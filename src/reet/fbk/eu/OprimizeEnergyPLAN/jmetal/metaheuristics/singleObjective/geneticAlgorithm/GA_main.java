@@ -54,7 +54,7 @@ public class GA_main {
 		// int bits ; // Length of bit string in the OneMax problem
 		HashMap parameters; // Operator parameters
 
-		int bits = 6;
+		int bits = 9;
 		problem = new Add5Numbers("BinaryIntAndReal", 6, 4, 2);
 
 		// problem = new Sphere("Real", 10) ;
