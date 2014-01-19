@@ -176,6 +176,12 @@ public class NSGAII extends Algorithm {
           requiredEvaluations = evaluations;
         } // if
       } // if
+    
+    //added by shaikat to track the run
+      if ((evaluations % 50) == 0) {
+    	    System.out.println(evaluations + ": " + population.get(0).getObjective(0)) ;
+    	  } //
+    
     } // while
 
     // Return as output parameter the required evaluations
