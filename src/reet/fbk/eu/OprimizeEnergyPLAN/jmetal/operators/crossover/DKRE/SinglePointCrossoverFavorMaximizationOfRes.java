@@ -48,8 +48,8 @@ public class SinglePointCrossoverFavorMaximizationOfRes extends Crossover {
 	/**
 	 * Valid solution types to apply this operator
 	 */
-	private static final List VALID_TYPES = Arrays
-			.asList(BinaryIntSolutionType.class, BinaryIntAndRealSolutionType.class);
+	private static final List VALID_TYPES = Arrays.asList(
+			BinaryIntSolutionType.class, BinaryIntAndRealSolutionType.class);
 
 	private Double singlePointCrossoverProbability_ = null;
 
@@ -112,68 +112,82 @@ public class SinglePointCrossoverFavorMaximizationOfRes extends Crossover {
 
 					// each variable will be checked with favorGenes array
 					for (int i = 0; i < parent1.getDecisionVariables().length; i++) {
-						if(parent1.getDecisionVariables()[i].getClass()==BinaryInt.class){
-						if (favorGenes[i] == true) {
-							BinaryInt off[] = doMaximizeCrossoverInGene(
-									(BinaryInt) parent1.getDecisionVariables()[i],
-									(BinaryInt) parent2.getDecisionVariables()[i]);
+						if (parent1.getDecisionVariables()[i].getClass() == BinaryInt.class) {
+							if (favorGenes[i] == true) {
+								BinaryInt off[] = doMaximizeCrossoverInGene(
+										(BinaryInt) parent1
+												.getDecisionVariables()[i],
+										(BinaryInt) parent2
+												.getDecisionVariables()[i]);
 
-							offSpring[0].getDecisionVariables()[i] = off[0]
-									.deepCopy();
+								offSpring[0].getDecisionVariables()[i] = off[0]
+										.deepCopy();
 
-							offSpring[1].getDecisionVariables()[i] = off[1]
-									.deepCopy();
+								offSpring[1].getDecisionVariables()[i] = off[1]
+										.deepCopy();
 
-						} else {
-							// usual crossover
-							BinaryInt off[] = doUsualCrossoverInGene(
-									(BinaryInt) parent1.getDecisionVariables()[i],
-									(BinaryInt) parent2.getDecisionVariables()[i]);
+							} else {
+								// usual crossover
+								BinaryInt off[] = doUsualCrossoverInGene(
+										(BinaryInt) parent1
+												.getDecisionVariables()[i],
+										(BinaryInt) parent2
+												.getDecisionVariables()[i]);
 
-							offSpring[0].getDecisionVariables()[i] = off[0]
-									.deepCopy();
-							offSpring[1].getDecisionVariables()[i] = off[1]
-									.deepCopy();
+								offSpring[0].getDecisionVariables()[i] = off[0]
+										.deepCopy();
+								offSpring[1].getDecisionVariables()[i] = off[1]
+										.deepCopy();
+							}
 						}
-					}
 
 					}
 					// decode the result
 					// 7. Decode the results
 					for (int i = 0; i < offSpring[0].getDecisionVariables().length; i++) {
-						if(parent1.getDecisionVariables()[i].getClass()==BinaryInt.class){
-						((BinaryInt) offSpring[0].getDecisionVariables()[i])
-								.decode();
-						if (((BinaryInt) offSpring[0].getDecisionVariables()[i]).getValue() > ((BinaryInt) offSpring[0]
-								.getDecisionVariables()[i]).getUpperBound()) {
+						if (parent1.getDecisionVariables()[i].getClass() == BinaryInt.class) {
 							((BinaryInt) offSpring[0].getDecisionVariables()[i])
-									.setValue(((BinaryInt) offSpring[0]
-											.getDecisionVariables()[i]).getUpperBound());
-						} else if (((BinaryInt) offSpring[0]
-								.getDecisionVariables()[i]).getValue() < ((BinaryInt) offSpring[0]
-								.getDecisionVariables()[i]).getLowerBound()) {
-							((BinaryInt) offSpring[0].getDecisionVariables()[i])
-									.setValue(((BinaryInt) offSpring[0]
-											.getDecisionVariables()[i]).getLowerBound());
+									.decode();
+							if (((BinaryInt) offSpring[0]
+									.getDecisionVariables()[i]).getValue() > ((BinaryInt) offSpring[0]
+									.getDecisionVariables()[i]).getUpperBound()) {
+								((BinaryInt) offSpring[0]
+										.getDecisionVariables()[i])
+										.setValue(((BinaryInt) offSpring[0]
+												.getDecisionVariables()[i])
+												.getUpperBound());
+							} else if (((BinaryInt) offSpring[0]
+									.getDecisionVariables()[i]).getValue() < ((BinaryInt) offSpring[0]
+									.getDecisionVariables()[i]).getLowerBound()) {
+								((BinaryInt) offSpring[0]
+										.getDecisionVariables()[i])
+										.setValue(((BinaryInt) offSpring[0]
+												.getDecisionVariables()[i])
+												.getLowerBound());
 
-						}
-						((BinaryInt) offSpring[1].getDecisionVariables()[i])
-								.decode();
-						if (((BinaryInt) offSpring[1].getDecisionVariables()[i]).getValue() > ((BinaryInt) offSpring[1]
-								.getDecisionVariables()[i]).getUpperBound()) {
+							}
 							((BinaryInt) offSpring[1].getDecisionVariables()[i])
-									.setValue(((BinaryInt) offSpring[1]
-											.getDecisionVariables()[i]).getUpperBound());
-						} else if (((BinaryInt) offSpring[1]
-								.getDecisionVariables()[i]).getValue() < ((BinaryInt) offSpring[1]
-								.getDecisionVariables()[i]).getLowerBound()) {
-							((BinaryInt) offSpring[1].getDecisionVariables()[i])
-									.setValue(((BinaryInt) offSpring[1]
-											.getDecisionVariables()[i]).getLowerBound());
+									.decode();
+							if (((BinaryInt) offSpring[1]
+									.getDecisionVariables()[i]).getValue() > ((BinaryInt) offSpring[1]
+									.getDecisionVariables()[i]).getUpperBound()) {
+								((BinaryInt) offSpring[1]
+										.getDecisionVariables()[i])
+										.setValue(((BinaryInt) offSpring[1]
+												.getDecisionVariables()[i])
+												.getUpperBound());
+							} else if (((BinaryInt) offSpring[1]
+									.getDecisionVariables()[i]).getValue() < ((BinaryInt) offSpring[1]
+									.getDecisionVariables()[i]).getLowerBound()) {
+								((BinaryInt) offSpring[1]
+										.getDecisionVariables()[i])
+										.setValue(((BinaryInt) offSpring[1]
+												.getDecisionVariables()[i])
+												.getLowerBound());
 
+							}
 						}
 					}
-				}
 				} // Binary or BinaryReal
 			}
 		} catch (ClassCastException e1) {
@@ -276,7 +290,7 @@ public class SinglePointCrossoverFavorMaximizationOfRes extends Crossover {
 
 		}
 
-		// 3. now do the real single point crossover by taking 1st part from a
+		// 3. now do a single point crossover by taking 1st part from a
 		// better parent
 
 		for (int i = crossoverPoint; i >= 0; i--) {
@@ -287,25 +301,72 @@ public class SinglePointCrossoverFavorMaximizationOfRes extends Crossover {
 		offSpring1.decode();
 		offSpring[0] = (BinaryInt) offSpring1.deepCopy();
 
-		// 4. the other offspring comes as usual
-		crossoverPoint = PseudoRandom.randInt(0, gene1.getNumberOfBits() - 1);
+		/*
+		 * // 4. the other offspring comes as usual crossoverPoint =
+		 * PseudoRandom.randInt(0, gene1.getNumberOfBits() - 1);
+		 * 
+		 * if (g1.getValue() < g2.getValue()) { // offspring offSpring1 =
+		 * (BinaryInt) gene1.deepCopy(); offSpring2 = (BinaryInt)
+		 * gene2.deepCopy(); } else { offSpring1 = (BinaryInt) gene2.deepCopy();
+		 * offSpring2 = (BinaryInt) gene1.deepCopy();
+		 * 
+		 * }
+		 * 
+		 * for (int i = crossoverPoint; i >= 0; i--) { offSpring1.bits_.set(i,
+		 * offSpring2.bits_.get(i)); } // copy to main gene offSpring1.decode();
+		 * offSpring[1] = (BinaryInt) offSpring1.deepCopy();
+		 */
 
-		if (g1.getValue() < g2.getValue()) {
+		// now do the same for another crossover point
+		// 1. Calculate the point to make the crossover
+		crossoverPoint = PseudoRandom.randInt(0,
+				gene1.getNumberOfBits() - 1);
+
+		// 2. calculate which one is better until crossover point
+		BinaryInt ge1 = new BinaryInt(gene1.getNumberOfBits() - 1
+				- crossoverPoint, 0, (int) Math.pow(2, gene1.getNumberOfBits()
+				- 1 - crossoverPoint));
+		BinaryInt ge2 = new BinaryInt(gene1.getNumberOfBits() - 1
+				- crossoverPoint, 0, (int) Math.pow(2, gene1.getNumberOfBits()
+				- 1 - crossoverPoint));
+
+		ge1.bits_.clear();
+		ge2.bits_.clear();
+
+		for (int i = crossoverPoint + 1; i < gene1.getNumberOfBits(); i++) {
+			if (gene1.bits_.get(i)) {
+				ge1.bits_.set(i - crossoverPoint - 1);
+			}
+			if (gene2.bits_.get(i)) {
+				ge2.bits_.set(i - crossoverPoint - 1);
+			}
+		}
+
+		ge1.decode();
+		ge2.decode();
+
+		BinaryInt offS1, offS2;
+
+		if (ge1.getValue() > ge2.getValue()) {
 			// offspring
-			offSpring1 = (BinaryInt) gene1.deepCopy();
-			offSpring2 = (BinaryInt) gene2.deepCopy();
+			offS1 = (BinaryInt) gene1.deepCopy();
+			offS2 = (BinaryInt) gene2.deepCopy();
 		} else {
-			offSpring1 = (BinaryInt) gene2.deepCopy();
-			offSpring2 = (BinaryInt) gene1.deepCopy();
+			offS1 = (BinaryInt) gene2.deepCopy();
+			offS2 = (BinaryInt) gene1.deepCopy();
 
 		}
+
+		// 3. now do a single point crossover by taking 1st part from a
+		// better parent
 
 		for (int i = crossoverPoint; i >= 0; i--) {
-			offSpring1.bits_.set(i, offSpring2.bits_.get(i));
+			offS1.bits_.set(i, offS2.bits_.get(i));
+
 		}
 		// copy to main gene
-		offSpring1.decode();
-		offSpring[1] = (BinaryInt) offSpring1.deepCopy();
+		offS1.decode();
+		offSpring[0] = (BinaryInt) offS1.deepCopy();
 
 		// retune
 		return offSpring;
