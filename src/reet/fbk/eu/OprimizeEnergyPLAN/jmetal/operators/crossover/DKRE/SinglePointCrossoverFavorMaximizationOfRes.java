@@ -366,7 +366,7 @@ public class SinglePointCrossoverFavorMaximizationOfRes extends Crossover {
 		}
 		// copy to main gene
 		offS1.decode();
-		offSpring[0] = (BinaryInt) offS1.deepCopy();
+		offSpring[1] = (BinaryInt) offS1.deepCopy();
 
 		// retune
 		return offSpring;
