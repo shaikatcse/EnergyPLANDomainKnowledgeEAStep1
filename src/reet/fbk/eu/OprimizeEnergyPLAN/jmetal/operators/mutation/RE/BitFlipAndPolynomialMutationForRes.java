@@ -58,7 +58,7 @@ public class BitFlipAndPolynomialMutationForRes extends Mutation {
   private Double bitFlipMutationProbability_ = null ;
   private Double polynomialMutationProbability_ = null;
 	
-  private GeneralBitFlipMutationForRes generalBitFlipMutation; 
+  private BitFlipMutationForRes bitFlipMutation; 
   /**
 	 * Constructor
 	 * Creates a new instance of the Bit Flip mutation operator
@@ -73,7 +73,7 @@ public class BitFlipAndPolynomialMutationForRes extends Mutation {
   	if (parameters.get("distributionIndex") != null)
   		distributionIndex_ = (Double) parameters.get("distributionIndex") ;  	
   	
-  	generalBitFlipMutation= new GeneralBitFlipMutationForRes(parameters);
+  	bitFlipMutation = new BitFlipMutationForRes(parameters);
   	
 	} // BitFlipMutation
 	
@@ -129,7 +129,7 @@ public class BitFlipAndPolynomialMutationForRes extends Mutation {
 		try {
 			
 				//do general bit flip mutation
-				generalBitFlipMutation.doMutation(bitFlipMutationProbability_, solution);
+				bitFlipMutation.doMutation(bitFlipMutationProbability_, solution);
 				
 				//do polynomial mutation
 				doPolynomialMutation(polynomialMutationProbability_,solution);

@@ -206,10 +206,10 @@ public class GeneralSinglePointCrossoverForRes extends Crossover {
 
 		Solution[] offSpring;
 		int random = PseudoRandom.randInt(0, 100);
-		if (random <= 25) {
+		if (random <= 15) {
 			offSpring = singlePointCrossoverFavorMaximizationOfRes.doCrossover(
 					probability, parent1, parent2);
-		} else if (random > 25 && random <= 50) {
+		} else if (random > 15 && random <= 30) {
 			offSpring = singlePointCrossoverFavorMaximizationOfPP.doCrossover(
 					probability, parent1, parent2);
 		} else {

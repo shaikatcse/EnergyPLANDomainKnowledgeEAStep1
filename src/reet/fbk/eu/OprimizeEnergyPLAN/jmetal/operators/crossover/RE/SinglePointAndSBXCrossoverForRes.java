@@ -40,7 +40,7 @@ import java.util.List;
 import reet.fbk.eu.OprimizeEnergyPLAN.jmetal.encodings.solutionType.BinaryIntSolutionType;
 import reet.fbk.eu.OprimizeEnergyPLAN.jmetal.encodings.variable.BinaryInt;
 import jmetal.operators.crossover.*;
-import reet.fbk.eu.OprimizeEnergyPLAN.jmetal.operators.crossover.SinglePointCrossover;
+import reet.fbk.eu.OprimizeEnergyPLAN.jmetal.operators.crossover.RE.SinglePointCrossoverForRes;
 import reet.fbk.eu.OprimizeEnergyPLAN.jmetal.operators.crossover.DKRE.SinglePointCrossoverFavorMaximizationOfPP;
 import reet.fbk.eu.OprimizeEnergyPLAN.jmetal.operators.crossover.DKRE.SinglePointCrossoverFavorMaximizationOfRes;
 import reet.fbk.eu.OprimizeEnergyPLAN.jmetal.encodings.solutionType.BinaryIntAndRealSolutionType;
@@ -73,15 +73,15 @@ public class SinglePointAndSBXCrossoverForRes extends Crossover {
 	private static final List VALID_TYPES = Arrays
 			.asList(BinaryIntAndRealSolutionType.class);
 
-	private GeneralSinglePointCrossoverForRes generalSinglePointCrossoverForRes;
-	private SinglePointCrossover singlePointCrossover;
+	private SinglePointCrossoverForRes singlePointCrossoverForRes;
+	
 
 	/**
 	 * Constructor Creates a new instance of the single point crossover operator
 	 */
 	public SinglePointAndSBXCrossoverForRes(HashMap<String, Object> parameters) {
 		super(parameters);
-		generalSinglePointCrossoverForRes = new GeneralSinglePointCrossoverForRes(
+		singlePointCrossoverForRes = new SinglePointCrossoverForRes(
 				parameters);
 
 		if (parameters.get("SBXCrossoverProbability") != null)
@@ -244,7 +244,7 @@ public class SinglePointAndSBXCrossoverForRes extends Crossover {
 		Solution[] offSpring;
 		// do generalized single-point crossover on parents
 		Solution[] binaryIntOffSpring;
-		binaryIntOffSpring = generalSinglePointCrossoverForRes.doCrossover(
+		binaryIntOffSpring = singlePointCrossoverForRes.doCrossover(
 				singlePointCrossoverProbability_, parent1, parent2);
 
 		// do SBX crossover on real part on parents

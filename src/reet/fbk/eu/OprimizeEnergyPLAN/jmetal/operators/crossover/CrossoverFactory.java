@@ -56,7 +56,8 @@ else if (name.equalsIgnoreCase("BLXAlphaCrossover"))
 
 if (name.equalsIgnoreCase("SinglePointAndSBXCrossoverForRes"))
     return new SinglePointAndSBXCrossoverForRes(parameters);
-
+else if (name.equalsIgnoreCase("SinglePointAndSBXCrossoverForResWithDK"))
+    return new SinglePointAndSBXCrossoverForResWithDK(parameters);
 /*else if(name.equalsIgnoreCase("SinglePointCrossoverFavorMaximizationOfRes"))
 	return new SinglePointCrossoverFavorMaximizationOfRes(parameters);*/
 else {

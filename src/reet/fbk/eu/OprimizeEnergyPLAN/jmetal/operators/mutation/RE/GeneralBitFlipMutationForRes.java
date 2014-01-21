@@ -88,11 +88,11 @@ public class GeneralBitFlipMutationForRes extends Mutation {
 			throws JMException {
 		try {
 			int random = PseudoRandom.randInt(0, 100);
-			if (random <= 25) {
+			if (random <= 15) {
 				bitFlipMutationFavorMaximizationOfRes.doMutation(
 						probability, solution);
 
-			} else if (random > 25 && random <= 50) {
+			} else if (random > 15 && random <= 30) {
 				bitFlipMutationFavorMaximizationOfPP.doMutation(
 						probability, solution);
 			} else {
