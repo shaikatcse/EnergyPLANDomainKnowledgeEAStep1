@@ -22,7 +22,7 @@ public class RepairFuelGene {
 		this.stepSize = stepSize;
 	}
 	
-	Variable [] doRepair(Variable coal, Variable oil, Variable nGas){
+	public Variable [] doRepair(Variable coal, Variable oil, Variable nGas){
 		
 		Variable fuelShare[] = new Variable[3];
 		fuelShare[0]=coal;

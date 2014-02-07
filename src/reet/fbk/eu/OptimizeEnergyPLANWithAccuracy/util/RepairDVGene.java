@@ -20,7 +20,7 @@ public class RepairDVGene {
 		this.stepSize = stepSize;
 	}
 
-	Variable doRepair(Variable gene)
+	public Variable doRepair(Variable gene)
 	{
 		try {
 			double geneOriginalValue = gene.getValue();
