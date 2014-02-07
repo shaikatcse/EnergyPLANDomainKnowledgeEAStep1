@@ -21,10 +21,13 @@ package reet.fbk.eu.OprimizeEnergyPLAN.jmetal.operators.mutation.Real;
 //You should have received a copy of the GNU Lesser General Public License
 //along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
+import jmetal.core.Problem;
 import jmetal.core.Solution;
+import jmetal.core.Variable;
 import jmetal.encodings.solutionType.BinaryRealSolutionType;
 import jmetal.encodings.solutionType.BinarySolutionType;
 import jmetal.encodings.solutionType.IntSolutionType;
+import jmetal.encodings.solutionType.RealSolutionType;
 import jmetal.encodings.variable.Binary;
 import jmetal.encodings.variable.Real;
 import jmetal.util.Configuration;
@@ -41,6 +44,7 @@ import reet.fbk.eu.OprimizeEnergyPLAN.jmetal.encodings.variable.BinaryInt;
 import reet.fbk.eu.OprimizeEnergyPLAN.jmetal.operators.mutation.DKRE.BitFlipMutationFavorMaximizationOfRes;
 import reet.fbk.eu.OprimizeEnergyPLAN.jmetal.operators.mutation.DKRE.BitFlipMutationFavorMaximizationOfPP;
 import jmetal.operators.mutation.*;
+import jmetal.problems.singleObjective.Sphere;
 
 /**
  * This class implements a bit flip mutation operator. NOTE: the operator is
@@ -89,6 +93,7 @@ public class GeneralRealMutationForRes extends Mutation {
 			throws JMException {
 		try {
 			int random = PseudoRandom.randInt(0, 100);
+			
 			if (random <= 20) {
 				dkRealMutationFavorRE.doMutation(
 						probability, solution);
@@ -135,4 +140,54 @@ public class GeneralRealMutationForRes extends Mutation {
 
 		return solution;
 	} // execute
+	
+	public static void main(String args[]) throws JMException{
+		HashMap hm = new HashMap();
+
+		double distributionIndex = 20.0;
+
+		hm.put("probability", 1.0);
+		hm.put("distributionIndex", distributionIndex);
+
+		Problem problem = new Sphere("Real", 7);
+
+		Real p1[] = new Real[7];
+		
+		for(int i=0;i<4;i++){
+			
+			p1[i] = new Real();
+			p1[i].setUpperBound(10000);
+			p1[i].setLowerBound(0);
+			
+		}
+		
+		for(int i=4;i<7;i++){
+			
+			p1[i] = new Real();
+			p1[i].setUpperBound(1.00);
+			p1[i].setLowerBound(0);
+			
+		}
+		
+		
+		p1[0].setValue(1500.00);
+		p1[1].setValue(2550.12);
+		p1[2].setValue(5650.12);
+		p1[3].setValue(2300.12);
+		p1[4].setValue(0.124);
+		p1[5].setValue(0.874);
+		p1[6].setValue(0.446);
+		//p1[0].setValue(b);
+		
+		
+		Real p2[] = new Real[1];
+		p2[0] = new Real();
+
+		Solution s1 = new Solution();
+		s1.setDecisionVariables((Variable[]) p1);
+		s1.setType(new RealSolutionType(problem));
+		
+		GeneralRealMutationForRes gmu = new GeneralRealMutationForRes(hm);
+		gmu.doMutation(1.0, s1);
+	}
 } // BitFlipMutation

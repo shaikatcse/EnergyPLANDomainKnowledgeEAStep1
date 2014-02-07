@@ -59,11 +59,6 @@ public class DKRealMutationFavorRE extends Mutation {
 		 */
 	}
 
-	public static void main(String args[]) {
-		NormalDistribution nd = new NormalDistribution(0, 1);
-		System.out.println(nd.density(0.2));
-	}
-
 	/**
 	 * Perform the mutation operation
 	 * 
@@ -73,6 +68,7 @@ public class DKRealMutationFavorRE extends Mutation {
 	 *            The solution to mutate
 	 * @throws JMException
 	 */
+	@SuppressWarnings("null")
 	public void doMutation(double probability, Solution solution)
 			throws JMException {
 		try {
@@ -81,13 +77,12 @@ public class DKRealMutationFavorRE extends Mutation {
 				for (int i = 0; i < solution.getDecisionVariables().length; i++) {
 					// do mutation on all variables
 
-					if (solution.getDecisionVariables()[i].getClass() == BinaryInt.class) {
+					// check if the probability is greater than a given
+					// probability
 
-						// check if the probability is greater than a given
-						// probability
+					if (PseudoRandom.randDouble() < probability) {
 
-						if (PseudoRandom.randDouble() < probability) {
-
+						try {
 							if (favorGenes[i] == true) {
 
 								double indvValue = solution
@@ -97,7 +92,8 @@ public class DKRealMutationFavorRE extends Mutation {
 										.getDecisionVariables()[i]
 										.getUpperBound();
 								NormalDistribution nd = new NormalDistribution(
-										indvValue, distUpperBound / 3);
+										indvValue,
+										(distUpperBound - indvValue) / 3);
 
 								double rand = PseudoRandom.randDouble();
 
@@ -107,8 +103,9 @@ public class DKRealMutationFavorRE extends Mutation {
 												+ rand
 												* (nd.cumulativeProbability(distUpperBound) - nd
 														.cumulativeProbability(distLowerBound)));
-								solution.getDecisionVariables()[i].setLowerBound(newIndvValue);
-								
+								solution.getDecisionVariables()[i]
+										.setValue(newIndvValue);
+
 							} else {
 								double indvValue = solution
 										.getDecisionVariables()[i].getValue();
@@ -117,7 +114,8 @@ public class DKRealMutationFavorRE extends Mutation {
 										.getLowerBound();
 								double distUpperBound = indvValue;
 								NormalDistribution nd = new NormalDistribution(
-										indvValue, distLowerBound / 3);
+										indvValue,
+										(indvValue - distLowerBound) / 3);
 
 								double rand = PseudoRandom.randDouble();
 
@@ -127,9 +125,12 @@ public class DKRealMutationFavorRE extends Mutation {
 												+ rand
 												* (nd.cumulativeProbability(distUpperBound) - nd
 														.cumulativeProbability(distLowerBound)));
-								solution.getDecisionVariables()[i].setLowerBound(newIndvValue);
-							}
+								solution.getDecisionVariables()[i]
+										.setValue(newIndvValue);
 
+							}
+						} catch (NullPointerException e) {
+							continue;
 						}
 					} // if
 				}

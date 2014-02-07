@@ -82,13 +82,12 @@ public class DKRealMutationFavorConventionalPP extends Mutation {
 				for (int i = 0; i < solution.getDecisionVariables().length; i++) {
 					// do mutation on all variables
 
-					if (solution.getDecisionVariables()[i].getClass() == BinaryInt.class) {
-
+					
 						// check if the probability is greater than a given
 						// probability
 
 						if (PseudoRandom.randDouble() < probability) {
-
+							try {
 							if (favorGenes[i] == true) {
 
 								double indvValue = solution
@@ -98,7 +97,7 @@ public class DKRealMutationFavorConventionalPP extends Mutation {
 										.getDecisionVariables()[i]
 										.getUpperBound();
 								NormalDistribution nd = new NormalDistribution(
-										indvValue, distUpperBound / 3);
+										indvValue, (distUpperBound - indvValue) / 3);
 
 								double rand = PseudoRandom.randDouble();
 
@@ -108,7 +107,7 @@ public class DKRealMutationFavorConventionalPP extends Mutation {
 												+ rand
 												* (nd.cumulativeProbability(distUpperBound) - nd
 														.cumulativeProbability(distLowerBound)));
-								solution.getDecisionVariables()[i].setLowerBound(newIndvValue);
+								solution.getDecisionVariables()[i].setValue(newIndvValue);
 							}
 
 							else {
@@ -119,7 +118,7 @@ public class DKRealMutationFavorConventionalPP extends Mutation {
 										.getLowerBound();
 								double distUpperBound = indvValue;
 								NormalDistribution nd = new NormalDistribution(
-										indvValue, distLowerBound / 3);
+										indvValue, (indvValue - distLowerBound)  / 3);
 
 								double rand = PseudoRandom.randDouble();
 
@@ -129,11 +128,13 @@ public class DKRealMutationFavorConventionalPP extends Mutation {
 												+ rand
 												* (nd.cumulativeProbability(distUpperBound) - nd
 														.cumulativeProbability(distLowerBound)));
-								solution.getDecisionVariables()[i].setLowerBound(newIndvValue);
+								solution.getDecisionVariables()[i].setValue(newIndvValue);
 							}
-							
-
+						}catch(NullPointerException e){
+							continue;
 						}
+
+						
 					} // if
 				}
 			}// else
