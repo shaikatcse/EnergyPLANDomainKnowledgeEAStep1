@@ -16,6 +16,12 @@ import jmetal.util.JMException;
  */
 
 public class RepairFuelGene {
+	
+	/**
+	   * EPS defines the minimum difference allowed between sum and 1.00
+	   */
+	  private static final double EPS= 1.0e-14;
+	
 	double stepSize;
 
 	public RepairFuelGene(double stepSize) {
@@ -51,8 +57,8 @@ public class RepairFuelGene {
 			sum+=repairedValue[i];
 		}
 		
-		if(sum!=1.00){
-			Random rm=new Random();
+		if(java.lang.Math.abs(sum -1.00)> EPS ){
+			Random rm=new Random(1012014);
 			int randomPosition = rm.nextInt(3);
 			if(sum<1.00){
 				repairedValue[randomPosition]=repairedValue[randomPosition] + (1.00-sum); 
