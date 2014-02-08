@@ -30,6 +30,7 @@ import java.util.HashMap;
 import jmetal.operators.mutation.Mutation;
 import reet.fbk.eu.OprimizeEnergyPLAN.jmetal.operators.mutation.RE.BitFlipAndPolynomialMutationForRes;
 import reet.fbk.eu.OprimizeEnergyPLAN.jmetal.operators.mutation.RE.BitFlipAndPolynomialMutationForResWithDK;
+import reet.fbk.eu.OprimizeEnergyPLAN.jmetal.operators.mutation.Real.GeneralRealMutationForRes;
 /**
 * Class implementing a factory for Mutation objects.
 */
@@ -56,6 +57,8 @@ if (name.equalsIgnoreCase("BitFlipAndPolynomialMutationForRes"))
 		  return new BitFlipAndPolynomialMutationForRes(parameters);
 else if (name.equalsIgnoreCase("BitFlipAndPolynomialMutationForResWithDK"))
 	  return new BitFlipAndPolynomialMutationForResWithDK(parameters);
+else if (name.equalsIgnoreCase("GeneralRealMutationForRes"))
+	return new GeneralRealMutationForRes(parameters);
 /*else if(name.equalsIgnoreCase("BitFlipMutationFavorMaximizationOfRes"))
 	return new BitFlipMutationFavorMaximizationOfRes(parameters);
 else if(name.equalsIgnoreCase("MutationForRes"))
