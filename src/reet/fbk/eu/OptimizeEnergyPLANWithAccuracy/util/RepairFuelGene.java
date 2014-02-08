@@ -11,7 +11,7 @@ import jmetal.util.JMException;
 /*
  * The class represent a doRepair() funtion that can reapir three variables for fuel (now the function is considering about
  * coal, oil and natural-gas, but it is possible to extend it to incorporate boi-mass also). The function receive 3 varibles
- * with double value between 0 to 1. The function maps those variables close to the multiple of given step size. The function  
+ * with Double value between 0 to 1. The function maps those variables close to the multiple of given step size. The function  
  * also take care that the summation of three varibales are 1. 
  */
 
@@ -20,11 +20,11 @@ public class RepairFuelGene {
 	/**
 	   * EPS defines the minimum difference allowed between sum and 1.00
 	   */
-	  private static final double EPS= 1.0e-14;
+	  private static final Double EPS= 1.0e-14;
 	
-	double stepSize;
+	Double stepSize;
 
-	public RepairFuelGene(double stepSize) {
+	public RepairFuelGene(Double stepSize) {
 		this.stepSize = stepSize;
 	}
 	
@@ -35,11 +35,11 @@ public class RepairFuelGene {
 		fuelShare[1]=oil;
 		fuelShare[2]=nGas;
 		
-		double repairedValue[] =new double[3];
+		Double repairedValue[] =new Double[3];
 		
 		try {
-			double originalSum=0.0;
-			double sum=0.0;
+			Double originalSum=0.0;
+			Double sum=0.0;
 		
 			for(int i=0;i<3;i++){
 			originalSum += fuelShare[i].getValue();;
@@ -51,7 +51,7 @@ public class RepairFuelGene {
 		}
 			
 		for(int i=0;i<3;i++){
-			double tmpValue = new BigDecimal(repairedValue[i]).setScale(2, RoundingMode.HALF_UP).doubleValue();
+			Double tmpValue = new BigDecimal(repairedValue[i].toString()).setScale(2, RoundingMode.HALF_UP).doubleValue();
 			repairedValue[i] = ((tmpValue%this.stepSize)>= stepSize/2 ? 
 					(tmpValue + (stepSize - tmpValue% stepSize)): (tmpValue- (tmpValue%stepSize)));
 			sum+=repairedValue[i];

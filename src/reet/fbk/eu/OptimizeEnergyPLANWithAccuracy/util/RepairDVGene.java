@@ -23,9 +23,9 @@ public class RepairDVGene {
 	public Variable doRepair(Variable gene)
 	{
 		try {
-			double geneOriginalValue = gene.getValue();
-			double geneTmpValue = new BigDecimal(geneOriginalValue).setScale(0, RoundingMode.HALF_UP).doubleValue();
-			double geneRepairValue = ((geneTmpValue%this.stepSize)>= stepSize/2 ? 
+			Double geneOriginalValue = gene.getValue();
+			Double geneTmpValue = new BigDecimal(geneOriginalValue.toString()).setScale(0, RoundingMode.HALF_UP).doubleValue();
+			Double geneRepairValue = ((geneTmpValue%this.stepSize)>= stepSize/2 ? 
 					(geneTmpValue + (stepSize - geneTmpValue% stepSize)): (geneTmpValue- (geneTmpValue%stepSize)));
 			gene.setValue(geneRepairValue);
 			
