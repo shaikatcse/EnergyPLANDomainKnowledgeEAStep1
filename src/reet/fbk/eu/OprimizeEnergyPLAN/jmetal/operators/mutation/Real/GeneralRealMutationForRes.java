@@ -55,7 +55,7 @@ public class GeneralRealMutationForRes extends Mutation {
 	/**
 	 * Valid solution types to apply this operator
 	 */
-	private static final List VALID_TYPES = Arrays.asList(Real.class);
+	private static final List VALID_TYPES = Arrays.asList(RealSolutionType.class);
 
 	private Double mutationProbability_ = null;
 
@@ -69,8 +69,8 @@ public class GeneralRealMutationForRes extends Mutation {
 	 */
 	public GeneralRealMutationForRes(HashMap<String, Object> parameters) {
 		super(parameters);
-		if (parameters.get("bitFlipMutationprobability") != null)
-			mutationProbability_ = (Double) parameters.get("mutationProbability");
+		if (parameters.get("probability") != null)
+			mutationProbability_ = (Double) parameters.get("probability");
 
 		polynomialMutation = new PolynomialMutation(parameters);
 		dkRealMutationFavorRE = new DKRealMutationFavorRE(

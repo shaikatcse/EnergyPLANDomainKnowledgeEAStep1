@@ -82,59 +82,71 @@ public class DKRealMutationFavorConventionalPP extends Mutation {
 				for (int i = 0; i < solution.getDecisionVariables().length; i++) {
 					// do mutation on all variables
 
-					
-						// check if the probability is greater than a given
-						// probability
+					// check if the probability is greater than a given
+					// probability
 
-						if (PseudoRandom.randDouble() < probability) {
-							try {
+					if (PseudoRandom.randDouble() < probability) {
+						try {
 							if (favorGenes[i] == true) {
 
 								double indvValue = solution
 										.getDecisionVariables()[i].getValue();
+								double newIndvValue = indvValue;
+								
 								double distLowerBound = indvValue;
 								double distUpperBound = solution
 										.getDecisionVariables()[i]
 										.getUpperBound();
+								if((distUpperBound - indvValue)>0.0){
+									
 								NormalDistribution nd = new NormalDistribution(
-										indvValue, (distUpperBound - indvValue) / 3);
+										indvValue,
+										(distUpperBound - indvValue) / 3);
 
 								double rand = PseudoRandom.randDouble();
 
-								double newIndvValue = nd
+								newIndvValue = nd
 										.inverseCumulativeProbability(nd
 												.cumulativeProbability(distLowerBound)
 												+ rand
 												* (nd.cumulativeProbability(distUpperBound) - nd
 														.cumulativeProbability(distLowerBound)));
-								solution.getDecisionVariables()[i].setValue(newIndvValue);
+								}
+								solution.getDecisionVariables()[i]
+										.setValue(newIndvValue);
 							}
 
 							else {
 								double indvValue = solution
 										.getDecisionVariables()[i].getValue();
+								
+								double newIndvValue = indvValue;
+								
 								double distLowerBound = solution
 										.getDecisionVariables()[i]
 										.getLowerBound();
 								double distUpperBound = indvValue;
-								NormalDistribution nd = new NormalDistribution(
-										indvValue, (indvValue - distLowerBound)  / 3);
+								if ((indvValue - distLowerBound) > 0) {
+									NormalDistribution nd = new NormalDistribution(
+											indvValue,
+											(indvValue - distLowerBound) / 3);
 
-								double rand = PseudoRandom.randDouble();
+									double rand = PseudoRandom.randDouble();
 
-								double newIndvValue = nd
-										.inverseCumulativeProbability(nd
-												.cumulativeProbability(distLowerBound)
-												+ rand
-												* (nd.cumulativeProbability(distUpperBound) - nd
-														.cumulativeProbability(distLowerBound)));
-								solution.getDecisionVariables()[i].setValue(newIndvValue);
+									newIndvValue = nd
+											.inverseCumulativeProbability(nd
+													.cumulativeProbability(distLowerBound)
+													+ rand
+													* (nd.cumulativeProbability(distUpperBound) - nd
+															.cumulativeProbability(distLowerBound)));
+								}
+								solution.getDecisionVariables()[i]
+										.setValue(newIndvValue);
 							}
-						}catch(NullPointerException e){
+						} catch (NullPointerException e) {
 							continue;
 						}
 
-						
 					} // if
 				}
 			}// else
