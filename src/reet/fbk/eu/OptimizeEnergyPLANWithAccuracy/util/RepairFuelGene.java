@@ -53,7 +53,7 @@ public class RepairFuelGene {
 		
 		if(sum!=1.00){
 			Random rm=new Random();
-			int randomPosition = rm.nextInt()%3;
+			int randomPosition = rm.nextInt(3);
 			if(sum<1.00){
 				repairedValue[randomPosition]=repairedValue[randomPosition] + (1.00-sum); 
 			}else{
