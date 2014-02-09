@@ -135,8 +135,10 @@ public class NSGAIIForDK extends NSGAII {
 							.execute(population);
 					Solution[] offSpring = (Solution[]) crossoverOperator
 							.execute(parents);
+					
 					repairSolution.doRepair(offSpring[0]);
 					repairSolution.doRepair(offSpring[1]);
+					
 					
 					mutationOperator.execute(offSpring[0]);
 					mutationOperator.execute(offSpring[1]);

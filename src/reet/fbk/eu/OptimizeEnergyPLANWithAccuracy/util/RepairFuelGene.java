@@ -31,9 +31,9 @@ public class RepairFuelGene {
 	public Variable [] doRepair(Variable coal, Variable oil, Variable nGas){
 		
 		Variable fuelShare[] = new Variable[3];
-		fuelShare[0]=coal;
-		fuelShare[1]=oil;
-		fuelShare[2]=nGas;
+		fuelShare[0]=coal.deepCopy();
+		fuelShare[1]=oil.deepCopy();
+		fuelShare[2]=nGas.deepCopy();
 		
 		Double repairedValue[] =new Double[3];
 		
@@ -44,13 +44,18 @@ public class RepairFuelGene {
 			for(int i=0;i<3;i++){
 			originalSum += fuelShare[i].getValue();;
 			repairedValue[i]= fuelShare[i].getValue();
-		}	
+			}	
+			
+			
 			
 		for(int i=0;i<3;i++){
 			repairedValue[i]=repairedValue[i]/originalSum;
 		}
 			
 		for(int i=0;i<3;i++){
+			
+			
+			
 			Double tmpValue = new BigDecimal(repairedValue[i].toString()).setScale(2, RoundingMode.HALF_UP).doubleValue();
 			repairedValue[i] = ((tmpValue%this.stepSize)>= stepSize/2 ? 
 					(tmpValue + (stepSize - tmpValue% stepSize)): (tmpValue- (tmpValue%stepSize)));
@@ -78,7 +83,13 @@ public class RepairFuelGene {
 
 		 */
 		for(int i=0;i<3;i++){
+			if(repairedValue[i]*originalSum>1.00){
+				fuelShare[i].setValue(1.0);
+			}else{
+			
 			fuelShare[i].setValue(repairedValue[i]*originalSum);
+			}
+			
 		}
 		
 		

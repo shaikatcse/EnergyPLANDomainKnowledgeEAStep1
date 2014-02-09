@@ -92,19 +92,19 @@ public class DKRealMutationFavorRE extends Mutation {
 								double distUpperBound = solution
 										.getDecisionVariables()[i]
 										.getUpperBound();
-								if((distUpperBound - indvValue)>0.0){
-								NormalDistribution nd = new NormalDistribution(
-										indvValue,
-										(distUpperBound - indvValue) / 3);
+								if ((distUpperBound - indvValue) > 0.0) {
+									NormalDistribution nd = new NormalDistribution(
+											indvValue,
+											(distUpperBound - indvValue) / 3);
 
-								double rand = PseudoRandom.randDouble();
+									double rand = PseudoRandom.randDouble();
 
-								newIndvValue = nd
-										.inverseCumulativeProbability(nd
-												.cumulativeProbability(distLowerBound)
-												+ rand
-												* (nd.cumulativeProbability(distUpperBound) - nd
-														.cumulativeProbability(distLowerBound)));
+									newIndvValue = nd
+											.inverseCumulativeProbability(nd
+													.cumulativeProbability(distLowerBound)
+													+ rand
+													* (nd.cumulativeProbability(distUpperBound) - nd
+															.cumulativeProbability(distLowerBound)));
 								}
 								solution.getDecisionVariables()[i]
 										.setValue(newIndvValue);
@@ -118,18 +118,18 @@ public class DKRealMutationFavorRE extends Mutation {
 										.getLowerBound();
 								double distUpperBound = indvValue;
 								if ((indvValue - distLowerBound) > 0.0) {
-								NormalDistribution nd = new NormalDistribution(
-										indvValue,
-										(indvValue - distLowerBound) / 3);
+									NormalDistribution nd = new NormalDistribution(
+											indvValue,
+											(indvValue - distLowerBound) / 3);
 
-								double rand = PseudoRandom.randDouble();
+									double rand = PseudoRandom.randDouble();
 
-								newIndvValue = nd
-										.inverseCumulativeProbability(nd
-												.cumulativeProbability(distLowerBound)
-												+ rand
-												* (nd.cumulativeProbability(distUpperBound) - nd
-														.cumulativeProbability(distLowerBound)));
+									newIndvValue = nd
+											.inverseCumulativeProbability(nd
+													.cumulativeProbability(distLowerBound)
+													+ rand
+													* (nd.cumulativeProbability(distUpperBound) - nd
+															.cumulativeProbability(distLowerBound)));
 								}
 								solution.getDecisionVariables()[i]
 										.setValue(newIndvValue);

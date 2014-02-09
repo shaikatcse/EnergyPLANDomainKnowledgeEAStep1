@@ -42,7 +42,8 @@ public class RepairSolution {
 					.doRepair(solution.getDecisionVariables()[j]);
 
 		}
-		// repiar the fuel share
+		// repair the fuel share
+		
 		Variable fuelShare[] = repairFuelGene.doRepair(
 				solution.getDecisionVariables()[4],
 				solution.getDecisionVariables()[5],
