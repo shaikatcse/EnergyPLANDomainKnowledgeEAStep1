@@ -45,7 +45,6 @@ public class RepairFuelGene {
 
 			for (int i = 0; i < 3; i++) {
 				originalSum = originalSum + fuelShare[i].getValue();
-				;
 				repairedValue[i] = fuelShare[i].getValue();
 			}
 

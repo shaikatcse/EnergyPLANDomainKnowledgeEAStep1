@@ -16,8 +16,8 @@ import jmetal.util.Configuration;
 import jmetal.util.JMException;
 import jmetal.util.PseudoRandom;
 import jmetal.util.RandomGenerator;
-import reet.fbk.eu.OprimizeEnergyPLAN.jmetal.operators.mutation.MutationFactory;
-//import jmetal.operators.mutation.MutationFactory;
+//import reet.fbk.eu.OprimizeEnergyPLAN.jmetal.operators.mutation.MutationFactory;
+import jmetal.operators.mutation.MutationFactory;
 
 
 import java.util.logging.FileHandler;
@@ -45,9 +45,9 @@ public class EnergyPLANProblemStep1Main {
 
 		QualityIndicator indicators; // Object to get quality indicators
 		
-		long seed [] = {2121979, 13031984 };
+		long seed [] = {545782, 4558754, 5479445, 458478, 9813546, 652262, 562366, 36565232, 45654526, 54923512 };
 		
-		int numberOfRun=2;
+		int numberOfRun=10;
 		for (int i = 0; i < numberOfRun; i++) {
 			
 			
@@ -62,7 +62,7 @@ public class EnergyPLANProblemStep1Main {
 
 			// Algorithm parameters
 			algorithm.setInputParameter("populationSize", 100);
-			algorithm.setInputParameter("maxEvaluations", 4000);
+			algorithm.setInputParameter("maxEvaluations", 8000);
 
 			// Mutation and Crossover for Real codification
 			parameters = new HashMap();
@@ -74,11 +74,11 @@ public class EnergyPLANProblemStep1Main {
 			parameters = new HashMap();
 			parameters.put("probability", 0.2);
 			parameters.put("distributionIndex", 4.0);
-			/*mutation = MutationFactory.getMutationOperator("PolynomialMutation",
-						parameters);*/
+			mutation = MutationFactory.getMutationOperator("PolynomialMutation",
+						parameters);
 
-			mutation = MutationFactory.getMutationOperator("GeneralRealMutationForRes",
-					parameters);
+			//mutation = MutationFactory.getMutationOperator("GeneralRealMutationForRes",
+				//	parameters);
 
 			// Selection Operator
 			parameters = null;
@@ -102,9 +102,9 @@ public class EnergyPLANProblemStep1Main {
 			// Result messages
 			logger_.info("Total execution time: " + estimatedTime + "ms");
 			logger_.info("Variables values have been writen to file VAR");
-			population.printVariablesToFile("run_"+i+"_VAR");
+			population.printVariablesToFile("run_"+i+"_VAR_Seed:"+seed[i]);
 			logger_.info("Objectives values have been writen to file FUN");
-			population.printObjectivesToFile("run_"+i+"_FUN");
+			population.printObjectivesToFile("run_"+i+"_FUN_Seed:"+seed[i]);
 		}
 	}
 }

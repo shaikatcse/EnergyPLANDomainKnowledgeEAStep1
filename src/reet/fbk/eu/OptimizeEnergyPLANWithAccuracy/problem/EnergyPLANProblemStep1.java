@@ -53,7 +53,7 @@ public class EnergyPLANProblemStep1 extends Problem {
 		for (var = 0; var < 4; var++) {
 			// capccities of wind, off-shore wind, PV and condencing power unit
 			lowerLimit_[var] = 0.0;
-			upperLimit_[var] = 10000.0;
+			upperLimit_[var] = 20000.0;
 		} // for
 
 		for (; var < numberOfVariables_; var++) {
