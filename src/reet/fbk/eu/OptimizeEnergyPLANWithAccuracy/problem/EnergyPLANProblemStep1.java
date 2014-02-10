@@ -169,9 +169,9 @@ public class EnergyPLANProblemStep1 extends Problem {
 		// pp Ngas share
 		double PP_ngas_share = solution.getDecisionVariables()[6].getValue();
 
-		final double PP_coal_eff=0.3;
-		final double PP_oil_eff=0.4;
-		final double PP_ngas_eff=0.5;
+		final double PP_coal_eff=0.35;
+		final double PP_oil_eff=0.45;
+		final double PP_ngas_eff=0.55;
 		
 		//efficiency calculation for PP
 		//normalized the share
@@ -180,9 +180,11 @@ public class EnergyPLANProblemStep1 extends Problem {
 		double nor_PP_ngas_share = PP_ngas_share / (PP_coal_share+PP_oil_share+PP_ngas_share);
 		
 		
-		double overall_eff = ((PP*nor_PP_coal_share)*PP_coal_eff + (PP*nor_PP_oil_share)*PP_oil_eff + (PP*nor_PP_ngas_share)*PP_ngas_eff)/PP;
+		double overall_eff_other = ((PP*nor_PP_coal_share)*PP_coal_eff + (PP*nor_PP_oil_share)*PP_oil_eff + (PP*nor_PP_ngas_share)*PP_ngas_eff)/PP;
 		
+		//efficiency calculation from Dr. Marco
 		
+		double overall_eff_marco = 1 / ((nor_PP_coal_share/PP_coal_eff) + (nor_PP_oil_share/PP_oil_eff) + (nor_PP_ngas_share/PP_ngas_eff) ) ;
 		
 		try {
 
@@ -255,7 +257,7 @@ public class EnergyPLANProblemStep1 extends Problem {
 			str = "input_eff_pp_el=";
 			bw.write(str);
 			bw.newLine();
-			str = "" + twoDForm.format(overall_eff);
+			str = "" + twoDForm.format(overall_eff_marco);
 			bw.write(str);
 			bw.newLine();
 
