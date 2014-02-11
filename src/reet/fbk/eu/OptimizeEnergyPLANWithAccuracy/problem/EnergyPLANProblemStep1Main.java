@@ -45,9 +45,9 @@ public class EnergyPLANProblemStep1Main {
 
 		QualityIndicator indicators; // Object to get quality indicators
 		
-		long seed [] = {545782, 4558754, 5479445, 458478, 9813546, 652262, 562366, 36565232, 45654526, 54923512 };
+		long seed [] = {545782, 455875, 547945, 458478, 981354, 652262, 562366, 365652, 456545, 549235 };
 		
-		int numberOfRun=10;
+		int numberOfRun=1;
 		for (int i = 0; i < numberOfRun; i++) {
 			
 			
@@ -61,8 +61,8 @@ public class EnergyPLANProblemStep1Main {
 			// algorithm = new ssNSGAII(problem);
 
 			// Algorithm parameters
-			algorithm.setInputParameter("populationSize", 100);
-			algorithm.setInputParameter("maxEvaluations", 8000);
+			algorithm.setInputParameter("populationSize", 4);
+			algorithm.setInputParameter("maxEvaluations", 12);
 
 			// Mutation and Crossover for Real codification
 			parameters = new HashMap();
@@ -102,9 +102,9 @@ public class EnergyPLANProblemStep1Main {
 			// Result messages
 			logger_.info("Total execution time: " + estimatedTime + "ms");
 			logger_.info("Variables values have been writen to file VAR");
-			population.printVariablesToFile("run_"+i+"_VAR_Seed:"+seed[i]);
+			population.printVariablesToFile("SBX_Ploy\\run_"+i+"_VAR_SBX_Poly_seed_"+seed[i]);
 			logger_.info("Objectives values have been writen to file FUN");
-			population.printObjectivesToFile("run_"+i+"_FUN_Seed:"+seed[i]);
+			population.printObjectivesToFile("SBX_Ploy\\run_"+i+"_FUN_SBX_Poly_seed_"+seed[i]);
 		}
 	}
 }
