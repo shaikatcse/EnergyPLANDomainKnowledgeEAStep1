@@ -61,8 +61,8 @@ public class EnergyPLANProblemStep1WithDKOperatorMain {
 			// algorithm = new ssNSGAII(problem);
 
 			// Algorithm parameters
-			algorithm.setInputParameter("populationSize", 4);
-			algorithm.setInputParameter("maxEvaluations", 20);
+			algorithm.setInputParameter("populationSize", 100);
+			algorithm.setInputParameter("maxEvaluations", 5000);
 
 			// Mutation and Crossover for Real codification
 			parameters = new HashMap();
