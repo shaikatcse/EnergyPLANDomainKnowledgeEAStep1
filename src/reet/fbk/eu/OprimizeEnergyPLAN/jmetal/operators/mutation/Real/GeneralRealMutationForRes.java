@@ -94,11 +94,11 @@ public class GeneralRealMutationForRes extends Mutation {
 		try {
 			int random = PseudoRandom.randInt(0, 100);
 			
-			if (random <= 20) {
+			if (random < 25) {
 				dkRealMutationFavorRE.doMutation(
 						probability, solution);
 
-			} else if (random > 20 && random <= 40) {
+			} else if (random >= 25 && random < 50) {
 				dkRealMutationFavorConventionalPP.doMutation(
 						probability, solution);
 			} else {
