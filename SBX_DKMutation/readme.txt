@@ -13,3 +13,5 @@ Mutation probability: 0.3
 Distribution index: 4
 Algorithm: NSGA-II
 selection: Binary Tournament.
+
+seed [] = {545782, 455875, 547945, 458478, 981354, 652262, 562366, 365652, 456545, 549235 };
