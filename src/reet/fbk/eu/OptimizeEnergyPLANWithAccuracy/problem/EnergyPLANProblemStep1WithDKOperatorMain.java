@@ -72,7 +72,7 @@ public class EnergyPLANProblemStep1WithDKOperatorMain {
 					parameters);
 
 			parameters = new HashMap();
-			parameters.put("probability", 0.3);
+			parameters.put("probability", 0.2);
 			parameters.put("distributionIndex", 4.0);
 			//mutation = MutationFactory.getMutationOperator("PolynomialMutation",
 				//		parameters);
