@@ -37,6 +37,7 @@ import jmetal.util.PseudoRandom;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Random;
 
 import reet.fbk.eu.OprimizeEnergyPLAN.jmetal.encodings.solutionType.BinaryIntAndRealSolutionType;
 import reet.fbk.eu.OprimizeEnergyPLAN.jmetal.encodings.solutionType.BinaryIntSolutionType;
@@ -63,6 +64,8 @@ public class GeneralRealMutationForRes extends Mutation {
 
 	private DKRealMutationFavorRE dkRealMutationFavorRE;
 	private DKRealMutationFavorConventionalPP dkRealMutationFavorConventionalPP;
+	
+	Random rm;
 
 	/**
 	 * Constructor Creates a new instance of the Bit Flip mutation operator
@@ -77,6 +80,8 @@ public class GeneralRealMutationForRes extends Mutation {
 				parameters);
 		dkRealMutationFavorConventionalPP = new DKRealMutationFavorConventionalPP(
 				parameters);
+		
+		rm=new Random();
 
 	} // BitFlipMutation
 
@@ -92,7 +97,8 @@ public class GeneralRealMutationForRes extends Mutation {
 	public void doMutation(double probability, Solution solution)
 			throws JMException {
 		try {
-			int random = PseudoRandom.randInt(0, 100);
+						
+			int random = rm.nextInt(100);
 			
 			if (random < 25) {
 				dkRealMutationFavorRE.doMutation(
