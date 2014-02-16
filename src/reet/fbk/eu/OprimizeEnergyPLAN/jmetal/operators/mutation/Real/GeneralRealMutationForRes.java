@@ -98,8 +98,8 @@ public class GeneralRealMutationForRes extends Mutation {
 			throws JMException {
 		try {
 						
-			int random = rm.nextInt(100);
-			
+			//int random = rm.nextInt(100);
+			int random=PseudoRandom.randInt(0,100);
 			if (random < 25) {
 				dkRealMutationFavorRE.doMutation(
 						probability, solution);
