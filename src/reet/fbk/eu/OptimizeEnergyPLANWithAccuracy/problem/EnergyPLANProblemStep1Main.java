@@ -47,7 +47,7 @@ public class EnergyPLANProblemStep1Main {
 		
 		long seed [] = {545782, 455875, 547945, 458478, 981354, 652262, 562366, 365652, 456545, 549235 };
 		
-		int numberOfRun=2;
+		int numberOfRun=10;
 		for (int i = 0; i < numberOfRun; i++) {
 			
 			
@@ -63,8 +63,8 @@ public class EnergyPLANProblemStep1Main {
 			indicators = new QualityIndicator(problem, "C:\\Users\\Nusrat\\Documents\\GitHub\\EnergyPLANDomainKnowledgeEAStep1\\Results\\truePf\\mergefun.pf") ;
 			
 			// Algorithm parameters
-			algorithm.setInputParameter("populationSize", 4);
-			algorithm.setInputParameter("maxEvaluations", 12);
+			algorithm.setInputParameter("populationSize", 100);
+			algorithm.setInputParameter("maxEvaluations", 5000);
 
 			// Mutation and Crossover for Real codification
 			parameters = new HashMap();
