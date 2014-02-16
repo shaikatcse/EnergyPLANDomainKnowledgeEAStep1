@@ -21,6 +21,11 @@
 
 package reet.fbk.eu.OptimizeEnergyPLANWithAccuracy.jmetal.metaheuristics;
 
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
+
 import reet.fbk.eu.OptimizeEnergyPLANWithAccuracy.util.RepairDVGene;
 import reet.fbk.eu.OptimizeEnergyPLANWithAccuracy.util.RepairFuelGene;
 import reet.fbk.eu.OptimizeEnergyPLANWithAccuracy.util.RepairSolution;
@@ -44,6 +49,10 @@ import jmetal.util.comparators.CrowdingComparator;
 public class NSGAIIForDK extends NSGAII {
 
 	RepairSolution repairSolution;
+	
+	File file;
+	FileWriter fw;
+	BufferedWriter bw;
 
 	/**
 	 * Constructor
@@ -59,6 +68,25 @@ public class NSGAIIForDK extends NSGAII {
 		
 	} // NSGAII
 
+
+	public NSGAIIForDK(Problem problem, long seed, String folderName) {
+		super(problem);
+		repairSolution = new RepairSolution();
+		
+		file = new File(folderName+"\\trackEvolution"+seed);
+		 
+		// if file doesnt exists, then create it
+		try{
+		if (!file.exists()) {
+			file.createNewFile();
+		}
+
+		 fw = new FileWriter(file.getAbsoluteFile());
+		 bw = new BufferedWriter(fw);
+		}catch(IOException e){
+			e.printStackTrace();
+		}
+	} 
 	
 
 	/**
@@ -120,6 +148,16 @@ public class NSGAIIForDK extends NSGAII {
 			population.add(newSolution);
 		} // for
 
+		int genNo = (int) evaluations / populationSize;
+		double  hyperVolume= indicators.getHypervolume(population);
+		
+		try {
+			bw.write(genNo+" "+hyperVolume+"\n");
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
 		// Generations
 		while (evaluations < maxEvaluations) {
 
@@ -157,6 +195,9 @@ public class NSGAIIForDK extends NSGAII {
 				} // if
 			} // for
 
+		
+			
+			
 			// Create the solutionSet union of solutionSet and offSpring
 			union = ((SolutionSet) population).union(offspringPopulation);
 
@@ -211,13 +252,23 @@ public class NSGAIIForDK extends NSGAII {
 			// than the hypervolume of the true Pareto front.
 			if ((indicators != null) && (requiredEvaluations == 0)) {
 				double HV = indicators.getHypervolume(population);
-				if (HV >= (0.98 * indicators.getTrueParetoFrontHypervolume())) {
+				if (HV >= (0.85 * indicators.getTrueParetoFrontHypervolume())) {
 					requiredEvaluations = evaluations;
 				} // if
 			} // if
 
+			genNo = (int) evaluations / populationSize;
+			hyperVolume = indicators.getHypervolume(population);
+			
+			try {
+				bw.write(genNo+" "+hyperVolume+"\n");
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			
 			// added by shaikat to track the run
-			if ((evaluations % 50) == 0) {
+			if ((evaluations % populationSize) == 0) {
 				System.out.println(evaluations + ": "
 						+ population.get(0).getObjective(0));
 			} //
@@ -231,6 +282,14 @@ public class NSGAIIForDK extends NSGAII {
 		Ranking ranking = new Ranking(population);
 		ranking.getSubfront(0).printFeasibleFUN("FUN_NSGAII");
 
+		try {
+			bw.write("Required evolution to reach 85% Hypervolume: " +requiredEvaluations );
+			bw.close();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
 		return ranking.getSubfront(0);
 	} // execute
 } // NSGA-II
