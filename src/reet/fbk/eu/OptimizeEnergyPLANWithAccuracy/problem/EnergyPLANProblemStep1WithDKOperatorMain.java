@@ -47,19 +47,21 @@ public class EnergyPLANProblemStep1WithDKOperatorMain {
 		
 		long seed [] = {545782, 455875, 547945, 458478, 981354, 652262, 562366, 365652, 456545, 549235 };
 		
-		int numberOfRun=1;
+		int numberOfRun=10;
 		for (int i = 0; i < numberOfRun; i++) {
 			
 			
 			PseudoRandom.setRandomGenerator(new RandomGenerator(seed[i]));
-
 			
 			indicators = null;
 
 			problem = new EnergyPLANProblemStep1("Real");
-			algorithm = new NSGAIIForDK(problem);
+			algorithm = new NSGAIIForDK(problem, seed[i], "SBX_DKMutation");
 			// algorithm = new ssNSGAII(problem);
 
+			indicators = new QualityIndicator(problem, "C:\\Users\\Nusrat\\Documents\\GitHub\\EnergyPLANDomainKnowledgeEAStep1\\Results\\truePf\\mergefun.pf") ;
+			
+			
 			// Algorithm parameters
 			algorithm.setInputParameter("populationSize", 100);
 			algorithm.setInputParameter("maxEvaluations", 5000);
@@ -72,7 +74,7 @@ public class EnergyPLANProblemStep1WithDKOperatorMain {
 					parameters);
 
 			parameters = new HashMap();
-			parameters.put("probability", 0.2);
+			parameters.put("probability", 0.4);
 			parameters.put("distributionIndex", 4.0);
 			//mutation = MutationFactory.getMutationOperator("PolynomialMutation",
 				//		parameters);
@@ -102,9 +104,9 @@ public class EnergyPLANProblemStep1WithDKOperatorMain {
 			// Result messages
 			logger_.info("Total execution time: " + estimatedTime + "ms");
 			logger_.info("Variables values have been writen to file VAR");
-			population.printVariablesToFile("SBX_DKMutation\\run_"+i+"_VAR_SBX_DKMutation_seed_"+seed[i]);
+			population.printVariablesToFile("SBX_DKMutation\\VAR_SBX_DKMutation_seed_"+seed[i]);
 			logger_.info("Objectives values have been writen to file FUN");
-			population.printObjectivesToFile("SBX_DKMutation\\run_"+i+"_FUN_SBX_DKMutation_seed_"+seed[i]);
+			population.printObjectivesToFile("SBX_DKMutation\\FUN_SBX_DKMutation_seed_"+seed[i]);
 		}
 	}
 }

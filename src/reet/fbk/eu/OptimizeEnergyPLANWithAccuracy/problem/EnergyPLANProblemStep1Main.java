@@ -47,7 +47,7 @@ public class EnergyPLANProblemStep1Main {
 		
 		long seed [] = {545782, 455875, 547945, 458478, 981354, 652262, 562366, 365652, 456545, 549235 };
 		
-		int numberOfRun=1;
+		int numberOfRun=2;
 		for (int i = 0; i < numberOfRun; i++) {
 			
 			
@@ -57,9 +57,11 @@ public class EnergyPLANProblemStep1Main {
 			indicators = null;
 
 			problem = new EnergyPLANProblemStep1("Real");
-			algorithm = new NSGAIIForDK(problem);
+			algorithm = new NSGAIIForDK(problem,seed[i], "SBX_Poly");
 			// algorithm = new ssNSGAII(problem);
 
+			indicators = new QualityIndicator(problem, "C:\\Users\\Nusrat\\Documents\\GitHub\\EnergyPLANDomainKnowledgeEAStep1\\Results\\truePf\\mergefun.pf") ;
+			
 			// Algorithm parameters
 			algorithm.setInputParameter("populationSize", 4);
 			algorithm.setInputParameter("maxEvaluations", 12);
@@ -102,9 +104,9 @@ public class EnergyPLANProblemStep1Main {
 			// Result messages
 			logger_.info("Total execution time: " + estimatedTime + "ms");
 			logger_.info("Variables values have been writen to file VAR");
-			population.printVariablesToFile("SBX_Ploy\\run_"+i+"_VAR_SBX_Poly_seed_"+seed[i]);
+			population.printVariablesToFile("SBX_Poly\\VAR_SBX_Poly_seed_"+seed[i]);
 			logger_.info("Objectives values have been writen to file FUN");
-			population.printObjectivesToFile("SBX_Ploy\\run_"+i+"_FUN_SBX_Poly_seed_"+seed[i]);
+			population.printObjectivesToFile("SBX_Poly\\FUN_SBX_Poly_seed_"+seed[i]);
 		}
 	}
 }
