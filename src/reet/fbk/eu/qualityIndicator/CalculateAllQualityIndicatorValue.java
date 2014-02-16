@@ -27,7 +27,7 @@ public class CalculateAllQualityIndicatorValue {
 	 *            Pareto front file
 	 */
 	public CalculateAllQualityIndicatorValue(Problem problem,
-			String paretoFrontFile, String folderName) {
+			 String folderName, String paretoFrontFile) {
 		problem_ = problem;
 		utilities_ = new jmetal.qualityIndicator.util.MetricsUtil();
 		trueParetoFront_ = utilities_
@@ -51,7 +51,7 @@ public class CalculateAllQualityIndicatorValue {
 					.readNonDominatedSolutionSet(fs[i].getPath());
 			
 			System.out.println(i+ " " +fs[i].getName());
-			/*System.out.println( "HyperVolume: "+new Hypervolume().hypervolume(solutionParetoFront.writeObjectivesToMatrix(),
+			System.out.println( "HyperVolume: "+new Hypervolume().hypervolume(solutionParetoFront.writeObjectivesToMatrix(),
                     trueParetoFront_.writeObjectivesToMatrix(),
                     problem_.getNumberOfObjectives()));
 			
@@ -67,11 +67,11 @@ public class CalculateAllQualityIndicatorValue {
                     trueParetoFront_.writeObjectivesToMatrix(),
                     problem_.getNumberOfObjectives()));
 			
-			System.out.println( "Spread: "+ new Epsilon().epsilon(solutionParetoFront.writeObjectivesToMatrix(),
+			System.out.println( "Epsilon: "+ new Epsilon().epsilon(solutionParetoFront.writeObjectivesToMatrix(),
                     trueParetoFront_.writeObjectivesToMatrix(),
-                    problem_.getNumberOfObjectives()));*/
+                    problem_.getNumberOfObjectives()));
 			
-			System.out.println( "Spread: "+ new GeneralizedSpread().generalizedSpread(solutionParetoFront.writeObjectivesToMatrix(),
+			System.out.println( "Generalized Spread: "+ new GeneralizedSpread().generalizedSpread(solutionParetoFront.writeObjectivesToMatrix(),
                     trueParetoFront_.writeObjectivesToMatrix(),
                     problem_.getNumberOfObjectives()));
 			
@@ -85,7 +85,7 @@ public class CalculateAllQualityIndicatorValue {
 		// TODO Auto-generated method stub
 
 		Problem problem = new EnergyPLANProblemStep1("Real");
-		CalculateAllQualityIndicatorValue calqI = new CalculateAllQualityIndicatorValue(problem, "C:\\Users\\Nusrat\\Documents\\GitHub\\EnergyPLANDomainKnowledgeEAStep1\\truePf\\mergefun.pf", "C:\\Users\\Nusrat\\Documents\\GitHub\\EnergyPLANDomainKnowledgeEAStep1\\truePf\\");
+		CalculateAllQualityIndicatorValue calqI = new CalculateAllQualityIndicatorValue(problem, args[0], args[1]);
 		calqI.doCalcutation();
 	}
 }
