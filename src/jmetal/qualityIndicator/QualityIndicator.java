@@ -113,4 +113,17 @@ public class QualityIndicator {
                                  trueParetoFront_.writeObjectivesToMatrix(),
                                  problem_.getNumberOfObjectives());
   } // getEpsilon
+  
+  /**
+   * Retuens the generalised Spread indicators of solution set
+   *  @param SolutionSet solutionSet
+   *  @return the value of generalized spread
+   *  //added by shahriar
+   */
+  public double getGeneralizedSpread(SolutionSet solutionSet) {
+	    return new GeneralizedSpread().generalizedSpread(solutionSet.writeObjectivesToMatrix(),
+	                                 trueParetoFront_.writeObjectivesToMatrix(),
+	                                 problem_.getNumberOfObjectives());
+	  } //generalized Spread
+  
 } // QualityIndicator
