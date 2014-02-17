@@ -180,7 +180,7 @@ public class NSGAIIForDK extends NSGAII {
 			population.add(newSolution);
 		} // for
 
-		if (indicators != null) {
+		/*if (indicators != null) {
 			int genNo = (int) evaluations / populationSize;
 			double hyperVolume = indicators.getHypervolume(population);
 			double gd = indicators.getGD(population);
@@ -201,7 +201,7 @@ public class NSGAIIForDK extends NSGAII {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
-		}
+		}*/
 		// Generations
 		while (evaluations < maxEvaluations) {
 
