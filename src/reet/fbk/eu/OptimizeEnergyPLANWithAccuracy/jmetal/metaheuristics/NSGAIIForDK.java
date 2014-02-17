@@ -25,6 +25,8 @@ import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
 
 import reet.fbk.eu.OptimizeEnergyPLANWithAccuracy.util.RepairDVGene;
 import reet.fbk.eu.OptimizeEnergyPLANWithAccuracy.util.RepairFuelGene;
@@ -70,7 +72,20 @@ public class NSGAIIForDK extends NSGAII {
 	public NSGAIIForDK(Problem problem, long seed, String folderName) {
 		super(problem);
 		repairSolution = new RepairSolution();
-
+		if(!(new File(folderName+"\\HV").exists()))
+			new File(folderName+"\\HV").mkdirs();
+		if(!(new File(folderName+"\\GD").exists()))
+			new File(folderName+"\\GD").mkdirs();
+		if(!(new File(folderName+"\\IGD").exists()))
+			new File(folderName+"\\IGD").mkdirs();
+		if(!(new File(folderName+"\\Spread").exists()))
+			new File(folderName+"\\Spread").mkdirs();
+		if(!(new File(folderName+"\\Epsilon").exists()))
+			new File(folderName+"\\Epsilon").mkdirs();
+		if(!(new File(folderName+"\\GenSpread").exists()))
+			new File(folderName+"\\GenSpread").mkdirs();
+		
+		
 		fileHV = new File(folderName + "\\HV\\trackHV_" + seed);
 		fileGD = new File(folderName + "\\GD\\trackGD_" + seed);
 		fileIGD = new File(folderName + "\\IGD\\trackIGD_" + seed);
@@ -318,7 +333,7 @@ public class NSGAIIForDK extends NSGAII {
 		ranking.getSubfront(0).printFeasibleFUN("FUN_NSGAII");
 		if (indicators != null) {
 			try {
-				bwHV.write("Required evolution to reach 85% Hypervolume: "
+				bwHV.write("Required evolution to reach 90% Hypervolume: "
 						+ requiredEvaluations);
 				bwHV.close();
 				bwGD.close();
