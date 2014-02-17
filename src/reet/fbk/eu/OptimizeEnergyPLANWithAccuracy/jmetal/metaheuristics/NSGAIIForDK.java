@@ -49,10 +49,10 @@ import jmetal.util.comparators.CrowdingComparator;
 public class NSGAIIForDK extends NSGAII {
 
 	RepairSolution repairSolution;
-	
-	File file;
-	FileWriter fw;
-	BufferedWriter bw;
+
+	File fileHV, fileGD, fileIGD, fileSpread, fileEpsilon, fileGenSpread;
+	FileWriter fwHV, fwGD, fwIGD, fwSpread, fwEpsilon, fwGenSpread;;
+	BufferedWriter bwHV, bwGD, bwIGD, bwSpread, bwEpsilon, bwGenSpread;;
 
 	/**
 	 * Constructor
@@ -65,29 +65,47 @@ public class NSGAIIForDK extends NSGAII {
 		super(problem);
 		repairSolution = new RepairSolution();
 
-		
 	} // NSGAII
-
 
 	public NSGAIIForDK(Problem problem, long seed, String folderName) {
 		super(problem);
 		repairSolution = new RepairSolution();
-		
-		file = new File(folderName+"\\trackEvolution"+seed);
-		 
-		// if file doesnt exists, then create it
-		try{
-		if (!file.exists()) {
-			file.createNewFile();
-		}
 
-		 fw = new FileWriter(file.getAbsoluteFile());
-		 bw = new BufferedWriter(fw);
-		}catch(IOException e){
+		fileHV = new File(folderName + "\\HV\\trackHV_" + seed);
+		fileGD = new File(folderName + "\\GD\\trackGD_" + seed);
+		fileIGD = new File(folderName + "\\IGD\\trackIGD_" + seed);
+		fileSpread = new File(folderName + "\\Spread\\trackSpread_" + seed);
+		fileEpsilon = new File(folderName + "\\Epsilon\\trackEpsilon_" + seed);
+		fileGenSpread = new File(folderName + "\\GenSpread\\trackGenSpread_" + seed);
+		// if file doesnt exists, then create it
+		try {
+			if (!fileHV.exists()) {
+				fileHV.createNewFile();
+				fileGD.createNewFile();
+				fileIGD.createNewFile();
+				fileSpread.createNewFile();
+				fileEpsilon.createNewFile();
+				fileGenSpread.createNewFile();
+			}
+
+			fwHV = new FileWriter(fileHV.getAbsoluteFile());
+			fwGD = new FileWriter(fileGD.getAbsoluteFile());
+			fwIGD = new FileWriter(fileIGD.getAbsoluteFile());
+			fwSpread = new FileWriter(fileSpread.getAbsoluteFile());
+			fwEpsilon = new FileWriter(fileEpsilon.getAbsoluteFile());
+			fwGenSpread = new FileWriter(fileGenSpread.getAbsoluteFile());
+
+			bwHV = new BufferedWriter(fwHV);
+			bwGD = new BufferedWriter(fwGD);
+			bwIGD = new BufferedWriter(fwIGD);
+			bwSpread = new BufferedWriter(fwSpread);
+			bwEpsilon = new BufferedWriter(fwEpsilon);
+			bwGenSpread = new BufferedWriter(fwGenSpread);
+
+		} catch (IOException e) {
 			e.printStackTrace();
 		}
-	} 
-	
+	}
 
 	/**
 	 * Runs the NSGA-II algorithm.
@@ -138,26 +156,37 @@ public class NSGAIIForDK extends NSGAII {
 		Solution newSolution;
 		for (int i = 0; i < populationSize; i++) {
 			newSolution = new Solution(problem_);
-			
-			
+
 			repairSolution.doRepair(newSolution);
-			
+
 			problem_.evaluate(newSolution);
 			problem_.evaluateConstraints(newSolution);
 			evaluations++;
 			population.add(newSolution);
 		} // for
 
-		int genNo = (int) evaluations / populationSize;
-		double  hyperVolume= indicators.getHypervolume(population);
-		
-		try {
-			bw.write(genNo+" "+hyperVolume+"\n");
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+		if (indicators != null) {
+			int genNo = (int) evaluations / populationSize;
+			double hyperVolume = indicators.getHypervolume(population);
+			double gd = indicators.getGD(population);
+			double igd = indicators.getIGD(population);
+			double spread = indicators.getSpread(population);
+			double epsilon = indicators.getEpsilon(population);
+			double genSpread = indicators.getGeneralizedSpread(population);
+
+			try {
+				bwHV.write(genNo + " " + hyperVolume + "\n");
+				bwGD.write(genNo + " " + gd + "\n");
+				bwIGD.write(genNo + " " + igd + "\n");
+				bwSpread.write(genNo + " " + spread + "\n");
+				bwEpsilon.write(genNo + " " + epsilon + "\n");
+				bwGenSpread.write(genNo + " " + genSpread + "\n");
+
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 		}
-		
 		// Generations
 		while (evaluations < maxEvaluations) {
 
@@ -173,18 +202,16 @@ public class NSGAIIForDK extends NSGAII {
 							.execute(population);
 					Solution[] offSpring = (Solution[]) crossoverOperator
 							.execute(parents);
-					
+
 					repairSolution.doRepair(offSpring[0]);
 					repairSolution.doRepair(offSpring[1]);
-					
-					
+
 					mutationOperator.execute(offSpring[0]);
 					mutationOperator.execute(offSpring[1]);
-					
+
 					repairSolution.doRepair(offSpring[0]);
 					repairSolution.doRepair(offSpring[1]);
-					
-					
+
 					problem_.evaluate(offSpring[0]);
 					problem_.evaluateConstraints(offSpring[0]);
 					problem_.evaluate(offSpring[1]);
@@ -195,9 +222,6 @@ public class NSGAIIForDK extends NSGAII {
 				} // if
 			} // for
 
-		
-			
-			
 			// Create the solutionSet union of solutionSet and offSpring
 			union = ((SolutionSet) population).union(offspringPopulation);
 
@@ -252,21 +276,32 @@ public class NSGAIIForDK extends NSGAII {
 			// than the hypervolume of the true Pareto front.
 			if ((indicators != null) && (requiredEvaluations == 0)) {
 				double HV = indicators.getHypervolume(population);
-				if (HV >= (0.85 * indicators.getTrueParetoFrontHypervolume())) {
+				if (HV >= (0.90 * indicators.getTrueParetoFrontHypervolume())) {
 					requiredEvaluations = evaluations;
 				} // if
 			} // if
+			if (indicators != null) {
+				int genNo = (int) evaluations / populationSize;
+				double hyperVolume = indicators.getHypervolume(population);
+				double gd = indicators.getGD(population);
+				double igd = indicators.getIGD(population);
+				double spread = indicators.getSpread(population);
+				double epsilon = indicators.getEpsilon(population);
+				double genSpread = indicators.getGeneralizedSpread(population);
 
-			genNo = (int) evaluations / populationSize;
-			hyperVolume = indicators.getHypervolume(population);
-			
-			try {
-				bw.write(genNo+" "+hyperVolume+"\n");
-			} catch (IOException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
+				try {
+					bwHV.write(genNo + " " + hyperVolume + "\n");
+					bwGD.write(genNo + " " + gd + "\n");
+					bwIGD.write(genNo + " " + igd + "\n");
+					bwSpread.write(genNo + " " + spread + "\n");
+					bwEpsilon.write(genNo + " " + epsilon + "\n");
+					bwGenSpread.write(genNo + " " + genSpread + "\n");
+
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
 			}
-			
 			// added by shaikat to track the run
 			if ((evaluations % populationSize) == 0) {
 				System.out.println(evaluations + ": "
@@ -281,15 +316,22 @@ public class NSGAIIForDK extends NSGAII {
 		// Return the first non-dominated front
 		Ranking ranking = new Ranking(population);
 		ranking.getSubfront(0).printFeasibleFUN("FUN_NSGAII");
-
-		try {
-			bw.write("Required evolution to reach 85% Hypervolume: " +requiredEvaluations );
-			bw.close();
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+		if (indicators != null) {
+			try {
+				bwHV.write("Required evolution to reach 85% Hypervolume: "
+						+ requiredEvaluations);
+				bwHV.close();
+				bwGD.close();
+				bwIGD.close();
+				bwSpread.close();
+				bwEpsilon.close();
+				bwGenSpread.close();
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 		}
-		
+
 		return ranking.getSubfront(0);
 	} // execute
 } // NSGA-II
