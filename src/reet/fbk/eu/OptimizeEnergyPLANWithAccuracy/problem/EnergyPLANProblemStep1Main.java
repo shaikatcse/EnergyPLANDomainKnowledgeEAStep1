@@ -60,7 +60,7 @@ public class EnergyPLANProblemStep1Main {
 			algorithm = new NSGAIIForDK(problem,seed[i], "SBX_Poly");
 			// algorithm = new ssNSGAII(problem);
 
-			indicators = new QualityIndicator(problem, "C:\\Users\\Nusrat\\Documents\\GitHub\\EnergyPLANDomainKnowledgeEAStep1\\Results\\truePf\\mergefun.pf") ;
+			indicators = new QualityIndicator(problem, "C:\\Users\\mahbub\\Documents\\GitHub\\EnergyPLANDomainKnowledgeEAStep1\\Results\\truePf\\mergefun.pf") ;
 			
 			// Algorithm parameters
 			algorithm.setInputParameter("populationSize", 100);
