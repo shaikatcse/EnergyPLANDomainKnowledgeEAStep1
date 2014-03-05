@@ -1,20 +1,14 @@
-Those are the results for 10 different runs with 10 different seed.
+This is the results of 10 different runs with 10 different seed.
+SBX & Polynomial Mutation is used.
 
-Crossover: SBXCrossover
-Mutation: polynomialMutation
+Population: 100
+Evolution: 5000
+crossover Probabilty: 0.9
+Mutation probability: 0.2
+Distribution index: 4
+Algorithm: NSGA-II
+selection: Binary Tournament 2.
 
 seed [] = {545782, 455875, 547945, 458478, 981354, 652262, 562366, 365652, 456545, 549235 };
 
-Population size: 100
-Number of evolution: 5000
-Crossover Probability: 0.9
-Crossover distribution Index: 4
-Mutation Probability: 0.2
-Mutation distribution Index: 4
-Algorithm: NSGA-II
-
-Selection: Binary Tournament 2
-
-You can merge all the files starts with Fun using the following command:
-
-copy /b Fun* MergedFun
+Now this simutation will run track the evolution of hypervolume.

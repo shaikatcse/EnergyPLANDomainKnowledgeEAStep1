@@ -1,10 +1,16 @@
 This is the results of 10 different runs with 10 different seed.
-SBX & Polynomial Mutation is used.
+Here mutation based on domain knowledge is applies with SBX crossover.
+
+It mutation is designed to work in 3 stages.
+
+25% times, mutation favor RE sources.
+25% times mutation favor conventation energies.
+rest of the time Ploynomial mutation is used.
 
 Population: 100
 Evolution: 5000
 crossover Probabilty: 0.9
-Mutation probability: 0.2
+Mutation probability: 0.4
 Distribution index: 4
 Algorithm: NSGA-II
 selection: Binary Tournament 2.

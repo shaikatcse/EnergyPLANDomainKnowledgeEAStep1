@@ -10,7 +10,7 @@ rest of the time Ploynomial mutation is used.
 Population: 100
 Evolution: 5000
 crossover Probabilty: 0.9
-Mutation probability: 0.4
+Mutation probability: 0.2
 Distribution index: 4
 Algorithm: NSGA-II
 selection: Binary Tournament 2.
