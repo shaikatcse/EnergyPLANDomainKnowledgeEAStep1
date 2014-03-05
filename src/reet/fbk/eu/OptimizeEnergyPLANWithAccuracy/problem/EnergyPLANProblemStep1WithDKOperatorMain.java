@@ -59,7 +59,7 @@ public class EnergyPLANProblemStep1WithDKOperatorMain {
 			algorithm = new NSGAIIForDK(problem, seed[i], "SBX_DKMutation");
 			// algorithm = new ssNSGAII(problem);
 
-			indicators = new QualityIndicator(problem, "C:\\Users\\Nusrat\\Documents\\GitHub\\EnergyPLANDomainKnowledgeEAStep1\\Results\\truePf\\mergefun.pf") ;
+			//indicators = new QualityIndicator(problem, "C:\\Users\\Nusrat\\Documents\\GitHub\\EnergyPLANDomainKnowledgeEAStep1\\Results\\truePf\\mergefun.pf") ;
 			
 			
 			// Algorithm parameters
@@ -74,7 +74,7 @@ public class EnergyPLANProblemStep1WithDKOperatorMain {
 					parameters);
 
 			parameters = new HashMap();
-			parameters.put("probability", 0.4);
+			parameters.put("probability", 0.2);
 			parameters.put("distributionIndex", 4.0);
 			//mutation = MutationFactory.getMutationOperator("PolynomialMutation",
 				//		parameters);
