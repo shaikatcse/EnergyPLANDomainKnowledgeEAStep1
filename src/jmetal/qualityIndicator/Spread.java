@@ -109,7 +109,7 @@ public class Spread {
     // STEP 5. Calculate the mean of distances between points i and (i - 1). 
     // (the poins are in lexicografical order)
     for (int i = 0; i < (normalizedFront.length-1); i++) {
-      mean += utils_.distance(normalizedFront[i],normalizedFront[i+1]);
+    	mean += utils_.distance(normalizedFront[i],normalizedFront[i+1]);
     } // for
 
     mean = mean / (double)(numberOfPoints - 1);
