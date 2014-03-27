@@ -119,7 +119,7 @@ The following equation describes the function.
 \label{eq:Representation of capacity design variables2}
 rgv =
 \begin{cases}
-value + (sts - (value\bmod{sts})) & \text{if } (value \bmod{ sts}) >= sts, \\
+value + (sts - (value\bmod{sts})) & \text{if } (value \bmod{ sts}) >= sts/2, \\
 value - (value \bmod{ sts}) & \text{otherwise}.
 \end{cases}
 \end{equation*}

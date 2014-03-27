@@ -18,6 +18,11 @@ K.~Deb, A.~Pratap, S.~Agarwal, and T.~Meyarivan.
 \newblock {\em {IEEE} Transactions on Evolutionary Computation}, 6(2):182--197,
   April 2002.
 
+\bibitem{Deb_2001}
+Kalyanmoy Deb.
+\newblock {\em Multi-objective optimization using evolutionary algorithms}.
+\newblock John Wiley \& Sons, 2001.
+
 \bibitem{Durillo_Nebro_Alba_2010}
 J.J. Durillo, A.J. Nebro, and E.~Alba.
 \newblock The jmetal framework for multi-objective optimization: Design and

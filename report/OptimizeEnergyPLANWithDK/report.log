@@ -1,9 +1,9 @@
-This is pdfTeX, Version 3.1415926-2.3-1.40.12 (MiKTeX 2.9 64-bit) (preloaded format=pdflatex 2013.11.11)  26 FEB 2014 15:12
+This is pdfTeX, Version 3.1415926-2.3-1.40.12 (MiKTeX 2.9 64-bit) (preloaded format=pdflatex 2014.3.24)  27 MAR 2014 18:28
 entering extended mode
 **report.tex
 
-("C:\Users\mahbub\Dropbox\Unitn\PhD thesis\Reports\OptimizeEnergyPLANWithDK\rep
-ort.tex"
+(C:\Users\mahbub\Documents\GitHub\EnergyPLANDomainKnowledgeEAStep1\report\Optim
+izeEnergyPLANWithDK\report.tex
 LaTeX2e <2011/06/27>
 Babel <v3.8m> and hyphenation patterns for english, afrikaans, ancientgreek, ar
 abic, armenian, assamese, basque, bengali, bokmal, bulgarian, catalan, coptic, 
@@ -426,8 +426,8 @@ LaTeX Font Info:    Try loading font information for U+psy on input line 64.
 (C:\Users\mahbub\MikTex\tex\latex\psnfss\upsy.fd
 File: upsy.fd 2001/06/04 font definitions for U/psy.
 ))
-("C:\Users\mahbub\Dropbox\Unitn\PhD thesis\Reports\OptimizeEnergyPLANWithDK\rep
-ort.aux"
+(C:\Users\mahbub\Documents\GitHub\EnergyPLANDomainKnowledgeEAStep1\report\Optim
+izeEnergyPLANWithDK\report.aux
 
 LaTeX Warning: Label `fig:genetational IGD' multiply defined.
 
@@ -460,12 +460,13 @@ LaTeX Info: Redefining \ref on input line 25.
 LaTeX Info: Redefining \pageref on input line 25.
 LaTeX Info: Redefining \nameref on input line 25.
 
-("C:\Users\mahbub\Dropbox\Unitn\PhD thesis\Reports\OptimizeEnergyPLANWithDK\rep
-ort.out")
-("C:\Users\mahbub\Dropbox\Unitn\PhD thesis\Reports\OptimizeEnergyPLANWithDK\rep
-ort.out")
+(C:\Users\mahbub\Documents\GitHub\EnergyPLANDomainKnowledgeEAStep1\report\Optim
+izeEnergyPLANWithDK\report.out)
+(C:\Users\mahbub\Documents\GitHub\EnergyPLANDomainKnowledgeEAStep1\report\Optim
+izeEnergyPLANWithDK\report.out)
 \@outlinefile=\write3
- (C:\Users\mahbub\MikTex\tex\context\base\supp-pdf.mkii
+
+(C:\Users\mahbub\MikTex\tex\context\base\supp-pdf.mkii
 [Loading MPS to PDF converter (version 2006.09.02).]
 \scratchcounter=\count126
 \scratchdimen=\dimen123
@@ -493,270 +494,269 @@ LaTeX Warning: No \author given.
 
 [1
 
-{C:/Users/mahbub/AppData/Local/MiKTeX/2.9/pdftex/config/pdftex.map}] [2]pdfTeX 
-warning (ext4): destination with the same identifier (name{equation.2.2}) has b
-een already used, duplicate ignored
-<to be read again> 
-                   \relax 
-l.131 \begin{equation}
-                      pdfTeX warning (ext4): destination with the same identifi
-er (name{equation.2.2}) has been already used, duplicate ignored
-<to be read again> 
-                   \relax 
-l.131 \begin{equation}
-                      pdfTeX warning (ext4): destination with the same identifi
-er (name{equation.2.2}) has been already used, duplicate ignored
-<to be read again> 
-                   \relax 
-l.131 \begin{equation}
-                      pdfTeX warning (ext4): destination with the same identifi
-er (name{equation.2.2}) has been already used, duplicate ignored
-<to be read again> 
-                   \relax 
-l.131 \begin{equation}
-                      
-Package hyperref Info: bookmark level for unknown algorithm defaults to 0 on in
-put line 153.
+{C:/Users/mahbub/AppData/Local/MiKTeX/2.9/pdftex/config/pdftex.map}] [2pdfTeX w
+arning (ext4): destination with the same identifier (name{table.1}) has been al
+ready used, duplicate ignored
 
-<./figures/Position_of_repair_function.pdf, id=118, 492.84125pt x 766.865pt>
+\AtBegShi@Output ...ipout \box \AtBeginShipoutBox 
+                                                  \fi \fi 
+l.160 
+      ]
+Package hyperref Info: bookmark level for unknown algorithm defaults to 0 on in
+put line 163.
+
+<./figures/Position_of_repair_function.pdf, id=112, 492.84125pt x 766.865pt>
 File: ./figures/Position_of_repair_function.pdf Graphic file (type pdf)
 
 <use ./figures/Position_of_repair_function.pdf>
 Package pdftex.def Info: ./figures/Position_of_repair_function.pdf used on inpu
-t line 185.
+t line 195.
 (pdftex.def)             Requested size: 246.42001pt x 383.43156pt.
-
-
-LaTeX Warning: `h' float specifier changed to `ht'.
-
-[3pdfTeX warning (ext4): destination with the same identifier (name{table.1}) h
-as been already used, duplicate ignored
+ [3pdfTeX warning (ext4): destination with the same identifier (name{table.2}) 
+has been already used, duplicate ignored
 
 \AtBegShi@Output ...ipout \box \AtBeginShipoutBox 
                                                   \fi \fi 
-l.214 
+l.227 
       ] [4pdfTeX warning (ext4): destination with the same identifier (name{fig
 ure.1}) has been already used, duplicate ignored
 
 \AtBegShi@Output ...ipout \box \AtBeginShipoutBox 
                                                   \fi \fi 
-l.214 
-       <C:/Users/mahbub/Dropbox/Unitn/PhD thesis/Reports/OptimizeEnergyPLANWith
-DK/figures/Position_of_repair_function.pdf>]
-LaTeX Font Info:    Try loading font information for OMS+cmr on input line 218.
+l.227 
+       <C:/Users/mahbub/Documents/GitHub/EnergyPLANDomainKnowledgeEAStep1/repor
+t/OptimizeEnergyPLANWithDK/figures/Position_of_repair_function.pdf>]
+<./figures/mutation_flowchart.pdf, id=144, 558.085pt x 571.13374pt>
+File: ./figures/mutation_flowchart.pdf Graphic file (type pdf)
+
+<use ./figures/mutation_flowchart.pdf>
+Package pdftex.def Info: ./figures/mutation_flowchart.pdf used on input line 24
+4.
+(pdftex.def)             Requested size: 334.85359pt x 342.68289pt.
+ [5pdfTeX warning (ext4): destination with the same identifier (name{figure.2})
+ has been already used, duplicate ignored
+
+\AtBegShi@Output ...ipout \box \AtBeginShipoutBox 
+                                                  \fi \fi 
+l.258 
+       <C:/Users/mahbub/Documents/GitHub/EnergyPLANDomainKnowledgeEAStep1/repor
+t/OptimizeEnergyPLANWithDK/figures/mutation_flowchart.pdf>]
+<./figures/trun_pdf_cdf.pdf, id=171, 361.35pt x 216.81pt>
+File: ./figures/trun_pdf_cdf.pdf Graphic file (type pdf)
+
+<use ./figures/trun_pdf_cdf.pdf>
+Package pdftex.def Info: ./figures/trun_pdf_cdf.pdf used on input line 275.
+(pdftex.def)             Requested size: 361.34912pt x 216.80946pt.
+
+Overfull \hbox (16.34912pt too wide) in paragraph at lines 275--276
+ [][] 
+ []
+
+
+Overfull \hbox (78.90346pt too wide) in paragraph at lines 324--329
+ [][] 
+ []
+
+[6pdfTeX warning (ext4): destination with the same identifier (name{table.3}) h
+as been already used, duplicate ignored
+
+\AtBegShi@Output ...ipout \box \AtBeginShipoutBox 
+                                                  \fi \fi 
+l.348 \item
+            Minimize the distance between true Pareto-front and obtained non...
+] [7pdfTeX warning (ext4): destination with the same identifier (name{figure.3}
+) has been already used, duplicate ignored
+
+\AtBegShi@Output ...ipout \box \AtBeginShipoutBox 
+                                                  \fi \fi 
+l.348 \item
+            Minimize the distance between true Pareto-front and obtained non...
+ <C:/Users/mahbub/Documents/GitHub/EnergyPLANDomainKnowledgeEAStep1/report/Opti
+mizeEnergyPLANWithDK/figures/trun_pdf_cdf.pdf>]
+Overfull \hbox (16.66733pt too wide) in paragraph at lines 348--349
+[]\OT1/cmr/m/n/10 Minimize the dis-tance be-tween true Pareto-front and ob-tain
+ed non-dominating
+ []
+
+[8] <./figures/gd.png, id=221, 219.82124pt x 224.33812pt>
+File: ./figures/gd.png Graphic file (type png)
+
+<use ./figures/gd.png>
+Package pdftex.def Info: ./figures/gd.png used on input line 379.
+(pdftex.def)             Requested size: 219.8207pt x 224.33757pt.
+ [9pdfTeX warning (ext4): destination with the same identifier (name{figure.4})
+ has been already used, duplicate ignored
+
+\AtBegShi@Output ...ipout \box \AtBeginShipoutBox 
+                                                  \fi \fi 
+l.396 
+       <C:/Users/mahbub/Documents/GitHub/EnergyPLANDomainKnowledgeEAStep1/repor
+t/OptimizeEnergyPLANWithDK/figures/gd.png>]
+<./figures/Spread.pdf, id=233, 217.45514pt x 162.94945pt>
+File: ./figures/Spread.pdf Graphic file (type pdf)
+
+<use ./figures/Spread.pdf>
+Package pdftex.def Info: ./figures/Spread.pdf used on input line 414.
+(pdftex.def)             Requested size: 217.45459pt x 162.94904pt.
+ [10pdfTeX warning (ext4): destination with the same identifier (name{figure.5}
+) has been already used, duplicate ignored
+
+\AtBegShi@Output ...ipout \box \AtBeginShipoutBox 
+                                                  \fi \fi 
+l.422 
+       <C:/Users/mahbub/Documents/GitHub/EnergyPLANDomainKnowledgeEAStep1/repor
+t/OptimizeEnergyPLANWithDK/figures/Spread.pdf>]
+Missing character: There is no â in font cmr7!
+Missing character: There is no € in font cmr7!
+Missing character: There is no ¢ in font cmr7!
+
+<./figures/epsilon.png, id=251, 219.82124pt x 224.33812pt>
+File: ./figures/epsilon.png Graphic file (type png)
+
+<use ./figures/epsilon.png>
+Package pdftex.def Info: ./figures/epsilon.png used on input line 452.
+(pdftex.def)             Requested size: 219.8207pt x 224.33757pt.
+ [11]
+<./figures/hypervolume.png, id=267, 214.55156pt x 224.33812pt>
+File: ./figures/hypervolume.png Graphic file (type png)
+
+<use ./figures/hypervolume.png>
+Package pdftex.def Info: ./figures/hypervolume.png used on input line 473.
+(pdftex.def)             Requested size: 214.55103pt x 224.33757pt.
+ [12pdfTeX warning (ext4): destination with the same identifier (name{figure.6}
+) has been already used, duplicate ignored
+
+\AtBegShi@Output ...ipout \box \AtBeginShipoutBox 
+                                                  \fi \fi 
+l.490 \begin{itemize}
+                      <C:/Users/mahbub/Documents/GitHub/EnergyPLANDomainKnowled
+geEAStep1/report/OptimizeEnergyPLANWithDK/figures/epsilon.png>]
+LaTeX Font Info:    Try loading font information for OMS+cmr on input line 491.
 
 
 (C:\Users\mahbub\MikTex\tex\latex\base\omscmr.fd
 File: omscmr.fd 1999/05/25 v2.5h Standard LaTeX font definitions
 )
 LaTeX Font Info:    Font shape `OMS/cmr/m/n' in size <10> not available
-(Font)              Font shape `OMS/cmsy/m/n' tried instead on input line 218.
- [5pdfTeX warning (ext4): destination with the same identifier (name{table.2}) 
-has been already used, duplicate ignored
+(Font)              Font shape `OMS/cmsy/m/n' tried instead on input line 491.
 
-\AtBegShi@Output ...ipout \box \AtBeginShipoutBox 
-                                                  \fi \fi 
-l.220 \item T
-             he use of coal should be decrease to reduce CO\textsubscript{2}...
-] <./figures/mutation_flowchart.pdf, id=157, 585.18625pt x 571.13374pt>
-File: ./figures/mutation_flowchart.pdf Graphic file (type pdf)
-
-<use ./figures/mutation_flowchart.pdf>
-Package pdftex.def Info: ./figures/mutation_flowchart.pdf used on input line 23
-1.
-(pdftex.def)             Requested size: 292.5924pt x 285.56618pt.
- [6pdfTeX warning (ext4): destination with the same identifier (name{figure.2})
- has been already used, duplicate ignored
-
-\AtBegShi@Output ...ipout \box \AtBeginShipoutBox 
-                                                  \fi \fi 
-l.242 
-       <C:/Users/mahbub/Dropbox/Unitn/PhD thesis/Reports/OptimizeEnergyPLANWith
-DK/figures/mutation_flowchart.pdf>]
-<./figures/trun_pdf_cdf.pdf, id=181, 361.35pt x 216.81pt>
-File: ./figures/trun_pdf_cdf.pdf Graphic file (type pdf)
-
-<use ./figures/trun_pdf_cdf.pdf>
-Package pdftex.def Info: ./figures/trun_pdf_cdf.pdf used on input line 259.
-(pdftex.def)             Requested size: 361.34912pt x 216.80946pt.
-
-Overfull \hbox (16.34912pt too wide) in paragraph at lines 259--260
- [][] 
- []
-
-
-Overfull \hbox (18.34778pt too wide) in paragraph at lines 307--312
- [][] 
- []
-
-[7pdfTeX warning (ext4): destination with the same identifier (name{table.3}) h
-as been already used, duplicate ignored
-
-\AtBegShi@Output ...ipout \box \AtBeginShipoutBox 
-                                                  \fi \fi 
-l.327 \item
-            Minimize the distance between true Pareto-front and obtained non...
-] [8pdfTeX warning (ext4): destination with the same identifier (name{figure.3}
-) has been already used, duplicate ignored
-
-\AtBegShi@Output ...ipout \box \AtBeginShipoutBox 
-                                                  \fi \fi 
-l.327 \item
-            Minimize the distance between true Pareto-front and obtained non...
- <C:/Users/mahbub/Dropbox/Unitn/PhD thesis/Reports/OptimizeEnergyPLANWithDK/fig
-ures/trun_pdf_cdf.pdf>]
-Overfull \hbox (16.66733pt too wide) in paragraph at lines 327--328
-[]\OT1/cmr/m/n/10 Minimize the dis-tance be-tween true Pareto-front and ob-tain
-ed non-dominating
- []
-
-<./figures/gd.png, id=219, 219.82124pt x 224.33812pt>
-File: ./figures/gd.png Graphic file (type png)
- <use ./figures/gd.png>
-Package pdftex.def Info: ./figures/gd.png used on input line 358.
-(pdftex.def)             Requested size: 219.8207pt x 224.33757pt.
-
-[9] [10pdfTeX warning (ext4): destination with the same identifier (name{figure
-.4}) has been already used, duplicate ignored
-
-\AtBegShi@Output ...ipout \box \AtBeginShipoutBox 
-                                                  \fi \fi 
-l.382 
-       <C:/Users/mahbub/Dropbox/Unitn/PhD thesis/Reports/OptimizeEnergyPLANWith
-DK/figures/gd.png>] <./figures/Spread.pdf, id=242, 217.45514pt x 162.94945pt>
-File: ./figures/Spread.pdf Graphic file (type pdf)
-
-<use ./figures/Spread.pdf>
-Package pdftex.def Info: ./figures/Spread.pdf used on input line 391.
-(pdftex.def)             Requested size: 217.45459pt x 162.94904pt.
- [11pdfTeX warning (ext4): destination with the same identifier (name{figure.5}
-) has been already used, duplicate ignored
-
-\AtBegShi@Output ...ipout \box \AtBeginShipoutBox 
-                                                  \fi \fi 
-l.407 \begin{equation}
-                       <C:/Users/mahbub/Dropbox/Unitn/PhD thesis/Reports/Optimi
-zeEnergyPLANWithDK/figures/Spread.pdf>]
-Missing character: There is no â in font cmr7!
-Missing character: There is no € in font cmr7!
-Missing character: There is no ¢ in font cmr7!
-
-<./figures/epsilon.png, id=261, 219.82124pt x 224.33812pt>
-File: ./figures/epsilon.png Graphic file (type png)
-
-<use ./figures/epsilon.png>
-Package pdftex.def Info: ./figures/epsilon.png used on input line 428.
-(pdftex.def)             Requested size: 219.8207pt x 224.33757pt.
-
-<./figures/hypervolume.png, id=264, 214.55156pt x 224.33812pt>
-File: ./figures/hypervolume.png Graphic file (type png)
-
-<use ./figures/hypervolume.png>
-Package pdftex.def Info: ./figures/hypervolume.png used on input line 448.
-(pdftex.def)             Requested size: 214.55103pt x 224.33757pt.
- [12] [13pdfTeX warning (ext4): destination with the same identifier (name{figu
-re.6}) has been already used, duplicate ignored
-
-\AtBegShi@Output ...ipout \box \AtBeginShipoutBox 
-                                                  \fi \fi 
-l.464 \begin{itemize}
-                     pdfTeX warning (ext4): destination with the same identifie
-r (name{figure.7}) has been already used, duplicate ignored
-
-\AtBegShi@Output ...ipout \box \AtBeginShipoutBox 
-                                                  \fi \fi 
-l.464 \begin{itemize}
-                      <C:/Users/mahbub/Dropbox/Unitn/PhD thesis/Reports/Optimiz
-eEnergyPLANWithDK/figures/epsilon.png> <C:/Users/mahbub/Dropbox/Unitn/PhD thesi
-s/Reports/OptimizeEnergyPLANWithDK/figures/hypervolume.png>]
-<./figures/indicators_category.pdf, id=290, 463.33101pt x 275.429pt>
+<./figures/indicators_category.pdf, id=281, 463.33101pt x 275.429pt>
 File: ./figures/indicators_category.pdf Graphic file (type pdf)
 
 <use ./figures/indicators_category.pdf>
-Package pdftex.def Info: ./figures/indicators_category.pdf used on input line 4
-73.
+Package pdftex.def Info: ./figures/indicators_category.pdf used on input line 5
+01.
 (pdftex.def)             Requested size: 278.00073pt x 165.25867pt.
- [14pdfTeX warning (ext4): destination with the same identifier (name{figure.8}
+ [13pdfTeX warning (ext4): destination with the same identifier (name{figure.7}
 ) has been already used, duplicate ignored
 
 \AtBegShi@Output ...ipout \box \AtBeginShipoutBox 
                                                   \fi \fi 
-l.491 
-       <C:/Users/mahbub/Dropbox/Unitn/PhD thesis/Reports/OptimizeEnergyPLANWith
-DK/figures/indicators_category.pdf>]
-Overfull \hbox (44.8479pt too wide) in paragraph at lines 516--526
-[][] 
- []
-
-[15]
-Overfull \hbox (59.1897pt too wide) in paragraph at lines 540--554
-[][] 
- []
-
-
-Overfull \hbox (59.1897pt too wide) in paragraph at lines 562--576
+l.525 
+       <C:/Users/mahbub/Documents/GitHub/EnergyPLANDomainKnowledgeEAStep1/repor
+t/OptimizeEnergyPLANWithDK/figures/hypervolume.png>]
+Overfull \hbox (44.8479pt too wide) in paragraph at lines 550--560
 [][] 
  []
 
 
 LaTeX Warning: `h' float specifier changed to `ht'.
 
-[16]
-Overfull \hbox (59.1897pt too wide) in paragraph at lines 584--598
+[14pdfTeX warning (ext4): destination with the same identifier (name{figure.8})
+ has been already used, duplicate ignored
+
+\AtBegShi@Output ...ipout \box \AtBeginShipoutBox 
+                                                  \fi \fi 
+l.568 
+       <C:/Users/mahbub/Documents/GitHub/EnergyPLANDomainKnowledgeEAStep1/repor
+t/OptimizeEnergyPLANWithDK/figures/indicators_category.pdf>]
+Overfull \hbox (59.1897pt too wide) in paragraph at lines 581--595
 [][] 
  []
 
-<./figures/HV_generation.pdf, id=318, 709.04903pt x 555.67598pt>
+[15pdfTeX warning (ext4): destination with the same identifier (name{table.4}) 
+has been already used, duplicate ignored
+
+\AtBegShi@Output ...ipout \box \AtBeginShipoutBox 
+                                                  \fi \fi 
+l.611 
+      ]
+Overfull \hbox (59.1897pt too wide) in paragraph at lines 617--631
+[][] 
+ []
+
+
+Overfull \hbox (59.1897pt too wide) in paragraph at lines 640--654
+[][] 
+ []
+
+
+LaTeX Warning: `h' float specifier changed to `ht'.
+
+<./figures/HV_generation.pdf, id=315, 709.04903pt x 555.67598pt>
 File: ./figures/HV_generation.pdf Graphic file (type pdf)
 
 <use ./figures/HV_generation.pdf>
-Package pdftex.def Info: ./figures/HV_generation.pdf used on input line 611.
+Package pdftex.def Info: ./figures/HV_generation.pdf used on input line 670.
 (pdftex.def)             Requested size: 354.52364pt x 277.83731pt.
 
-Overfull \hbox (9.52364pt too wide) in paragraph at lines 611--612
+Overfull \hbox (9.52364pt too wide) in paragraph at lines 670--671
  [][] 
  []
 
-[17] <./figures/IGD_generation.pdf, id=325, 677.73201pt x 460.11899pt>
+[16pdfTeX warning (ext4): destination with the same identifier (name{table.5}) 
+has been already used, duplicate ignored
+
+\AtBegShi@Output ...ipout \box \AtBeginShipoutBox 
+                                                  \fi \fi 
+l.672 
+      ] <./figures/IGD_generation.pdf, id=324, 677.73201pt x 460.11899pt>
 File: ./figures/IGD_generation.pdf Graphic file (type pdf)
 
 <use ./figures/IGD_generation.pdf>
-Package pdftex.def Info: ./figures/IGD_generation.pdf used on input line 624.
+Package pdftex.def Info: ./figures/IGD_generation.pdf used on input line 684.
 (pdftex.def)             Requested size: 338.86517pt x 230.05893pt.
- [18 <C:/Users/mahbub/Dropbox/Unitn/PhD thesis/Reports/OptimizeEnergyPLANWithDK
-/figures/HV_generation.pdf>]
-("C:\Users\mahbub\Dropbox\Unitn\PhD thesis\Reports\OptimizeEnergyPLANWithDK\rep
-ort.bbl"
+
+(C:\Users\mahbub\Documents\GitHub\EnergyPLANDomainKnowledgeEAStep1\report\Optim
+izeEnergyPLANWithDK\report.bbl
 Missing character: There is no Ã in font cmr10!
 Missing character: There is no © in font cmr10!
 Missing character: There is no Ã in font cmr10!
 Missing character: There is no ³ in font cmr10!
- [19 <C:/Users/mahbub/Dropbox/Unitn/PhD thesis/Reports/OptimizeEnergyPLANWithDK
-/figures/IGD_generation.pdf>])
-Package atveryend Info: Empty hook `BeforeClearDocument' on input line 645.
- [20]
-Package atveryend Info: Empty hook `AfterLastShipout' on input line 645.
+ [17pdfTeX warning (ext4): destination with the same identifier (name{table.6})
+ has been already used, duplicate ignored
 
-("C:\Users\mahbub\Dropbox\Unitn\PhD thesis\Reports\OptimizeEnergyPLANWithDK\rep
-ort.aux")
-Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 645.
-Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 645.
+\AtBegShi@Output ...ipout \box \AtBeginShipoutBox 
+                                                  \fi \fi 
+l.8 \bibitem{Bonissone_Subbu_Eklund_Kiehl_2006}
+                                               ] [18 <C:/Users/mahbub/Documents
+/GitHub/EnergyPLANDomainKnowledgeEAStep1/report/OptimizeEnergyPLANWithDK/figure
+s/HV_generation.pdf> <C:/Users/mahbub/Documents/GitHub/EnergyPLANDomainKnowledg
+eEAStep1/report/OptimizeEnergyPLANWithDK/figures/IGD_generation.pdf>])
+Package atveryend Info: Empty hook `BeforeClearDocument' on input line 708.
+ [19]
+Package atveryend Info: Empty hook `AfterLastShipout' on input line 708.
+
+(C:\Users\mahbub\Documents\GitHub\EnergyPLANDomainKnowledgeEAStep1\report\Optim
+izeEnergyPLANWithDK\report.aux)
+Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 708.
+Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 708.
 Package rerunfilecheck Info: File `report.out' has not changed.
-(rerunfilecheck)             Checksum: 2A62E96BB7E25E48894D16A6FD8F84C2;1333.
+(rerunfilecheck)             Checksum: 763374D4F7A559A7A4514C7116C012CC;1164.
 
 
 LaTeX Warning: There were multiply-defined labels.
 
-Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 645.
+Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 708.
  ) 
 Here is how much of TeX's memory you used:
  7972 strings out of 493923
- 113611 string characters out of 3149332
- 208868 words of memory out of 3000000
- 11009 multiletter control sequences out of 15000+200000
+ 113870 string characters out of 3149333
+ 209185 words of memory out of 3000000
+ 11008 multiletter control sequences out of 15000+200000
  12840 words of font info for 49 fonts, out of 3000000 for 9000
  841 hyphenation exceptions out of 8191
- 42i,18n,35p,1637b,451s stack positions out of 5000i,500n,10000p,200000b,50000s
+ 42i,18n,35p,908b,455s stack positions out of 5000i,500n,10000p,200000b,50000s
 <C:/Users/mahbub/MikTex/fonts/type1/public/amsfonts/cm/cmbx10.pfb><C:/Users/m
 ahbub/MikTex/fonts/type1/public/amsfonts/cm/cmbx12.pfb><C:/Users/mahbub/MikTex/
 fonts/type1/public/amsfonts/cm/cmcsc10.pfb><C:/Users/mahbub/MikTex/fonts/type1/
@@ -773,9 +773,9 @@ kTex/fonts/type1/public/amsfonts/cm/cmr8.pfb><C:/Users/mahbub/MikTex/fonts/type
 onts/cm/cmsy7.pfb><C:/Users/mahbub/MikTex/fonts/type1/public/amsfonts/cm/cmti10
 .pfb><C:/Users/mahbub/MikTex/fonts/type1/public/amsfonts/symbols/msam10.pfb><C:
 /Users/mahbub/MikTex/fonts/type1/urw/zapfding/uzdr.pfb>
-Output written on report.pdf (20 pages, 640919 bytes).
+Output written on report.pdf (19 pages, 644498 bytes).
 PDF statistics:
- 433 PDF objects out of 1000 (max. 8388607)
- 85 named destinations out of 1000 (max. 500000)
- 211 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 430 PDF objects out of 1000 (max. 8388607)
+ 86 named destinations out of 1000 (max. 500000)
+ 195 words of extra memory for PDF output out of 10000 (max. 10000000)
 
