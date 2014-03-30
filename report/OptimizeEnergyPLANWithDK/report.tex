@@ -28,7 +28,8 @@
 
 \section{Introduction}
 
-This report is about the chromosome representation and design of a mutation based on domain knowledge. The report also reviews the quality indicators for measuring a multi-objective optimization evolutionary algorithm. 
+This report is about the chromosome representation of the optimization of energy systems. This report also presents a  new mutation based on domain knowledge. 
+The report reviews the quality indicators that are used for comparing  multi-objective optimization evolutionary algorithms. 
 The results of newly developed mutation is presented and compared with generic mutation.
  
 
@@ -37,7 +38,7 @@ The results of newly developed mutation is presented and compared with generic m
 Chromosome representation is one of the important steps in evolutionary algorithms. 
 A good representation helps the algorithm to search the space more efficiently. 
 %In this optimization problem, we can not able to directly use the generic representation (i.e., real representation). 
-In the next few sections, the problems of representation is discussed and a repair function is developed to deal with the problem.
+In the next few sections, the problems of generic representation is discussed and a repair function is developed to deal with the problem.
 %For our design variables, we need to deal with some step size. 
 %Consider a design variable, such as Off-shore wind capacity in MW. 
 %For the least discrete case, the design variable may differ to one another by 1 MW (e.g., for one case the off-shore wind capacity is 5000 MW, for another design the capacity is 5001 MW). 
@@ -71,31 +72,33 @@ In the next few sections, the problems of representation is discussed and a repa
 
 In  this optimization problem, we need to deal with two kinds of design variables. 
 First four variables are the capacity of four different sources in MW (Off-shore wind, on-shore wind, PV and conventional power plant). 
-And we have another three design variables those represent the share of three fuels (coal, oil and N. Gas) mixing for conventional power plant.
-Each fuel share value represents a relative share with respect to the use of other fuels. 
-As an example, if 0.5 and 0.5 is given for coal and oil, EnergyPLAN\footnote{It is assumed that EnergyPLAN is already introduced.} try to use same amount of coal and oil to meet the demand. 
+And we have another three design variables those represent the share of three fuels (coal, oil and N. Gas) for conventional power plant.
+Each fuel share value represents a relative share with respect to the uses of other fuels. 
+As an example, if both coal and oil share is 0.5, EnergyPLAN\footnote{It is assumed that EnergyPLAN is already introduced.} tries to use same amount of coal and oil to meet the demand. 
 But if 0.25 and 0.5 is given for coal and oil, EnergyPLAN tries to use double amount of oil than coal.
 
-For the decision variables of the capacity of different  sources, we use real representation where the maximum capacity is given. 
+For the decision variables of the capacity of different  sources, we use real representation where the maximum possible capacity of a region is given. 
 On the other hand for fuel shares, we use real representation within a range of 0 to 1. 
 %To deal with the step size we propose different repair functions for those two kinds of design variables.
 
 \subsection{Repair function}
 The concept of repair function \cite{Bonissone_Subbu_Eklund_Kiehl_2006} is vastly used in the field of evolutionary algorithm. 
-The main concept of repair function is that repair the genes\footnote{Each individual may contains several genes}. 
+The main concept of repair function is that repair the genes\footnote{Each individual may contains several genes} so that the in-feasible gene is changed to a feasible gene. 
 %In our case, we have seven genes within a individual} those are invalid in terms of search space exploration. 
 %For example, the capacity of 1510 MW for a source is invalid in a step size of 50 MW. 
 %For example, the first row of table \ref{table:example fuel share} is invalid if the excepted step of fuel share is 10\%.
-In our case, most of the time, decision maker are not interested in exact percentage (e.g.: 33\% coal, 23\% oil and 44\% natural gas) of the uses of fuels. 
+In the case of fuels mixing in a conventional power plant, most of the time, decision maker are not interested in exact percentage (e.g.: 31\% coal, 23\% oil and 44\% natural gas).
+Because the exact percentage is difficult to implement. 
 So, we want to employ the concept of step size, where decision maker can define the step size. 
+In the case of previous example, if the step size is 5\%, then the shares will be changed,  30\% for coal, 25\% for oil and 45\% for natural gas.
 %But there are some problem to use the same idea in fuel share. 
 %The way EnergyPLAN treat the fuel shares require some new modification of the earlier concept. 
 It is already mentioned that fuel shares in EnergyPLAN are treated as relative fuel shares with respect to other fuel shares. 
-Each gene to represent fuel share has a limit between 0 to 1. 
+Each gene that represents a fuel share has a limit between 0 to 1. 
 So, the repair function that we use here adjust the the gene values in a way so that relative shares of each fuel will be a multiple of the given step size. 
 An Example is given in the table \ref{table:example fuel share} where step size is 0.1 (i.g.: 10\%).
 The 1\textsuperscript{st} row of the tables is the gene values for fuel shares for a particular individual. 
-The 2\textsuperscript{nd} row is the relative shares calculated using equation \eqref{eq:Fuel Share}.
+The 2\textsuperscript{nd} row is the absolute shares calculated using equation \eqref{eq:Fuel Share}.
 3 \textsuperscript{rd} and 4\textsuperscript{th} rows present the gene values what we expect after \textit{repairing}.
 
 \begin{equation}
@@ -123,6 +126,7 @@ value + (sts - (value\bmod{sts})) & \text{if } (value \bmod{ sts}) >= sts/2, \\
 value - (value \bmod{ sts}) & \text{otherwise}.
 \end{cases}
 \end{equation*}
+
 Where $rgv$ is the repaired gene value and $sts$ is the step size, $value$ is the rounding gene value (e.g., rounded off two decimal place).
 
 %We want to continue with the same idea for mixing of fuel shares. 
@@ -135,9 +139,9 @@ Where $rgv$ is the repaired gene value and $sts$ is the step size, $value$ is th
 \begin{tabular}{c|c|c|c}\hline
 fuel & coal & Oil & N. gas \\ \hline
 gene value& 0.10 & 0.051 & 0.82 \\ \hline
-Fuel share before repair& 0.103 &0.053&0.844\\ \hline
+Absolute fuel share before repair& 0.103 &0.053&0.844\\ \hline
 gene value after repair & 0.097 & 0.097 & 0.78 \\ \hline
-Fuel share after repair & 0.1 & 0.1 & 0.8 \\ \hline   
+Absolute fuel share after repair & 0.1 & 0.1 & 0.8 \\ \hline   
 
 \end{tabular}
 \end{table}
@@ -145,13 +149,13 @@ Fuel share after repair & 0.1 & 0.1 & 0.8 \\ \hline
 %Share for a fuel is defined by the following formula.
 
 
-Next, we present an algorithm to repair the gene value according to the step size given by a decision maker \ref{alg:repair-fuel-gene}. 
+Next, we present an algorithm to repair the gene value according to the step size given by a decision maker algo. \ref{alg:repair-fuel-gene}. 
 %The repair of fuel genes are more complicated than the repair of sources' capacity genes. 
 The values represent in the fuel share genes do not represent the absolute shares of the fuels.
 It represent the relative share of the fuels.
 So, a two step process can solve the problem. 
 In the 1\textsuperscript{st} step, actual fuel shares are calculated (step \# 2 and 3 of algorithm \ref{alg:repair-fuel-gene}) and  adjust the absolute shares according to the given step size (Step \# 4). 
-The adjustment is done by using the equation \ref{eq:Representation of capacity design variables2}. 
+The adjustment is done by using the equation \eqref{eq:Representation of capacity design variables2}. 
 Then, in the 2\textsuperscript{nd} step, the new relative shares are assign according to the fixed absolute share (Step \# 7).
 Step \#5 and \#6 is necessary to make some minor change to the gene, if sum of all gene are not equal to 1. 
 Sometime this may be happen because of rounding effect. 
@@ -213,17 +217,17 @@ Step \#8, 9      & 0.111111 & 0        & 1      \\ \hline
 \end{table}
 
 \section{Problem Specific Mutation}
-Mutation is one of the key operators in EA basically mimic the idea of mutation of nature. 
+Mutation, one of the key operators of an EA, basically mimic the idea of mutation from nature. 
 %A problem specific mutation specially designed to deal with the optimization problem of renewable energy and conventional energy is presented. 
 The presented mutation operator, specially designed to deal with the optimization problem of an energy system, is a combination of three different mutations.
-In a single mutation process, only one mutation is applied within three mutations.  
-First mutation is designed to favours renewable sources i.e,  increase their capacity and use cleaner fuel, other mutation is designed to do completely the opposite (i.e.: favours conventional sources and low cost fuel). 
+In a single mutation process, only one mutation is applied among three mutations.  
+First mutation is designed to favours renewable sources i.e,  increase the capacity of RE sources and use cleaner fuel, other mutation is designed to do completely the opposite (i.e.: favours conventional sources and use low cost fuel). 
 The third mutation is a traditional/generic mutation (polynomial mutation or non-uniform mutation \cite{Deb_2001}). 
 The reason behind the use of generic mutation is to keep the diversity of the population. 
-Without the use of a traditional mutation approach we may lead the search toward extreme solutions. 
+Without the use of a traditional mutation, we may lead the search toward extreme solutions. 
 In that case, we will lose interesting trade-off solutions for the decision makers. 
-The selection of one mutation among three mutations depends on value of a random number over uniformly distributed probability distribution.
-Fig. \ref{fig:mutation flowchart} illustrates the overall mutation process ($P_{REFM}$ is the probability of applying the renewable energy favour mutation and $P_{CEFM}$ is the probability of conventional energy favour mutation).
+The selection of a mutation among three mutations depends on a random number drawn over uniformly distributed probability distribution.
+Fig. \ref{fig:mutation flowchart} illustrates the overall mutation process ($P_{REFM}$ is the probability of applying the renewable energy favour mutation and $P_{CEFM}$ is the probability of applying conventional energy favour mutation).
 
 
 %To design the mutation that favour renewable energy and conventional energy, the above domain-knowledge are considered.
@@ -241,39 +245,40 @@ Fig. \ref{fig:mutation flowchart} illustrates the overall mutation process ($P_{
 \begin{figure}
 \centering
 
-\includegraphics[scale=0.6]{./figures/mutation_flowchart.pdf}
-\caption{Mutation Flowchart}
+\includegraphics[scale=0.5]{./figures/mutation_flowchart.pdf}
+\caption{Mutation Flowchart.}
 \label{fig:mutation flowchart}
 \end{figure}
 
 %\subsection{Renewable energy favour mutation}
 Now, we present the design of a mutation operator that can favour renewable energy sources. 
-Traditional mutation operator makes a change to the individual so that the value of genes \footnote{An individual may consist of several genes.} may be decreased or increased. 
-Most of the time, a probability distribution is used to generate the new value of a gene e.g., polynomial mutation, normal mutation \cite{Deb_2001}. 
-In that case, the gene may fall both in the upper side (value increased) or lower side (value decreased) of the gene (e.g.: anywhere within -2 to 8, in the left figure of fig. \ref{fig:truncated pdf and cdf}).
-But to favour renewable sources, we want the mutation operator should make changes to some chosen genes so that the new gene value can only be increased (e.g.: anywhere within gV to gUB in the left figure of fig.\ref{fig:truncated pdf and cdf}).
-As an example, consider a gene value of an individual is \textbf{1250}, and the lower and upper bound of the gene is 0 and 2000 respectively. 
-And if the gene represents the capacity of a renewable source, the mutation operator should generate a new gene only within the range of 1250 to 2000. 
-If we want to favour conventional sources, the mutation should produce a new gene only within the range 0 to 1250. 
+Traditional mutation operator makes a change to an individual so that the value of genes \footnote{An individual may consists of several genes.} may be decreased or increased. 
+Most of the time, a probability distribution is used to generate a new value of a gene e.g., polynomial mutation, normal mutation \cite{Deb_2001}. 
+In that case, the gene may fall both in the upper side (value increased) or lower side (value decreased) of the gene (anywhere within gLB to gUB, in the left figure of fig. \ref{fig:truncated pdf and cdf}, where \textit{gV}, \textit{gLB} and \textit{gUB} represent gene value, lower bound and upper bound of the gene respectively).
+But to favour renewable sources, we want the mutation operator should make changes to some chosen genes so that the new gene value can only be increased (anywhere within gV to gUB in the left figure of fig. \ref{fig:truncated pdf and cdf}) or decreased.
+As an example, consider a gene value of an individual is \textbf{1250} and the lower and upper bound of the gene is 0 and 2000 respectively. 
+If the gene represents the capacity of a wind source, the mutation should generate a new gene only within the range of 1250 to 2000. 
+If we want to favour conventional sources, the mutation should produce a new gene within the range of 0 to 1250. 
 
-To design the renewable or conventional favour mutation, we use \textit{normal probability  distribution}\cite{wiki:normal-distribution}. 
+To design the renewable or conventional favour mutation, we use the \textit{normal probability  distribution}\cite{wiki:normal-distribution}. 
 %The reason behind selecting normal distribution is that it give better control over the distribution through two parameter, \textit{mean and standard deviation}.
-We will have a normal distribution centred on the gene value of an individual (mean, $\mu$ is set equal to gene value and standard deviation, $\sigma$ is set to $d/3$, where $d=|geneValue - geneUpperValue$ or $geneLowerValue|$). 
+We will have a normal distribution centered on the \textit{gV} of an individual (mean, $\mu$ is set to gV and standard deviation, $\sigma$ is set to $d/3$, where $d=|gV - gUB$ or $gLB|$). 
 The selection of $\sigma$ value ensures that most of the time the new gene value will lie near to the old gene value (i.e., mean value). 
 Then the probability density function (pdf) is truncated within an upper or lower range \cite{wiki:truncated-distribution}.
 % (e.g.: in the fig. \ref{fig:truncated pdf and cdf}, upper range is shown). 
-The red distribution in the left side of fig. \ref{fig:truncated pdf and cdf} shows the pdf distributed from [$-\infty$ to $\infty$] with $\mu=3$ and $\sigma=1.0$, where gene value is 3 and upper bound of the gene is 6. 
-In the figure, $gV$ represents the gene value and $gUB$ represents the upper bound of the gene.  
-On the other hand, the blue distribution shows the truncated pdf within the range of $gV$ to $gUB$.
+The red distribution in the left side of fig. \ref{fig:truncated pdf and cdf} shows the truncated pdf distributed within the range of \emph{$gLB$ to $gUB$}. 
+%with $\mu=3.0$ and $\sigma=1.0$, where gV is 3.0 and gUB is 6.0. 
+On the other hand, the blue distribution shows the truncated pdf within the range of \emph{$gV$ to $gUB$}.
+%In the figure, $gV$ represents the gene value and $gUB$ represents the upper bound of the gene.  
 And the corresponding cumulative distribution function is shown in the right side of the figure.  
-A random number is drawn from a uniform distribution within a range of 0 to 1.
+A random number is drawn from an uniform distribution within a range of 0 to 1.
 A new gene value is obtained using \textit{inverse cdf or quantile function}\cite{wiki:Quantile-function}.
 The details of the mutation is given in the following algorithm \ref{alg:mutation-favours-Res}. 
 
 \begin{figure}
 \centering
 \includegraphics[scale=1.0]{./figures/trun_pdf_cdf.pdf}
-\caption{An example of Probability density function and probability mass function used in mutation}
+\caption{An example of probability density function and cumulative distribution function used in the mutation.}
 \label{fig:truncated pdf and cdf}
 \end{figure}
 
@@ -297,14 +302,14 @@ The details of the mutation is given in the following algorithm \ref{alg:mutatio
 		\State{Truncate the distribution where distribution lower bound = $gV$ and distribution upper bound = $gUB$}
 	
 	\State{Calculate the cdf of the distribution}
-	\State{Draw a random number uniformly distributed over 0 to 1}
+	\State{Draw a random number from an uniform distribution within the range of 0 to 1}
 	\State{ $gV =$ inverse cdf (quantile function) for the random number}
 	\Else
 			\State{Define a normal distribution; $\mu= gV$,  $\sigma = d_l/3$}
 		\State{Truncate the distribution where distribution lower bound = $gLB$ and distribution upper bound = $gV$}
 	
 	\State{Calculate the cdf of the distribution}
-	\State{Draw a random number uniformly distributed over 0 to 1}
+	\State{Draw a random number from an uniform distribution within the range of 0 to 1}
 	\State{$gV =$ inverse cdf (quantile function) for the random number}
 	\EndIf
 	 		
@@ -324,16 +329,15 @@ The details of the mutation is given in the following algorithm \ref{alg:mutatio
 \begin{tabular}{cccccccc}
 Mutation & off-Shore Wind & On-shore Wind  & PV         & Conventional PP & coal       & Oil & N. Gas     \\ \hline
 favour RE & \checkmark & \checkmark & \checkmark & -- & \xmark     & --  & \checkmark \\
-favour CV & \xmark     & \xmark     & \xmark     & -- & \checkmark & --  & \xmark    
+favour CE & \xmark     & \xmark     & \xmark     & -- & \checkmark & --  & \xmark    
 \end{tabular}
-\caption{Different sources that should be increased or decreased in two different mutations. \checkmark indicate an increase and \xmark indicate a decrease, -- indicate doing nothing}
+\caption{Different sources that should be increased or decreased in two different mutations. \checkmark indicate an increase and \xmark indicate a decrease, -- indicate doing nothing.}
 \label{table:variables-in-mutation}
 \end{table*}
 
-The mutation that favour conventional energy is the same as the previous one except the choice of favouring decision variables. 
-But process that is applied on the variables is the same.
-
-The table \ref{table:variables-in-mutation} shows the variables that are increased or decreased according to the mutation status.
+The mutation that favours conventional energy is the same as the previous one except the choice of favouring decision variables. 
+But process that is applied on the variables is identical.
+The table \ref{table:variables-in-mutation} shows the decision variables that are increased or decreased according to the corresponding mutation.
 
 \section{Quality Indicators for Multi-objective Optimization Problem}
 \label{sec:Quality Indicators for Multi-objective Optimization Problem}
