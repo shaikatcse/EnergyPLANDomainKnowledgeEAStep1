@@ -31,6 +31,7 @@ import jmetal.operators.mutation.Mutation;
 import reet.fbk.eu.jmetal.operators.mutation.RE.BitFlipAndPolynomialMutationForRes;
 import reet.fbk.eu.jmetal.operators.mutation.RE.BitFlipAndPolynomialMutationForResWithDK;
 import reet.fbk.eu.jmetal.operators.mutation.Real.GeneralRealMutationForRes;
+import reet.fbk.eu.jmetal.operators.mutation.ModifiedPolynomial.GeneralModifiedPolynomialMutationForRes;
 /**
 * Class implementing a factory for Mutation objects.
 */
@@ -59,6 +60,8 @@ else if (name.equalsIgnoreCase("BitFlipAndPolynomialMutationForResWithDK"))
 	  return new BitFlipAndPolynomialMutationForResWithDK(parameters);
 else if (name.equalsIgnoreCase("GeneralRealMutationForRes"))
 	return new GeneralRealMutationForRes(parameters);
+else if (name.equalsIgnoreCase("GeneralModifiedPolynomialMutationForRes"))
+	return new GeneralModifiedPolynomialMutationForRes(parameters);
 /*else if(name.equalsIgnoreCase("BitFlipMutationFavorMaximizationOfRes"))
 	return new BitFlipMutationFavorMaximizationOfRes(parameters);
 else if(name.equalsIgnoreCase("MutationForRes"))

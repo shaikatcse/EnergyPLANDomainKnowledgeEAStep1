@@ -8,7 +8,7 @@ import jmetal.core.Algorithm;
 import jmetal.core.Operator;
 import jmetal.core.Problem;
 import jmetal.core.SolutionSet;
-import reet.fbk.eu.OptimizeEnergyPLANWithAccuracy.jmetal.metaheuristics.NSGAIIForDK;
+import reet.fbk.eu.jmetal.metaheuristics.nsgaII.NSGAIIForDK;
 import jmetal.operators.crossover.CrossoverFactory;
 import jmetal.operators.selection.SelectionFactory;
 import jmetal.qualityIndicator.QualityIndicator;
@@ -16,7 +16,7 @@ import jmetal.util.Configuration;
 import jmetal.util.JMException;
 import jmetal.util.PseudoRandom;
 import jmetal.util.RandomGenerator;
-import reet.fbk.eu.OprimizeEnergyPLAN.jmetal.operators.mutation.MutationFactory;
+import reet.fbk.eu.jmetal.operators.mutation.MutationFactory;
 //import jmetal.operators.mutation.MutationFactory;
 
 
