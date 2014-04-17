@@ -8,7 +8,7 @@ import jmetal.core.Algorithm;
 import jmetal.core.Operator;
 import jmetal.core.Problem;
 import jmetal.core.SolutionSet;
-import reet.fbk.eu.jmetal.metaheuristics.nsgaII.NSGAIIForDK;
+
 import jmetal.operators.crossover.CrossoverFactory;
 import jmetal.operators.selection.SelectionFactory;
 import jmetal.qualityIndicator.QualityIndicator;
@@ -16,9 +16,10 @@ import jmetal.util.Configuration;
 import jmetal.util.JMException;
 import jmetal.util.PseudoRandom;
 import jmetal.util.RandomGenerator;
-import reet.fbk.eu.jmetal.operators.mutation.MutationFactory;
-//import jmetal.operators.mutation.MutationFactory;
 
+//import jmetal.operators.mutation.MutationFactory;
+import reet.fbk.eu.jmetal.metaheuristics.nsgaII.NSGAIIForDK;
+import reet.fbk.eu.jmetal.operators.mutation.MutationFactory;
 
 import java.util.logging.FileHandler;
 import java.util.logging.Logger;
@@ -56,15 +57,16 @@ public class EnergyPLANProblemStep1WithDKOperatorMain {
 			indicators = null;
 
 			problem = new EnergyPLANProblemStep1("Real");
-			algorithm = new NSGAIIForDK(problem, seed[i], "SBX_DKMutation");
+			
 			// algorithm = new ssNSGAII(problem);
-
+			algorithm = new NSGAIIForDK(problem, seed[i], "SBX_ModifiedPolynomialMutation");
+			
 			//indicators = new QualityIndicator(problem, "C:\\Users\\Nusrat\\Documents\\GitHub\\EnergyPLANDomainKnowledgeEAStep1\\Results\\truePf\\mergefun.pf") ;
 			
 			
 			// Algorithm parameters
-			algorithm.setInputParameter("populationSize", 100);
-			algorithm.setInputParameter("maxEvaluations", 5000);
+			algorithm.setInputParameter("populationSize", 2);
+			algorithm.setInputParameter("maxEvaluations", 10);
 
 			// Mutation and Crossover for Real codification
 			parameters = new HashMap();
@@ -78,8 +80,9 @@ public class EnergyPLANProblemStep1WithDKOperatorMain {
 			parameters.put("distributionIndex", 4.0);
 			//mutation = MutationFactory.getMutationOperator("PolynomialMutation",
 				//		parameters);
-
-			mutation = MutationFactory.getMutationOperator("GeneralRealMutationForRes",
+			parameters.put("maximum generation", (int) algorithm.getInputParameter("maxEvaluations")/(int) algorithm.getInputParameter("populationSize")-1);
+			
+			mutation = MutationFactory.getMutationOperator("GeneralModifiedPolynomialMutationForRes",
 					parameters);
 
 			// Selection Operator
@@ -104,9 +107,9 @@ public class EnergyPLANProblemStep1WithDKOperatorMain {
 			// Result messages
 			logger_.info("Total execution time: " + estimatedTime + "ms");
 			logger_.info("Variables values have been writen to file VAR");
-			population.printVariablesToFile("SBX_DKMutation\\VAR_SBX_DKMutation_seed_"+seed[i]);
+			population.printVariablesToFile("SBX_ModifiedPolynomialMutation\\VAR_SBX_ModifiedPolynomialMutation_seed_"+seed[i]);
 			logger_.info("Objectives values have been writen to file FUN");
-			population.printObjectivesToFile("SBX_DKMutation\\FUN_SBX_DKMutation_seed_"+seed[i]);
+			population.printObjectivesToFile("SBX_ModifiedPolynomialmutation\\FUN_SBX_ModifiedPolynomialMutation_seed_"+seed[i]);
 		}
 	}
 }
