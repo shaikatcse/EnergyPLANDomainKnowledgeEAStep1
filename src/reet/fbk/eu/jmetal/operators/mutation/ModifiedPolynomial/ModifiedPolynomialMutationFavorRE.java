@@ -1,4 +1,4 @@
-package reet.fbk.eu.jmetal.operators.mutation.modifiedPolynomial;
+package reet.fbk.eu.jmetal.operators.mutation.ModifiedPolynomial;
 
 /*this class simplly implements mutation that favoring RE based on
  * Normal distribution
@@ -29,7 +29,7 @@ import jmetal.operators.mutation.*;
 
 import org.apache.commons.math3.distribution.NormalDistribution;
 
-public class ModifiedPolynomialMutationFavorRE extends Mutation {
+public class ModifiedPolynomialMutationFavorRE extends PolynomialMutation {
 
 	/**
 	 * The array will keep track on which gene the mutation will be applied true
@@ -40,15 +40,14 @@ public class ModifiedPolynomialMutationFavorRE extends Mutation {
 	private static Boolean favorGenes[] = new Boolean[] { true, true, true,
 			null, false, null, true };
 
-	private Double bitFlipMutationProbability_ = null;
+	// private Double bitFlipMutationProbability_ = null;
 
-	
 	private static final double ETA_M_DEFAULT_ = 20.0;
-	private final double eta_m_=ETA_M_DEFAULT_;
-	
-  private Double mutationProbability_ = null ;
-  private Double distributionIndex_ = eta_m_;
-	
+	private final double eta_m_ = ETA_M_DEFAULT_;
+
+	private Double mutationProbability_ = null;
+	private Double distributionIndex_ = eta_m_;
+
 	/**
 	 * Valid solution types to apply this operator
 	 */
@@ -60,12 +59,19 @@ public class ModifiedPolynomialMutationFavorRE extends Mutation {
 	 */
 	public ModifiedPolynomialMutationFavorRE(HashMap<String, Object> parameters) {
 		super(parameters);
-		/*
-		 * if (parameters.get("bitFlipMutationProbability") != null)
-		 * bitFlipMutationProbability_ = (Double) parameters
-		 * .get("bitFlipMutationProbability");
-		 */
+		if (parameters.get("probability") != null)
+			mutationProbability_ = (Double) parameters.get("probability");
+		if (parameters.get("distributionIndex") != null) {
+			distributionIndex_ = (Double) parameters.get("distributionIndex");
+
+		}
 	}
+
+	/*
+	 * if (parameters.get("bitFlipMutationProbability") != null)
+	 * bitFlipMutationProbability_ = (Double) parameters
+	 * .get("bitFlipMutationProbability");
+	 */
 
 	/**
 	 * Perform the mutation operation
@@ -79,11 +85,11 @@ public class ModifiedPolynomialMutationFavorRE extends Mutation {
 	@SuppressWarnings("null")
 	public void doMutation(double probability, Solution solution)
 			throws JMException {
-		
+
 		double rnd, deltaU, deltaL, mut_pow, deltaq;
 		double y, yl, yu, val, xy;
-		XReal x = new XReal(solution) ;		
-		
+		XReal x = new XReal(solution);
+
 		try {
 			if (solution.getType().getClass() == RealSolutionType.class) {
 
@@ -94,86 +100,92 @@ public class ModifiedPolynomialMutationFavorRE extends Mutation {
 					// probability
 
 					if (PseudoRandom.randDouble() < probability) {
-						y      = x.getValue(i);
-						yl     = x.getLowerBound(i);                
-						yu     = x.getUpperBound(i);
-						deltaL = (y-yl)/(yu-yl);
-						deltaU = (yu-y)/(yu-yl);
+						y = x.getValue(i);
+						yl = x.getLowerBound(i);
+						yu = x.getUpperBound(i);
+						deltaL = (y - yl) / (yu - yl);
+						deltaU = (yu - y) / (yu - yl);
 						rnd = PseudoRandom.randDouble();
-						mut_pow = 1.0/(eta_m_+1.0);
+						mut_pow = 1.0 / (distributionIndex_ + 1.0);
 						try {
 							if (favorGenes[i] == true) {
 
-								/*double indvValue = solution
-										.getDecisionVariables()[i].getValue();
-								double newIndvValue = indvValue;
-								double distLowerBound = indvValue;
-								double distUpperBound = solution
-										.getDecisionVariables()[i]
-										.getUpperBound();
-								if ((distUpperBound - indvValue) > 0.0) {
-									NormalDistribution nd = new NormalDistribution(
-											indvValue,
-											(distUpperBound - indvValue) / 3);
+								/*
+								 * double indvValue = solution
+								 * .getDecisionVariables()[i].getValue(); double
+								 * newIndvValue = indvValue; double
+								 * distLowerBound = indvValue; double
+								 * distUpperBound = solution
+								 * .getDecisionVariables()[i] .getUpperBound();
+								 * if ((distUpperBound - indvValue) > 0.0) {
+								 * NormalDistribution nd = new
+								 * NormalDistribution( indvValue,
+								 * (distUpperBound - indvValue) / 3);
+								 * 
+								 * double rand = PseudoRandom.randDouble();
+								 * 
+								 * newIndvValue = nd
+								 * .inverseCumulativeProbability(nd
+								 * .cumulativeProbability(distLowerBound) + rand
+								 * (nd.cumulativeProbability(distUpperBound) -
+								 * nd .cumulativeProbability(distLowerBound)));
+								 * }
+								 */
+								xy = 1.0 - deltaU;
+								val = 1
+										- rnd
+										+ rnd
+										* (Math.pow(xy,
+												(distributionIndex_ + 1.0)));
+								deltaq = 1 - java.lang.Math.pow(val, mut_pow);
 
-									double rand = PseudoRandom.randDouble();
-
-									newIndvValue = nd
-											.inverseCumulativeProbability(nd
-													.cumulativeProbability(distLowerBound)
-													+ rand
-													* (nd.cumulativeProbability(distUpperBound) - nd
-															.cumulativeProbability(distLowerBound)));
-								}*/
-								xy     = 1.0-deltaU;
-								val    = 1 - rnd +rnd*(Math.pow(xy,(distributionIndex_+1.0)));
-								deltaq = 1 - java.lang.Math.pow(val,mut_pow);
-								
-								y = y + deltaq*(yu-yl);
-								if (y<yl)
+								y = y + deltaq * (yu - yl);
+								if (y < yl)
 									y = yl;
-								if (y>yu)
+								if (y > yu)
 									y = yu;
-								x.setValue(i, y);    
-								
-								//solution.getDecisionVariables()[i]
-									//	.setValue(newIndvValue);
+								x.setValue(i, y);
+
+								// solution.getDecisionVariables()[i]
+								// .setValue(newIndvValue);
 
 							} else {
-								/*double indvValue = solution
-										.getDecisionVariables()[i].getValue();
-								double newIndvValue = indvValue;
-								double distLowerBound = solution
-										.getDecisionVariables()[i]
-										.getLowerBound();
-								double distUpperBound = indvValue;
-								if ((indvValue - distLowerBound) > 0.0) {
-									NormalDistribution nd = new NormalDistribution(
-											indvValue,
-											(indvValue - distLowerBound) / 3);
+								/*
+								 * double indvValue = solution
+								 * .getDecisionVariables()[i].getValue(); double
+								 * newIndvValue = indvValue; double
+								 * distLowerBound = solution
+								 * .getDecisionVariables()[i] .getLowerBound();
+								 * double distUpperBound = indvValue; if
+								 * ((indvValue - distLowerBound) > 0.0) {
+								 * NormalDistribution nd = new
+								 * NormalDistribution( indvValue, (indvValue -
+								 * distLowerBound) / 3);
+								 * 
+								 * double rand = PseudoRandom.randDouble();
+								 * 
+								 * newIndvValue = nd
+								 * .inverseCumulativeProbability(nd
+								 * .cumulativeProbability(distLowerBound) + rand
+								 * (nd.cumulativeProbability(distUpperBound) -
+								 * nd .cumulativeProbability(distLowerBound)));
+								 * } solution.getDecisionVariables()[i]
+								 * .setValue(newIndvValue);
+								 */
 
-									double rand = PseudoRandom.randDouble();
+								xy = 1.0 - deltaL;
+								val = rnd
+										+ (1 - rnd)
+										* (Math.pow(xy,
+												(distributionIndex_ + 1.0)));
+								deltaq = java.lang.Math.pow(val, mut_pow) - 1;
 
-									newIndvValue = nd
-											.inverseCumulativeProbability(nd
-													.cumulativeProbability(distLowerBound)
-													+ rand
-													* (nd.cumulativeProbability(distUpperBound) - nd
-															.cumulativeProbability(distLowerBound)));
-								}
-								solution.getDecisionVariables()[i]
-										.setValue(newIndvValue);*/
-								
-								xy     = 1.0-deltaL;
-								val    = rnd + (1-rnd) *(Math.pow(xy,(distributionIndex_+1.0)));
-								deltaq = java.lang.Math.pow(val,mut_pow)-1;
-								
-								y = y + deltaq*(yu-yl);
-								if (y<yl)
+								y = y + deltaq * (yu - yl);
+								if (y < yl)
 									y = yl;
-								if (y>yu)
+								if (y > yu)
 									y = yu;
-								x.setValue(i, y);    
+								x.setValue(i, y);
 
 							}
 						} catch (NullPointerException e) {
@@ -214,7 +226,7 @@ public class ModifiedPolynomialMutationFavorRE extends Mutation {
 			throw new JMException("Exception in " + name + ".execute()");
 		} // if
 
-		doMutation(bitFlipMutationProbability_, solution);
+		doMutation(mutationProbability_, solution);
 		return solution;
 	} // execute
 }

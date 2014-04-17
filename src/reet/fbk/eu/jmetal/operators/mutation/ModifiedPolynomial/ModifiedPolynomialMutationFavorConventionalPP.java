@@ -1,4 +1,4 @@
-package reet.fbk.eu.jmetal.operators.mutation.modifiedPolynomial;
+package reet.fbk.eu.jmetal.operators.mutation.ModifiedPolynomial;
 
 /*this class simplly implements mutation that favoring RE based on
  * Normal distribution
@@ -29,7 +29,7 @@ import jmetal.operators.mutation.*;
 
 import org.apache.commons.math3.distribution.NormalDistribution;
 
-public class ModifiedPolynomialMutationFavorConventionalPP extends Mutation {
+public class ModifiedPolynomialMutationFavorConventionalPP extends PolynomialMutation {
 
 	/**
 	 * The array will keep track on which gene the mutation will be applied true
@@ -41,7 +41,7 @@ public class ModifiedPolynomialMutationFavorConventionalPP extends Mutation {
 	private static Boolean favorGenes[] = new Boolean[] { false, false, false,
 			null, true, null, false };
 
-	private Double bitFlipMutationProbability_ = null;
+	//private Double bitFlipMutationProbability_ = null;
 	private static final double ETA_M_DEFAULT_ = 20.0;
 	private final double eta_m_ = ETA_M_DEFAULT_;
 
@@ -64,6 +64,11 @@ public class ModifiedPolynomialMutationFavorConventionalPP extends Mutation {
 		 * bitFlipMutationProbability_ = (Double) parameters
 		 * .get("bitFlipMutationProbability");
 		 */
+		
+		if (parameters.get("probability") != null)
+	  		mutationProbability_ = (Double) parameters.get("probability") ;  		
+	  	if (parameters.get("distributionIndex") != null)
+	  		distributionIndex_ = (Double) parameters.get("distributionIndex") ;  		
 	}
 
 	public static void main(String args[]) {
@@ -101,7 +106,7 @@ public class ModifiedPolynomialMutationFavorConventionalPP extends Mutation {
 						deltaL = (y - yl) / (yu - yl);
 						deltaU = (yu - y) / (yu - yl);
 						rnd = PseudoRandom.randDouble();
-						mut_pow = 1.0 / (eta_m_ + 1.0);
+						mut_pow = 1.0 / (distributionIndex_ + 1.0);
 						try {
 							if (favorGenes[i] == true) {
 
@@ -223,7 +228,7 @@ public class ModifiedPolynomialMutationFavorConventionalPP extends Mutation {
 			throw new JMException("Exception in " + name + ".execute()");
 		} // if
 
-		doMutation(bitFlipMutationProbability_, solution);
+		doMutation(mutationProbability_, solution);
 		return solution;
 	} // execute
 }

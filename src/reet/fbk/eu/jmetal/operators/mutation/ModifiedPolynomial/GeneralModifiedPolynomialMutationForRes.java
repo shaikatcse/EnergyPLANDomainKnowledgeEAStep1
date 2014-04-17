@@ -1,4 +1,4 @@
-package reet.fbk.eu.jmetal.operators.mutation.modifiedPolynomial;
+package reet.fbk.eu.jmetal.operators.mutation.ModifiedPolynomial;
 
 //BitFlipMutation.java
 //
@@ -67,6 +67,7 @@ public class GeneralModifiedPolynomialMutationForRes extends Mutation {
 	private ModifiedPolynomialMutationFavorRE modifiedPolynomialMutationFavorRE;
 	private ModifiedPolynomialMutationFavorConventionalPP modifiedPolynomialMutationFavorConventionalPP;
 
+	private int maxGeneration;
 	Random rm;
 
 	/*
@@ -77,13 +78,14 @@ public class GeneralModifiedPolynomialMutationForRes extends Mutation {
 		super(parameters);
 		if (parameters.get("probability") != null)
 			mutationProbability_ = (Double) parameters.get("probability");
-
+		if (parameters.get("maximum generation") != null)
+			maxGeneration = (int) parameters.get("maximum generation");
 		polynomialMutation = new PolynomialMutation(parameters);
 		modifiedPolynomialMutationFavorRE = new ModifiedPolynomialMutationFavorRE(parameters);
 		modifiedPolynomialMutationFavorConventionalPP = new ModifiedPolynomialMutationFavorConventionalPP(
 				parameters);
 
-		rm = new Random();
+		//rm = new Random();
 
 	} // BitFlipMutation
 
@@ -99,13 +101,19 @@ public class GeneralModifiedPolynomialMutationForRes extends Mutation {
 	public void doMutation(double probability, Solution solution)
 			throws JMException {
 		try {
-
+			int currentGeneration=-1;
+			
+			
+			if (this.getParameter("current generation") != null)
+				currentGeneration = (int) this.getParameter("current generation");
+			
+			double ModifiedMutationprobability = (1- currentGeneration/(double)maxGeneration);
 			// int random = rm.nextInt(100);
-			int random = PseudoRandom.randInt(0, 100);
-			if (random < 25) {
+			double random = PseudoRandom.randDouble();
+			if (random < ModifiedMutationprobability/2 ) {
 				modifiedPolynomialMutationFavorRE.doMutation(probability, solution);
 
-			} else if (random >= 25 && random < 50) {
+			} else if ( random < ModifiedMutationprobability) {
 				modifiedPolynomialMutationFavorConventionalPP.doMutation(probability,
 						solution);
 			} else {
@@ -129,6 +137,9 @@ public class GeneralModifiedPolynomialMutationForRes extends Mutation {
 	 * @throws JMException
 	 */
 	public Object execute(Object object) throws JMException {
+		
+		
+		
 		Solution solution = (Solution) object;
 
 		if (!VALID_TYPES.contains(solution.getType().getClass())) {
@@ -151,7 +162,7 @@ public class GeneralModifiedPolynomialMutationForRes extends Mutation {
 	public static void main(String args[]) throws JMException{
 		HashMap hm = new HashMap();
 
-		double distributionIndex = 20.0;
+		double distributionIndex = 4.0;
 
 		hm.put("probability", 1.0);
 		hm.put("distributionIndex", distributionIndex);
