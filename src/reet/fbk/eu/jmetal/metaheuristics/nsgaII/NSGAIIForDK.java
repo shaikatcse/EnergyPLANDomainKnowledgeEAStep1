@@ -19,7 +19,7 @@
 //  You should have received a copy of the GNU Lesser General Public License
 //  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-package reet.fbk.eu.jmetal.metaheuristics.nsgaii;
+package reet.fbk.eu.jmetal.metaheuristics.nsgaII;
 
 import java.io.BufferedWriter;
 import java.io.File;
@@ -220,7 +220,9 @@ public class NSGAIIForDK extends NSGAII {
 					repairSolution.doRepair(offSpring[0]);
 					repairSolution.doRepair(offSpring[1]);
 
+					mutationOperator.setParameter("current generation", (int) evaluations / populationSize);
 					mutationOperator.execute(offSpring[0]);
+					
 					mutationOperator.execute(offSpring[1]);
 
 					repairSolution.doRepair(offSpring[0]);
