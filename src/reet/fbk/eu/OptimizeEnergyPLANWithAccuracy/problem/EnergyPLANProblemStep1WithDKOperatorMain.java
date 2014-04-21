@@ -8,7 +8,6 @@ import jmetal.core.Algorithm;
 import jmetal.core.Operator;
 import jmetal.core.Problem;
 import jmetal.core.SolutionSet;
-
 import jmetal.operators.crossover.CrossoverFactory;
 import jmetal.operators.selection.SelectionFactory;
 import jmetal.qualityIndicator.QualityIndicator;
@@ -16,10 +15,11 @@ import jmetal.util.Configuration;
 import jmetal.util.JMException;
 import jmetal.util.PseudoRandom;
 import jmetal.util.RandomGenerator;
-
 import jmetal.operators.mutation.MutationFactory;
 import reet.fbk.eu.jmetal.metaheuristics.nsgaII.NSGAIIForDK;
 //import reet.fbk.eu.jmetal.operators.mutation.MutationFactory;
+
+import reet.fbk.eu.jmetal.metaheuristics.spea2.SPEA2ForDK;
 
 import java.util.logging.FileHandler;
 import java.util.logging.Logger;
@@ -33,7 +33,8 @@ public class EnergyPLANProblemStep1WithDKOperatorMain {
 			SecurityException, IOException, ClassNotFoundException {
 
 		logger_ = Configuration.logger_;
-		fileHandler_ = new FileHandler("NSGAII_main.log");
+		//fileHandler_ = new FileHandler("NSGAII_main.log");
+		fileHandler_ = new FileHandler("SPEA2.log"); 
 		logger_.addHandler(fileHandler_);
 
 		Problem problem; // The problem to solve
@@ -46,7 +47,10 @@ public class EnergyPLANProblemStep1WithDKOperatorMain {
 
 		QualityIndicator indicators; // Object to get quality indicators
 		
-		long seed [] = {545782, 455875, 547945, 458478, 981354, 652262, 562366, 365652, 456545, 549235 };
+		//seed for NSGAii
+		//	long seed [] = {545782, 455875, 547945, 458478, 981354, 652262, 562366, 365652, 456545, 549235 };
+		//seed for spea2
+		long seed[]={102354,986587,456987,159753, 216557,589632,471259,523486,4158963,745896}; 
 		
 		int numberOfRun=10;
 		for (int i = 0; i < numberOfRun; i++) {
@@ -59,7 +63,7 @@ public class EnergyPLANProblemStep1WithDKOperatorMain {
 			problem = new EnergyPLANProblemStep1("Real");
 			
 			// algorithm = new ssNSGAII(problem);
-			algorithm = new NSGAIIForDK(problem, seed[i], "SBX_PolynomialMutation");
+			algorithm = new SPEA2ForDK(problem, seed[i], "SPEA2_SBX_PolynomialMutation");
 			
 			//indicators = new QualityIndicator(problem, "C:\\Users\\Nusrat\\Documents\\GitHub\\EnergyPLANDomainKnowledgeEAStep1\\Results\\truePf\\mergefun.pf") ;
 			
@@ -67,6 +71,8 @@ public class EnergyPLANProblemStep1WithDKOperatorMain {
 			// Algorithm parameters
 			algorithm.setInputParameter("populationSize", 100);
 			algorithm.setInputParameter("maxEvaluations", 5000);
+			//for spea2
+			algorithm.setInputParameter("archiveSize",100);
 
 			// Mutation and Crossover for Real codification
 			parameters = new HashMap();
@@ -87,7 +93,7 @@ public class EnergyPLANProblemStep1WithDKOperatorMain {
 
 			// Selection Operator
 			parameters = null;
-			selection = SelectionFactory.getSelectionOperator("BinaryTournament2",
+			selection = SelectionFactory.getSelectionOperator("BinaryTournament",
 					parameters);
 
 			// Add the operators to the algorithm
@@ -107,9 +113,9 @@ public class EnergyPLANProblemStep1WithDKOperatorMain {
 			// Result messages
 			logger_.info("Total execution time: " + estimatedTime + "ms");
 			logger_.info("Variables values have been writen to file VAR");
-			population.printVariablesToFile("SBX_PolynomialMutation\\VAR_SBX_PolynomialMutation_seed_"+seed[i]);
+			population.printVariablesToFile("SPEA2_SBX_PolynomialMutation\\VAR_SBX_PolynomialMutation_seed_"+seed[i]);
 			logger_.info("Objectives values have been writen to file FUN");
-			population.printObjectivesToFile("SBX_PolynomialMutation\\FUN_SBX_PolynomialMutation_seed_"+seed[i]);
+			population.printObjectivesToFile("SPEA2_SBX_PolynomialMutation\\FUN_SBX_PolynomialMutation_seed_"+seed[i]);
 		}
 	}
 }

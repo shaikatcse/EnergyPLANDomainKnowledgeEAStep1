@@ -222,7 +222,6 @@ public class NSGAIIForDK extends NSGAII {
 
 					mutationOperator.setParameter("current generation", (int) evaluations / populationSize);
 					mutationOperator.execute(offSpring[0]);
-					
 					mutationOperator.execute(offSpring[1]);
 
 					repairSolution.doRepair(offSpring[0]);
