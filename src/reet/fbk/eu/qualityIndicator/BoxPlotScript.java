@@ -117,21 +117,21 @@ public class BoxPlotScript {
 
 		rows = 2;
 		columns = 3;
-		prefix = new String("Problems");
-		problems = new String[] { "EnergyPLANProblem" };
+		prefix = new String("NSGAII");
+		problems = new String[] { "OptimizeElecEnergy_NSGAII" };
 
 		BoxPlotScript bps = new BoxPlotScript();
 
-		bps.algorithmNameList_ = new String[] {  "Polynomial", "ModifiedPolynomial" };
+		bps.algorithmNameList_ = new String[] {  "PolynomialMutation", "DKMutation" };
 		bps.indicatorList_ = new String[] {"HV", "Spread", "IGD", "Epsilon", "GD"} ;
 
 		int numberOfAlgorithms = bps.algorithmNameList_.length;
 
-		bps.experimentBaseDirectory_ = "C:\\Users\\Nusrat\\Desktop\\test_jmetal_exp\\"
-				+"MutationStudy";
+		bps.experimentBaseDirectory_ = "C:\\Users\\mahbub\\Documents\\GitHub\\EnergyPLANDomainKnowledgeEAStep1\\Results\\"
+				+"MutationStudyNSGAII";
 
 		boolean notch;
-		bps.generateScripts(rows, columns, problems, prefix, notch = true);
+		bps.generateScripts(rows, columns, problems, prefix, notch = false);
 	}
 
 }

@@ -520,16 +520,16 @@ public class LatexTable {
 		LatexTable lt=new LatexTable();
 		
 		
-		  lt.experimentName_  = "MutationStudy" ;
+		  lt.experimentName_  = "MutationStudyNSGAII" ;
 		   lt.algorithmNameList_   = new String[] {
-		      "Polynomial", "ModifiedPolynomial"} ;
+		      "PolynomialMutation", "DKMutation"} ;
 		    lt.problemList_     = new String[] {
-		      "EnergyPLANProblem"} ;
+		      "OptimizeElecEnergy_NSGAII"} ;
 		    lt.indicatorList_   = new String[] {"HV", "Spread", "IGD", "Epsilon", "GD"} ;
 		    
 		    int numberOfAlgorithms = lt.algorithmNameList_.length ;
 
-		    lt.experimentBaseDirectory_ = "C:\\Users\\Nusrat\\Desktop\\test_jmetal_exp\\" +
+		    lt.experimentBaseDirectory_ = "C:\\Users\\mahbub\\Documents\\GitHub\\EnergyPLANDomainKnowledgeEAStep1\\Results\\" +
 		                                   lt.experimentName_;
 		   
 		    try {
