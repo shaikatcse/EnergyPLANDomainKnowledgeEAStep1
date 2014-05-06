@@ -369,10 +369,6 @@ public class RWilcoxonScript {
 		      		      
 		    } catch (IllegalArgumentException ex) {
 		      Logger.getLogger(NSGAIIStudy.class.getName()).log(Level.SEVERE, null, ex);
-		    } catch (IllegalAccessException ex) {
-		      Logger.getLogger(NSGAIIStudy.class.getName()).log(Level.SEVERE, null, ex);
-		    } catch (JMException ex) {
-		      Logger.getLogger(NSGAIIStudy.class.getName()).log(Level.SEVERE, null, ex);
 		    }
 		  } // algorithmSettings
 	  }
@@ -391,10 +387,18 @@ public class RWilcoxonScript {
 		  exp.problemList_     = new String[] {
 		      "OptimizeElecEnergy_NSGAII"} ;
 		  exp.indicatorList_   = new String[] {"HV", "Spread", "IGD", "Epsilon", "GD"} ;
+		  
+		  exp.indicatorMinimize_ = new HashMap<String, Boolean>();
+			exp.indicatorMinimize_.put("HV", false);
+			exp.indicatorMinimize_.put("Epsilon", true);
+			exp.indicatorMinimize_.put("Spread", true);
+			exp.indicatorMinimize_.put("GD", true);
+			exp.indicatorMinimize_.put("IGD", true);
+
 		    
 		    int numberOfAlgorithms = exp.algorithmNameList_.length ;
 
-		    exp.experimentBaseDirectory_ = "C:\\Users\\mahbub\\Documents\\GitHub\\EnergyPLANDomainKnowledgeEAStep1\\Results\\" +
+		    exp.experimentBaseDirectory_ = "C:/Users/mahbub/Documents/GitHub/EnergyPLANDomainKnowledgeEAStep1/Results/" +
 		    		exp.experimentName_;
 		   
 		    try {
