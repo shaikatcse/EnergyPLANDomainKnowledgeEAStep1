@@ -1,18 +1,18 @@
 EnergyPLAN version
 698
 input_RES1_capacity=
-4950
+350
 input_RES2_capacity=
-14050
+19950
 input_RES3_capacity=
-11650
+12850
 input_cap_pp_el=
-11000
+5750
 input_fuel_PP[1]=
-0.26
+0.00
 input_fuel_PP[2]=
-0.39
+0.00
 input_fuel_PP[3]=
-0.65
+0.90
 input_eff_pp_el=
-0.47
+0.55

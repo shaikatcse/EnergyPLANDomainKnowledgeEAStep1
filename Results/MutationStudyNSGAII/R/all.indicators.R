@@ -1,4 +1,4 @@
-postscript("NSGAII.all.indicators.withnotch.eps", horizontal=FALSE, onefile=FALSE, height=8, width=12, pointsize=10)
+postscript("NSGAII.all.indicators.eps", horizontal=FALSE, onefile=FALSE, height=8, width=12, pointsize=10)
 resultDirectory<-"../data/"
 qIndicator <- function(indicator, problem)
 {
@@ -13,7 +13,7 @@ fileDKMutation<-paste(fileDKMutation, indicator, sep="/")
 DKMutation<-scan(fileDKMutation)
 
 algs<-c("PolynomialMutation","DKMutation")
-boxplot(PolynomialMutation,DKMutation,names=algs, notch = TRUE)
+boxplot(PolynomialMutation,DKMutation,names=algs, notch = FALSE)
 titulo <-paste(indicator, problem, sep=":")
 title(main=titulo)
 }
@@ -21,8 +21,6 @@ par(mfrow=c(3,3))
 indicator<-"HV"
 qIndicator(indicator, "OptimizeElecEnergy_NSGAII")
 indicator<-"IGD"
-qIndicator(indicator, "OptimizeElecEnergy_NSGAII")
-indicator<-"Spread"
 qIndicator(indicator, "OptimizeElecEnergy_NSGAII")
 indicator<-"GD"
 qIndicator(indicator, "OptimizeElecEnergy_NSGAII")
