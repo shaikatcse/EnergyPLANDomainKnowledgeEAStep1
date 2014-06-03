@@ -35,8 +35,8 @@ public class OPtimizeEnergyPLANAalborgMain {
 			SecurityException, IOException, ClassNotFoundException {
 
 		logger_ = Configuration.logger_;
-		//fileHandler_ = new FileHandler("NSGAII_main.log");
-		fileHandler_ = new FileHandler("SPEA2.log"); 
+		fileHandler_ = new FileHandler("NSGAII_main.log");
+		//fileHandler_ = new FileHandler("SPEA2.log"); 
 		logger_.addHandler(fileHandler_);
 
 		Problem problem; // The problem to solve
@@ -54,7 +54,7 @@ public class OPtimizeEnergyPLANAalborgMain {
 		//seed for spea2
 		//long seed[]={102354,986587,456987,159753, 216557,589632,471259,523486,4158963,745896}; 
 		
-		int numberOfRun=2;
+		int numberOfRun=10;
 		for (int i = 0; i < numberOfRun; i++) {
 			
 			
@@ -71,8 +71,8 @@ public class OPtimizeEnergyPLANAalborgMain {
 			
 			
 			// Algorithm parameters
-			algorithm.setInputParameter("populationSize", 2);
-			algorithm.setInputParameter("maxEvaluations", 6);
+			algorithm.setInputParameter("populationSize", 100);
+			algorithm.setInputParameter("maxEvaluations", 15000);
 			//for spea2
 			//algorithm.setInputParameter("archiveSize",100);
 
