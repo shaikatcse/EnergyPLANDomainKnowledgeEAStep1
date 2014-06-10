@@ -39,7 +39,7 @@ public class EnergyPLANProblemAalborg extends Problem {
 	 *            The solution type must "Real", "BinaryReal, and "ArrayReal".
 	 */
 	public EnergyPLANProblemAalborg(String solutionType) {
-		numberOfVariables_ = 7;
+		numberOfVariables_ = 8;
 		numberOfObjectives_ = 3;
 		numberOfConstraints_ = 3;
 		problemName_ = "OptimizeEnergyPLANAalborg";
@@ -71,6 +71,11 @@ public class EnergyPLANProblemAalborg extends Problem {
 		//	capacity of heat storage group 3
 		lowerLimit_[var] = 0.0;
 		upperLimit_[var] = 5.0;
+		
+		//capacity for boiler, its a dummy, the value will be set in evaluation methods
+		//the boiler capacity do not need to be optimize, it is just use here to point the value
+		lowerLimit_[7]=0.0;
+		upperLimit_[7]=10000.0;
 		
 		/*
 		 * for (; var < numberOfVariables_; var++) { // share of coal, oil and
@@ -118,9 +123,11 @@ public class EnergyPLANProblemAalborg extends Problem {
 			col = (Collection<String>) energyplanmMap
 					.get("Maximumboilerheat r");
 			it = col.iterator();
-			double mamimumboilergroup3 = Double.parseDouble(it.next()
+			double maximumBoilerGroup3 = Double.parseDouble(it.next()
 					.toString());
-			modifyModificationFile(mamimumboilergroup3);
+			modifyModificationFile(maximumBoilerGroup3);
+			//set the decision variable according to the maximum boiler capacity
+			solution.getDecisionVariables()[7].setValue(maximumBoilerGroup3);
 			//run EnergyPLAN for 2nd time, after adjust the boiler3 capacity
 			process = Runtime.getRuntime().exec(energyPLANrunCommand);
 			process.waitFor();
