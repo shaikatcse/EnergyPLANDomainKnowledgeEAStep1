@@ -39,8 +39,8 @@ public class EnergyPLANProblemAalborg extends Problem {
 	 *            The solution type must "Real", "BinaryReal, and "ArrayReal".
 	 */
 	public EnergyPLANProblemAalborg(String solutionType) {
-		numberOfVariables_ = 6;
-		numberOfObjectives_ = 2;
+		numberOfVariables_ = 7;
+		numberOfObjectives_ = 3;
 		numberOfConstraints_ = 3;
 		problemName_ = "OptimizeEnergyPLANAalborg";
 
@@ -61,13 +61,17 @@ public class EnergyPLANProblemAalborg extends Problem {
 			upperLimit_[var] = 1000.0;
 		} // for
 
-		for (; var < numberOfVariables_; var++) {
+		for (; var < numberOfVariables_-1; var++) {
 			// capacities of wind (index: 3) , off-shore wind (index: 4) , PV
 			// (index: 5)
 			lowerLimit_[var] = 0.0;
 			upperLimit_[var] = 1500.0;
 		} // for
-
+		
+		//	capacity of heat storage group 3
+		lowerLimit_[var] = 0.0;
+		upperLimit_[var] = 5.0;
+		
 		/*
 		 * for (; var < numberOfVariables_; var++) { // share of coal, oil and
 		 * natural-gas lowerLimit_[var] = 0.0; upperLimit_[var] = 1.0;
@@ -91,6 +95,7 @@ public class EnergyPLANProblemAalborg extends Problem {
 	 *            The solution to evaluate.
 	 * @throws JMException
 	 */
+	@SuppressWarnings("unchecked")
 	public void evaluate(Solution solution) throws JMException {
 
 		writeModificationFile(solution);
@@ -133,10 +138,25 @@ public class EnergyPLANProblemAalborg extends Problem {
 			it = col.iterator();
 			solution.setObjective(1, Double.parseDouble(it.next().toString()));
 			// objective # 3
-		/*	col = (Collection<String>) energyplanmMap
-					.get("Fuel Consumption (corrected)");
+			col = (Collection<String>) energyplanmMap
+					.get("Annualimport");
 			it = col.iterator();
-			solution.setObjective(2, Double.parseDouble(it.next().toString()));*/
+			double annualImport = Double.parseDouble(it.next().toString());
+			col = (Collection<String>) energyplanmMap
+					.get("Annualppelec.");
+			it = col.iterator();
+			annualImport = annualImport+Double.parseDouble(it.next().toString());
+			
+			col = (Collection<String>) energyplanmMap
+					.get("Annualexport");
+			it = col.iterator();
+			double annualExport = Double.parseDouble(it.next().toString());
+			col = (Collection<String>) energyplanmMap
+					.get("Annualelec.demand");
+			it = col.iterator();
+			double annualElecDemand = Double.parseDouble(it.next().toString());
+						
+			solution.setObjective(2, (annualImport+annualExport)/annualElecDemand);
 
 			// check warning
 			col = (Collection<String>) energyplanmMap.get("WARNING");
@@ -223,7 +243,9 @@ public class EnergyPLANProblemAalborg extends Problem {
 		double offShoreWind = solution.getDecisionVariables()[4].getValue();
 		// PV
 		double PV = solution.getDecisionVariables()[5].getValue();
-
+		//heat starage group 3
+		double heatStorageGr3 = solution.getDecisionVariables()[6].getValue();
+		
 		/*
 		 * // PP coal share double PP_coal_share =
 		 * solution.getDecisionVariables()[4].getValue(); // pp oil sahre double
@@ -274,45 +296,52 @@ public class EnergyPLANProblemAalborg extends Problem {
 			str = "input_cap_chp3_el=";
 			bw.write(str);
 			bw.newLine();
-			str = "" + (int) CHPGr3;
+			str = "" + (int) Math.round(CHPGr3);
 			bw.write(str);
 			bw.newLine();
 
 			str = "input_cap_hp3_el=";
 			bw.write(str);
 			bw.newLine();
-			str = "" + (int) HPGr3;
+			str = "" + (int) Math.round(HPGr3);
 			bw.write(str);
 			bw.newLine();
 
 			str = "input_cap_pp_el=";
 			bw.write(str);
 			bw.newLine();
-			str = "" + (int) PP;
+			str = "" + (int) Math.round(PP);
 			bw.write(str);
 			bw.newLine();
 
 			str = "input_RES1_capacity=";
 			bw.write(str);
 			bw.newLine();
-			str = "" + (int) wind;
+			str = "" + (int) Math.round(wind);
 			bw.write(str);
 			bw.newLine();
 
 			str = "input_RES2_capacity=";
 			bw.write(str);
 			bw.newLine();
-			str = "" + (int) offShoreWind;
+			str = "" + (int) Math.round(offShoreWind);
 			bw.write(str);
 			bw.newLine();
 
 			str = "input_RES3_capacity=";
 			bw.write(str);
 			bw.newLine();
-			str = "" + (int) PV;
+			str = "" + (int) Math.round(PV);
 			bw.write(str);
 			bw.newLine();
-
+			
+			str="input_storage_gr3_cap=";
+			bw.write(str);
+			bw.newLine();
+			str = "" +  (double) Math.round(heatStorageGr3*100)/100;
+			bw.write(str);
+			bw.newLine();
+			
 			/*
 			 * str = "input_fuel_PP[1]="; bw.write(str); bw.newLine(); str = ""
 			 * + twoDForm.format(PP_coal_share); bw.write(str); bw.newLine();
@@ -346,7 +375,7 @@ public class EnergyPLANProblemAalborg extends Problem {
 			String str = "input_cap_boiler3_th=";
 			bw.write(str);
 			bw.newLine();
-			str = "" + (int) modification;
+			str = "" + (int) Math.round(modification);
 			bw.write(str);
 			bw.newLine();
 

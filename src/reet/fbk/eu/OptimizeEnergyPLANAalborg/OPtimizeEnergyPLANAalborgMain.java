@@ -72,7 +72,7 @@ public class OPtimizeEnergyPLANAalborgMain {
 			
 			// Algorithm parameters
 			algorithm.setInputParameter("populationSize", 100);
-			algorithm.setInputParameter("maxEvaluations", 15000);
+			algorithm.setInputParameter("maxEvaluations", 20000);
 			//for spea2
 			//algorithm.setInputParameter("archiveSize",100);
 
