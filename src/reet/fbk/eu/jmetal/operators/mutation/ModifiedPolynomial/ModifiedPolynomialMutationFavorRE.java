@@ -37,11 +37,13 @@ public class ModifiedPolynomialMutationFavorRE extends PolynomialMutation {
 	 * decrease and null means do nothing {Off-Shore wind, on-shore wind, Solar,
 	 * PP, coal, oil, ngas}
 	 */
-	private static Boolean favorGenes[] = new Boolean[] { true, true, true,
+	/*This was used for 1st paper
+	 * private static Boolean favorGenes[] = new Boolean[] { true, true, true,
 			null, false, null, true };
-
+	 */
 	// private Double bitFlipMutationProbability_ = null;
 
+	private Boolean  favorGenes[];
 	private static final double ETA_M_DEFAULT_ = 20.0;
 	private final double eta_m_ = ETA_M_DEFAULT_;
 
@@ -57,8 +59,9 @@ public class ModifiedPolynomialMutationFavorRE extends PolynomialMutation {
 	/**
 	 * Constructor Creates a new instance of the Bit Flip mutation operator
 	 */
-	public ModifiedPolynomialMutationFavorRE(HashMap<String, Object> parameters) {
+	public ModifiedPolynomialMutationFavorRE(HashMap<String, Object> parameters, Boolean favorGenes[]) {
 		super(parameters);
+		this.favorGenes = favorGenes;
 		if (parameters.get("probability") != null)
 			mutationProbability_ = (Double) parameters.get("probability");
 		if (parameters.get("distributionIndex") != null) {

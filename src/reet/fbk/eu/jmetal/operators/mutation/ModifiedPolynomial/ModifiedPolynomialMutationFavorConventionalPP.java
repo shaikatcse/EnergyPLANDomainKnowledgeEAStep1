@@ -38,9 +38,11 @@ public class ModifiedPolynomialMutationFavorConventionalPP extends PolynomialMut
 	 * PP, coal, oil, ngas}
 	 */
 
-	private static Boolean favorGenes[] = new Boolean[] { false, false, false,
-			null, true, null, false };
+	/*this was used for 1st paper
+	 * private static Boolean favorGenes[] = new Boolean[] { false, false, false,
+			null, true, null, false };*/
 
+	private Boolean favorGenes[];
 	//private Double bitFlipMutationProbability_ = null;
 	private static final double ETA_M_DEFAULT_ = 20.0;
 	private final double eta_m_ = ETA_M_DEFAULT_;
@@ -57,18 +59,20 @@ public class ModifiedPolynomialMutationFavorConventionalPP extends PolynomialMut
 	 * Constructor Creates a new instance of the Bit Flip mutation operator
 	 */
 	public ModifiedPolynomialMutationFavorConventionalPP(
-			HashMap<String, Object> parameters) {
+			HashMap<String, Object> parameters, Boolean favorGenes[]) {
 		super(parameters);
 		/*
 		 * if (parameters.get("bitFlipMutationProbability") != null)
 		 * bitFlipMutationProbability_ = (Double) parameters
 		 * .get("bitFlipMutationProbability");
 		 */
+		this.favorGenes = favorGenes;
 		
 		if (parameters.get("probability") != null)
 	  		mutationProbability_ = (Double) parameters.get("probability") ;  		
 	  	if (parameters.get("distributionIndex") != null)
-	  		distributionIndex_ = (Double) parameters.get("distributionIndex") ;  		
+	  		distributionIndex_ = (Double) parameters.get("distributionIndex") ;  
+	  	
 	}
 
 	public static void main(String args[]) {

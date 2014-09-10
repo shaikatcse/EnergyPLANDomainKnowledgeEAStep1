@@ -70,6 +70,8 @@ public class GeneralModifiedPolynomialMutationForRes extends Mutation {
 	private int maxGeneration;
 	Random rm;
 
+	private Boolean favorGenesForRE[], favorGenesForConventioanlPP[];
+	
 	/*
 	 * 
 	 */
@@ -80,10 +82,14 @@ public class GeneralModifiedPolynomialMutationForRes extends Mutation {
 			mutationProbability_ = (Double) parameters.get("probability");
 		if (parameters.get("maximum generation") != null)
 			maxGeneration = (int) parameters.get("maximum generation");
+		if(parameters.get("favorGenesforRE") != null && parameters.get("favorGenesForConventioanlPP") != null ){
+			favorGenesForRE=(Boolean []) parameters.get("favorGenesforRE");
+			favorGenesForConventioanlPP = (Boolean []) parameters.get("favorGenesForConventioanlPP");
+		}
 		polynomialMutation = new PolynomialMutation(parameters);
-		modifiedPolynomialMutationFavorRE = new ModifiedPolynomialMutationFavorRE(parameters);
+		modifiedPolynomialMutationFavorRE = new ModifiedPolynomialMutationFavorRE(parameters, favorGenesForRE );
 		modifiedPolynomialMutationFavorConventionalPP = new ModifiedPolynomialMutationFavorConventionalPP(
-				parameters);
+				parameters, favorGenesForConventioanlPP);
 
 		//rm = new Random();
 
