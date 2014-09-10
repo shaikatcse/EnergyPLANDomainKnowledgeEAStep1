@@ -1,0 +1,1 @@
+Three objective results with storage capacity

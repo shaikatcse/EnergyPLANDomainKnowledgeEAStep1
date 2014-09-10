@@ -12,3 +12,5 @@ max evaluation: 15000
 Crossover: SBXCrossover, probability: 0.9, distribution index: 10
 Mutation: PolynomialMutation, Probability: 1.0/problem.getNumberOfVariables(), distribution index: 10
 selection: binary tournament
+
+This results are generated where PP capccity is determine by optimizer.
