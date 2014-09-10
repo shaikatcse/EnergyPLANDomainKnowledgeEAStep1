@@ -73,7 +73,7 @@ public class EnergyPLANProblemAalborg extends Problem {
 		upperLimit_[var] = 5.0;
 		
 		//capacity for boiler, its a dummy, the value will be set in evaluation methods
-		//the boiler capacity do not need to be optimize, it is just use here to point the value
+		//the boiler capacity do not need to be optimize, it is just use here to print the value
 		lowerLimit_[7]=0.0;
 		upperLimit_[7]=10000.0;
 		

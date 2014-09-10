@@ -56,7 +56,6 @@ public class EnergyPLANProblemAalborg2Objectives extends Problem {
 		// index - 2 -> PP
 
 		for (var = 0; var < 2; var++) {
-			// capacities of wind, off-shore wind, PV and condencing power unit
 			lowerLimit_[var] = 0.0;
 			upperLimit_[var] = 1000.0;
 		} // for

@@ -22,6 +22,7 @@ import jmetal.util.PseudoRandom;
 import jmetal.util.RandomGenerator;
 import jmetal.operators.mutation.MutationFactory;
 import reet.fbk.eu.OptimizeEnergyPLANAalborg.problem.EnergyPLANProblemAalborg;
+import reet.fbk.eu.OptimizeEnergyPLANAalborg.problem.EnergyPLANProblemAalborg2Objectives;
 import reet.fbk.eu.jmetal.metaheuristics.nsgaII.NSGAIIForDK;
 //import reet.fbk.eu.jmetal.operators.mutation.MutationFactory;
 
@@ -67,7 +68,11 @@ public class OPtimizeEnergyPLANAalborgMain {
 
 			indicators = null;
 
-			problem = new EnergyPLANProblemAalborg("Real");
+			//problems for 2 objectives
+			problem=new EnergyPLANProblemAalborg2Objectives("Real");
+			
+			//problem for 3 objectives
+			//problem = new EnergyPLANProblemAalborg("Real");
 
 			algorithm = new NSGAII(problem);
 			// algorithm = new SPEA2ForDK(problem, seed[i],
@@ -78,8 +83,8 @@ public class OPtimizeEnergyPLANAalborgMain {
 			// ;
 
 			// Algorithm parameters
-			algorithm.setInputParameter("populationSize", 4);
-			algorithm.setInputParameter("maxEvaluations", 12);
+			algorithm.setInputParameter("populationSize", 100);
+			algorithm.setInputParameter("maxEvaluations", 15000);
 			// for spea2
 			// algorithm.setInputParameter("archiveSize",100);
 
@@ -163,9 +168,11 @@ public class OPtimizeEnergyPLANAalborgMain {
 			// Result messages
 			logger_.info("Total execution time: " + estimatedTime + "ms");
 			logger_.info("Variables values have been writen to file VAR");
-			population.printVariablesToFile("AalborgResults\\VAR" + i);
+			//population.printVariablesToFile("AalborgNewResults\\VAR" + i);
+			population.printFeasibleVAR("AalborgNewResults\\VAR" + i);
 			logger_.info("Objectives values have been writen to file FUN");
-			population.printObjectivesToFile("AalborgResults\\FUN" + i);
+			//population.printObjectivesToFile("AalborgNewResults\\FUN" + i);
+			population.printFeasibleFUN("AalborgNewResults\\FUN" + i);
 		}
 	}
 }
