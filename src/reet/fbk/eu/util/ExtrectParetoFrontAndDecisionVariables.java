@@ -121,7 +121,7 @@ public class ExtrectParetoFrontAndDecisionVariables {
 			br.close();
 			dcbr.close();
 		} catch (FileNotFoundException e3) {
-			System.err.println("The file " + FUNFileName_
+			System.err.println("The file " + FUNFileName_ + " or " + VARFileName_  
 					+ " has not been found in your file system");
 		} catch (IOException e3) {
 			System.err.println("The file " + FUNFileName_

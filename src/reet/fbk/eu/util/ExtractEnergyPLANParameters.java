@@ -27,7 +27,7 @@ public class ExtractEnergyPLANParameters {
 	// static MultiMap energyplanmMap;
 
 	static String inputs[]={"CHP3_Cap","HP3_Cap", "PP_Cap", "OnShoreWind_Cap","OffShoreWind_Cap","PV_Cap", "Boiler_Cap"};
-	static String outputs[]={"Annualchp3heat", "Annualhp3heat", "Annualppelec.", "Annualwindpower", "AnnualOffshorewind",
+	static String outputs[]={"Annualchp3heat", "Annualchpelec.", "Annualhp3heat", "Annualppelec.", "Annualwindpower", "AnnualOffshorewind",
 		"AnnualPV", "Annualboilerheat r", "Annualimport", "Annualexport", "CO2-emission (corrected)", "TOTAL ANNUAL COSTS"
 	};
 	
@@ -72,11 +72,11 @@ public class ExtractEnergyPLANParameters {
 			BufferedWriter bw = new BufferedWriter(fw);
 
 			bw.write("CHP3_C HP3_C PP_Cap Wind_C OffShoreWind_C PV_C Boiler3_C "
-					+ "Anl_CHP3_heat_P Anl_HP3_heat_P Anl_PP_P Anl_Wind_P Anl_OffShoreWind_P "
+					+ "Anl_CHP3_heat_P Anl_CHP_elec_P Anl_HP3_heat_P Anl_PP_P Anl_Wind_P Anl_OffShoreWind_P "
 					+ "Anl_PV_P Anl_Boiler_P Import Export CO2Emission Annual_Cost");
 			bw.newLine();
 			bw.write("(MW) (MW) (MW) (MW) (MW) (MW) (MJ) "
-					+ "(TWh) (TWh) (TWh) (TWh) (TWh) "
+					+ "(TWh) (TWh) (TWh) (TWh) (TWh) (TWh) "
 					+ "(TWh) (TWh) (TWh) (TWh) (Mton) (DKK)");
 			bw.newLine();
 			bw.close();
@@ -226,7 +226,7 @@ public class ExtractEnergyPLANParameters {
 			EnergyPLANFileParse epfp = new EnergyPLANFileParse(".\\result.txt");
 			energyplanmMap = epfp.parseFile();
 
-			Iterator it;
+			/*Iterator it;
 			Collection<String> col;
 
 			// extracting maximum Boiler configuration (group # 3)
@@ -242,7 +242,7 @@ public class ExtractEnergyPLANParameters {
 			process.waitFor();
 			process.destroy();
 			epfp = new EnergyPLANFileParse(".\\result.txt");
-			energyplanmMap = epfp.parseFile();
+			energyplanmMap = epfp.parseFile();*/
 
 			// put inputs into energyPLANMap
 			StringTokenizer st = new StringTokenizer(individual);
@@ -253,7 +253,7 @@ public class ExtractEnergyPLANParameters {
 				energyplanmMap.put(inputs[i], tmp);
 				i++;
 			}
-			energyplanmMap.put(inputs[i], (int)maximumBoilerGroup3);
+			/*energyplanmMap.put(inputs[i], (int)maximumBoilerGroup3);
 
 			// check warning
 			col = (Collection<String>) energyplanmMap.get("WARNING");
@@ -261,7 +261,7 @@ public class ExtractEnergyPLANParameters {
 				/*
 				 * System.out.println("No warning"); } else {
 				 */
-				@SuppressWarnings("rawtypes")
+			/*	@SuppressWarnings("rawtypes")
 				Iterator it3 = col.iterator();
 				String warning = it3.next().toString();
 				if (!warning.equals("PP too small. Critical import is needed")
@@ -270,7 +270,7 @@ public class ExtractEnergyPLANParameters {
 					throw new IOException("warning!!" + warning);
 				// System.out.println("Warning " + it3.next().toString());
 
-			}
+			}*/
 		} catch (IOException e) {
 			System.out.println("Energyplan.exe has some problem");
 			e.printStackTrace();
@@ -299,6 +299,9 @@ public class ExtractEnergyPLANParameters {
 		double offShoreWind = Double.parseDouble(st.nextElement().toString());
 		// PV
 		double PV = Double.parseDouble(st.nextElement().toString());
+		
+		// boiler
+		double boiler = Double.parseDouble(st.nextElement().toString());
 		// heat starage group 3
 		// double heatStorageGr3 =
 		// solution.getDecisionVariables()[6].getValue();
@@ -325,50 +328,59 @@ public class ExtractEnergyPLANParameters {
 			str = "input_cap_chp3_el=";
 			bw.write(str);
 			bw.newLine();
-			// str = "" + (int) Math.round(CHPGr3);
-			str = "" + (int) CHPGr3;
+			str = "" + (int) Math.round(CHPGr3);
+			//str = "" + (int) CHPGr3;
 			bw.write(str);
 			bw.newLine();
 
 			str = "input_cap_hp3_el=";
 			bw.write(str);
 			bw.newLine();
-			// str = "" + (int) Math.round(HPGr3);
-			str = "" + (int) HPGr3;
+			str = "" + (int) Math.round(HPGr3);
+			//str = "" + (int) HPGr3;
 			bw.write(str);
 			bw.newLine();
 
 			str = "input_cap_pp_el=";
 			bw.write(str);
 			bw.newLine();
-			// str = "" + (int) Math.round(PP);
-			str = "" + (int) PP;
+			str = "" + (int) Math.round(PP);
+			//str = "" + (int) PP;
 			bw.write(str);
 			bw.newLine();
 
 			str = "input_RES1_capacity=";
 			bw.write(str);
 			bw.newLine();
-			// str = "" + (int) Math.round(wind);
-			str = "" + (int) wind;
+			str = "" + (int) Math.round(wind);
+			//str = "" + (int) wind;
 			bw.write(str);
 			bw.newLine();
 
 			str = "input_RES2_capacity=";
 			bw.write(str);
 			bw.newLine();
-			// str = "" + (int) Math.round(offShoreWind);
-			str = "" + (int) offShoreWind;
+			str = "" + (int) Math.round(offShoreWind);
+			//str = "" + (int) offShoreWind;
 			bw.write(str);
 			bw.newLine();
 
 			str = "input_RES3_capacity=";
 			bw.write(str);
 			bw.newLine();
-			// str = "" + (int) Math.round(PV);
-			str = "" + (int) PV;
+			str = "" + (int) Math.round(PV);
+			//str = "" + (int) PV;
 			bw.write(str);
 			bw.newLine();
+			
+			str = "input_cap_boiler3_th=";
+			bw.write(str);
+			bw.newLine();
+			str = "" + (int) Math.round(boiler);
+			//str = "" + (int) modification;
+			bw.write(str);
+			bw.newLine();
+			
 			bw.close();
 			// file.delete();
 		} catch (IOException e) {
