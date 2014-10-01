@@ -74,7 +74,7 @@ public class OPtimizeEnergyPLANAalborgDKMain {
 			//problem for 3 objectives
 			//problem = new EnergyPLANProblemAalborg("Real");
 
-			algorithm = new NSGAII(problem);
+			algorithm = new NSGAIIForDK(problem);
 			// algorithm = new SPEA2ForDK(problem, seed[i],
 			// "SPEA2_SBX_PolynomialMutation");
 
@@ -103,7 +103,7 @@ public class OPtimizeEnergyPLANAalborgDKMain {
 			Boolean favorGenesforConventionalPP[] ={false, false, null, false, false, false, null};
 			parameters.put("favorGenesforRE", favorGenesforRE);
 			parameters.put("favorGenesForConventioanlPP", favorGenesforConventionalPP);
-			
+			parameters.put("maximum generation", (int) algorithm.getInputParameter("maxEvaluations")/(int) algorithm.getInputParameter("populationSize")-1);
 			
 			mutation = MutationFactory.getMutationOperator(
 					"GeneralModifiedPolynomialMutationForRes", parameters);
@@ -176,10 +176,10 @@ public class OPtimizeEnergyPLANAalborgDKMain {
 			logger_.info("Total execution time: " + estimatedTime + "ms");
 			logger_.info("Variables values have been writen to file VAR");
 			//population.printVariablesToFile("AalborgNewResults\\VAR" + i);
-			population.printFeasibleVAR("AalborgResultsDK\\VAR" + i);
+			population.printFeasibleVAR("AalborgResults\\VAR" + i);
 			logger_.info("Objectives values have been writen to file FUN");
 			//population.printObjectivesToFile("AalborgNewResults\\FUN" + i);
-			population.printFeasibleFUN("AalborgResultsDK\\FUN" + i);
+			population.printFeasibleFUN("AalborgResults\\FUN" + i);
 		}
 	}
 }
