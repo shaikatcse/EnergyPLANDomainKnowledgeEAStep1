@@ -78,19 +78,29 @@ public class GeneralModifiedPolynomialMutationForRes extends Mutation {
 	public GeneralModifiedPolynomialMutationForRes(
 			HashMap<String, Object> parameters) {
 		super(parameters);
-		if (parameters.get("probability") != null)
+		try{
+			if (parameters.get("probability") != null)
+		
 			mutationProbability_ = (Double) parameters.get("probability");
 		if (parameters.get("maximum generation") != null)
 			maxGeneration = (int) parameters.get("maximum generation");
+		else
+			throw new JMException("maximum generation parameter missing");
 		if(parameters.get("favorGenesforRE") != null && parameters.get("favorGenesForConventioanlPP") != null ){
 			favorGenesForRE=(Boolean []) parameters.get("favorGenesforRE");
 			favorGenesForConventioanlPP = (Boolean []) parameters.get("favorGenesForConventioanlPP");
-		}
+		}else
+			throw new JMException("favorGenesforRE or favorGenesForConventioanlPP parameter missing");
+		
 		polynomialMutation = new PolynomialMutation(parameters);
 		modifiedPolynomialMutationFavorRE = new ModifiedPolynomialMutationFavorRE(parameters, favorGenesForRE );
 		modifiedPolynomialMutationFavorConventionalPP = new ModifiedPolynomialMutationFavorConventionalPP(
 				parameters, favorGenesForConventioanlPP);
-
+		}catch(JMException e){
+			System.out.println("parameter missing");
+			System.exit(-1);
+		}
+		
 		//rm = new Random();
 
 	} // BitFlipMutation
@@ -112,6 +122,8 @@ public class GeneralModifiedPolynomialMutationForRes extends Mutation {
 			
 			if (this.getParameter("current generation") != null)
 				currentGeneration = (int) this.getParameter("current generation");
+			else
+				throw new JMException("current generation parameter missing");
 			
 			double ModifiedMutationprobability = (1- currentGeneration/(double)maxGeneration);
 			// int random = rm.nextInt(100);
