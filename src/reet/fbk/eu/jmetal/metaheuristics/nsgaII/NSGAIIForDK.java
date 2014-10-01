@@ -49,7 +49,7 @@ import jmetal.util.comparators.CrowdingComparator;
 
 public class NSGAIIForDK extends NSGAII {
 
-	RepairSolution repairSolution;
+	//RepairSolution repairSolution;
 
 	File fileHV, fileGD, fileIGD, fileSpread, fileEpsilon, fileGenSpread;
 	FileWriter fwHV, fwGD, fwIGD, fwSpread, fwEpsilon, fwGenSpread;;
@@ -64,13 +64,13 @@ public class NSGAIIForDK extends NSGAII {
 
 	public NSGAIIForDK(Problem problem) {
 		super(problem);
-		repairSolution = new RepairSolution();
+		//repairSolution = new RepairSolution();
 
 	} // NSGAII
 
 	public NSGAIIForDK(Problem problem, long seed, String folderName) {
 		super(problem);
-		repairSolution = new RepairSolution();
+		//repairSolution = new RepairSolution();
 		if(!(new File(folderName+"\\HV").exists()))
 			new File(folderName+"\\HV").mkdirs();
 		if(!(new File(folderName+"\\GD").exists()))
@@ -171,7 +171,7 @@ public class NSGAIIForDK extends NSGAII {
 		for (int i = 0; i < populationSize; i++) {
 			newSolution = new Solution(problem_);
 
-			repairSolution.doRepair(newSolution);
+			//repairSolution.doRepair(newSolution);
 
 			problem_.evaluate(newSolution);
 			problem_.evaluateConstraints(newSolution);
@@ -217,15 +217,15 @@ public class NSGAIIForDK extends NSGAII {
 					Solution[] offSpring = (Solution[]) crossoverOperator
 							.execute(parents);
 
-					repairSolution.doRepair(offSpring[0]);
-					repairSolution.doRepair(offSpring[1]);
+					//repairSolution.doRepair(offSpring[0]);
+				//	repairSolution.doRepair(offSpring[1]);
 
 					mutationOperator.setParameter("current generation", (int) evaluations / populationSize);
 					mutationOperator.execute(offSpring[0]);
 					mutationOperator.execute(offSpring[1]);
 
-					repairSolution.doRepair(offSpring[0]);
-					repairSolution.doRepair(offSpring[1]);
+					//repairSolution.doRepair(offSpring[0]);
+					//repairSolution.doRepair(offSpring[1]);
 
 					problem_.evaluate(offSpring[0]);
 					problem_.evaluateConstraints(offSpring[0]);
