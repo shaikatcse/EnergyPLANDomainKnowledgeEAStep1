@@ -100,8 +100,8 @@ public class OPtimizeEnergyPLANCivisCeisMain {
 			parameters.put("distributionIndex", 10.0);
 			parameters.put("maximum generation", (int) algorithm.getInputParameter("maxEvaluations")/(int) algorithm.getInputParameter("populationSize")-1);
 			
-			boolean favorGenesforRE[] ={true, true};
-			boolean favorGenesforConventionalPP[] ={false, false};
+			Boolean favorGenesforRE[] ={true, true};
+			Boolean favorGenesforConventionalPP[] ={false, false};
 			parameters.put("favorGenesforRE", favorGenesforRE);
 			parameters.put("favorGenesForConventioanlPP", favorGenesforConventionalPP);
 			

@@ -67,7 +67,7 @@ public class EnergyPLANProblemCivisCeis extends Problem {
 		
 		//HP: 0 to 42
 		lowerLimit_[1] = 0.0;
-		upperLimit_[1] = 33.0;
+		upperLimit_[1] = 34.78;
 		
 
 		if (solutionType.compareTo("Real") == 0)
@@ -131,8 +131,70 @@ public class EnergyPLANProblemCivisCeis extends Problem {
 			it = col.iterator();
 			String totalAnnualCost = it.next().toString();
 			String extractCost = totalAnnualCost.substring(0, totalAnnualCost.indexOf("1000") );
+			double extractCostfromEnergyPLAN = Double.parseDouble(extractCost);
 			
-			solution.setObjective(1, Double.parseDouble(extractCost));
+			//calculate additional cost
+			//extrect annual hydro production
+			col = (Collection<String>) energyplanmMap
+					.get("AnnualHydropower");
+			it = col.iterator();
+			double hydroPowerProduction = Double.parseDouble(it.next().toString());
+			//extract anual PV production
+			col = (Collection<String>) energyplanmMap
+					.get("AnnualPV");
+			it = col.iterator();
+			double PVproduction = Double.parseDouble(it.next().toString());
+			
+			//extract annual import
+			col = (Collection<String>) energyplanmMap
+					.get("Annualimport");
+			it = col.iterator();
+			double Import = Double.parseDouble(it.next().toString());
+			
+			//extract annual export
+			col = (Collection<String>) energyplanmMap
+					.get("Annualexport");
+			it = col.iterator();
+			double Export = Double.parseDouble(it.next().toString());
+			
+			//calculate additional cost
+			//(hydroProduction+PVproduction+Import-Export)*average additional cost (85.74)
+			double additionalCost = Math.round((hydroPowerProduction+PVproduction+Import-Export)*85.74);
+			
+			
+			/*
+			 * now, calculte how many boiler need to diassamble 
+			 */
+			double OilBoilerHeatdemand = 8.14, nGasBoilerHeatDemand=4.44, biomassBoilerHeatDemand = 22.20;
+			// total heat demand=Oil boiler + Ngas boiler + Biomass boiler
+			double totalHeatDemand = OilBoilerHeatdemand + nGasBoilerHeatDemand + biomassBoilerHeatDemand;
+			// HP
+			double HP = solution.getDecisionVariables()[1].getValue();
+
+			double reducedHeatdemand = totalHeatDemand - HP;
+			double numberOfBoilerforNewHeatDemand = Math.round(0.00312745 * reducedHeatdemand*Math.pow(10, 5)*1.5);
+			
+			//reduced investment cost = number of boiler to meet new heat demand after introducing HP* boiler cost + current PV capccity * pv cost + Hydro * hydro cost  
+			//see anual investment cost formual in EnergyPLAN manual 
+			double interest =0.03;
+			int boilerLifeTime=20;
+			int PVLifeTime = 25;
+			int HydroLifeTime=20;
+			double reductionInvestmentCost = (numberOfBoilerforNewHeatDemand * 0.625 *interest)/(1-Math.pow((1+interest),-boilerLifeTime)) + (5328 * 3.978 * interest)/(1-Math.pow((1+interest),-PVLifeTime)) +
+					(4000*3.51*interest)/(1-Math.pow((1+interest), -HydroLifeTime)) ;
+			
+			//extract 
+			col = (Collection<String>) energyplanmMap
+					.get("Annual Investment costs");
+			it = col.iterator();
+			String invest= it.next().toString();
+			String investmentCostStr = invest.substring(0, invest.indexOf("1000") );
+			double investmentCost = Double.parseDouble(investmentCostStr);
+			double realInvestmentCost = investmentCost-reductionInvestmentCost;
+			
+			double actualAnnualCost = extractCostfromEnergyPLAN - investmentCost + realInvestmentCost +additionalCost;
+			
+			solution.setObjective(1, actualAnnualCost);
 			
 		
 			// check warning
@@ -265,12 +327,16 @@ public class EnergyPLANProblemCivisCeis extends Problem {
 			bw.write(str);
 			bw.newLine();
 			
-			double totalHeatDemand = 7.65 + 4.17 + 20.87;
 			
-			if(HP<7.65){
+		
+			double OilBoilerHeatdemand = 8.14, nGasBoilerHeatDemand=4.44, biomassBoilerHeatDemand = 22.20;
+			// total heat demand=Oil boiler + Ngas boiler + Biomass boiler
+			double totalHeatDemand = OilBoilerHeatdemand + nGasBoilerHeatDemand + biomassBoilerHeatDemand;
+			
+			if(HP<=OilBoilerHeatdemand){
 				//reduce Oil boiler
-				double oilBoilerHeatDemand = 7.65 - HP;
-				double oilBoilerFuelConsumption = oilBoilerHeatDemand/0.8; //0.8 is the efficiency
+				double reducedOilBoilerHeatDemand = 8.14 - HP;
+				double oilBoilerFuelConsumption = reducedOilBoilerHeatDemand/0.8; //0.8 is the efficiency
 				
 				str = "input_fuel_Households[2]=";
 				bw.write(str);
@@ -279,10 +345,10 @@ public class EnergyPLANProblemCivisCeis extends Problem {
 				bw.write(str);
 				bw.newLine();
 				
-			}else if(HP>7.65 && HP<11.82){
+			}else if(HP>OilBoilerHeatdemand && HP<=OilBoilerHeatdemand+nGasBoilerHeatDemand){
 				//reduce Ngas boiler
-				double nGasBoilerHeatDemand = 11.82 - HP;
-				double nGasBoilerFuelConsumption = nGasBoilerHeatDemand/0.9; //0.9 is the efficiency
+				double reducedNGasBoilerHeatDemand = OilBoilerHeatdemand+nGasBoilerHeatDemand - HP;
+				double nGasBoilerFuelConsumption = reducedNGasBoilerHeatDemand/0.9; //0.9 is the efficiency
 				
 				//make oil boiler 0
 				str = "input_fuel_Households[2]=";
@@ -302,8 +368,8 @@ public class EnergyPLANProblemCivisCeis extends Problem {
 			}else{
 				//reduce Biomass boiler
 				
-				double biomassBoilerHeatDemand = totalHeatDemand - HP;
-				double biomassBoilerFuelConsumption = biomassBoilerHeatDemand/0.7; //0.7 is the efficiency
+				double reducedBiomassBoilerHeatDemand = totalHeatDemand - HP;
+				double biomassBoilerFuelConsumption = reducedBiomassBoilerHeatDemand/0.7; //0.7 is the efficiency
 				
 				//make oil boiler 0
 				str = "input_fuel_Households[2]=";
@@ -375,24 +441,5 @@ public class EnergyPLANProblemCivisCeis extends Problem {
 
 	}
 
-	void modifyModificationFile(double modification) throws JMException {
-		// now only modify boiler in group # 3
-		try {
-
-			File file = new File("modification.txt");
-			FileWriter fw = new FileWriter(file.getAbsoluteFile(), true);
-			BufferedWriter bw = new BufferedWriter(fw);
-
-			String str = "input_cap_boiler3_th=";
-			bw.write(str);
-			bw.newLine();
-			str = "" + (int) Math.round(modification);
-			bw.write(str);
-			bw.newLine();
-
-			bw.close();
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-	}
+	
 }
