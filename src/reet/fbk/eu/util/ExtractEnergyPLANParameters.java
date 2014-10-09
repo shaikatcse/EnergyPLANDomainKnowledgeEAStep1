@@ -249,7 +249,7 @@ public class ExtractEnergyPLANParameters {
 		
 			int i=0;
 			while(st.hasMoreTokens()){
-				String tmp = ""+(int)Double.parseDouble(st.nextToken());
+				String tmp = ""+(int)Math.round(Double.parseDouble(st.nextToken()));
 				energyplanmMap.put(inputs[i], tmp);
 				i++;
 			}
