@@ -84,7 +84,7 @@ public class OPtimizeEnergyPLANCivisCeisMain {
 
 			// Algorithm parameters
 			algorithm.setInputParameter("populationSize", 100);
-			algorithm.setInputParameter("maxEvaluations", 1000);
+			algorithm.setInputParameter("maxEvaluations", 7000);
 			// for spea2
 			// algorithm.setInputParameter("archiveSize",100);
 
