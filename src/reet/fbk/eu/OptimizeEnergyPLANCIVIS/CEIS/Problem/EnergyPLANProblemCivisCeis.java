@@ -130,13 +130,13 @@ public class EnergyPLANProblemCivisCeis extends Problem {
 			col = (Collection<String>) energyplanmMap.get("Total variable costs");
 			it = col.iterator();
 			String totalVariableCostStr = it.next().toString();
-			totalVariableCostStr = totalVariableCostStr.substring(0, totalVariableCostStr.indexOf("1000") );
+			totalVariableCostStr = totalVariableCostStr.substring(0, totalVariableCostStr.lastIndexOf("1000") );
 			double totalVariableCost = Double.parseDouble(totalVariableCostStr);
 			
 			col = (Collection<String>) energyplanmMap.get("Fixed operation costs");
 			it = col.iterator();
 			String fixedOperationalCostStr = it.next().toString();
-			fixedOperationalCostStr = fixedOperationalCostStr.substring(0, fixedOperationalCostStr.indexOf("1000") );
+			fixedOperationalCostStr = fixedOperationalCostStr.substring(0, fixedOperationalCostStr.lastIndexOf("1000") );
 			double fixedOperationalCost = Double.parseDouble(fixedOperationalCostStr);
 			
 						
@@ -202,7 +202,7 @@ public class EnergyPLANProblemCivisCeis extends Problem {
 					.get("Annual Investment costs");
 			it = col.iterator();
 			String invest= it.next().toString();
-			String investmentCostStr = invest.substring(0, invest.indexOf("1000") );
+			String investmentCostStr = invest.substring(0, invest.lastIndexOf("1000") );
 			double investmentCost = Double.parseDouble(investmentCostStr);
 			double realInvestmentCost = investmentCost-reductionInvestmentCost +geoBoreHoleInvestmentCost;
 			
