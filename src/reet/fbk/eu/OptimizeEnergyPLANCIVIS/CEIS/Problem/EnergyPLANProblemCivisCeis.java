@@ -179,13 +179,13 @@ public class EnergyPLANProblemCivisCeis extends Problem {
 			double HP = solution.getDecisionVariables()[1].getValue();
 
 			double reducedHeatdemand = totalHeatDemand - HP;
-			double numberOfBoilerforNewHeatDemand = Math.round(0.00312745 * reducedHeatdemand*Math.pow(10, 5)*1.5);
+			double numberOfBoilerforNewHeatDemand = Math.round(0.00312745 * reducedHeatdemand*Math.pow(10, 6)*1.5);
 			
 			double interest =0.04;
 			
 			double COP=3.2;
 			int geoBoreHoleLifeTime=100;
-			double numberOfHeatPump =  Math.round(0.00312745 * HP *Math.pow(10, 5)/ COP );
+			double numberOfHeatPump =  Math.round(0.000312745 * HP *Math.pow(10, 6)/ COP );
 			double geoBoreHoleInvestmentCost = (numberOfHeatPump * 3.2 * interest)/(1-Math.pow((1+interest),-geoBoreHoleLifeTime));
 			
 			//reduced investment cost = number of boiler to meet new heat demand after introducing HP* boiler cost + current PV capccity * pv cost + Hydro * hydro cost  

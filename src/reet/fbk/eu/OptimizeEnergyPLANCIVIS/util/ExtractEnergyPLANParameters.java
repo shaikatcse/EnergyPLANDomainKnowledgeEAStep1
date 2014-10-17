@@ -65,7 +65,7 @@ public class ExtractEnergyPLANParameters {
 
 			COP = 3.2;
 
-			maxHeatDemandInScaleOf1 = 0.00312745;
+			maxHeatDemandInScaleOf1 = 0.000312745;
 
 		} else if (siteName.equals("CEDIS")) {
 			currentPVCapacity = 5566;
@@ -95,8 +95,8 @@ public class ExtractEnergyPLANParameters {
 		MultiMap energyplanmMap = null;
 		// TODO Auto-generated method stub
 		ExtractEnergyPLANParameters ob = new ExtractEnergyPLANParameters(
-				args[0]);
-		FileInputStream fos = new FileInputStream(args[1]);
+				args[1]);
+		FileInputStream fos = new FileInputStream(args[0]);
 		InputStreamReader isr = new InputStreamReader(fos);
 		BufferedReader br = new BufferedReader(isr);
 
@@ -259,15 +259,15 @@ public class ExtractEnergyPLANParameters {
 			StringTokenizer st = new StringTokenizer(individual);
 			st.nextToken();
 			double HP = Double.parseDouble(st.nextToken().toString());
-			;
+			
 
 			double reducedHeatdemand = totalHeatDemand - HP;
 			double numberOfBoilerforNewHeatDemand = Math
 					.round(maxHeatDemandInScaleOf1 * reducedHeatdemand
-							* Math.pow(10, 5) * 1.5);
+							* Math.pow(10, 6) * 1.5);
 
 			double numberOfHeatPump = Math.round(maxHeatDemandInScaleOf1 * HP
-					* Math.pow(10, 5) / COP);
+					* Math.pow(10, 6) / COP);
 			double geoBoreHoleInvestmentCost = (numberOfHeatPump * 3.2 * interest)
 					/ (1 - Math.pow((1 + interest), -geoBoreHoleLifeTime));
 
