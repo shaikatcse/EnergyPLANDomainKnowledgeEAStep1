@@ -91,7 +91,7 @@ public class EnergyPLANProblemCivisCeis extends Problem {
 
 		writeModificationFile(solution);
 		String energyPLANrunCommand = ".\\EnergyPLAN_SEP_2013\\EnergyPLAN.exe -i "
-				+ "\".\\src\\reet\\fbk\\eu\\OptimizeEnergyPLANCIVIS\\CEIS\\problem\\data\\Civis_CEIS.txt\" "
+				+ "\".\\src\\reet\\fbk\\eu\\OptimizeEnergyPLANCIVIS\\CEIS\\data\\Civis_CEIS.txt\" "
 				+ "-m \"modification.txt\" -ascii \"result.txt\" ";
 		try {
 			// Process process = new
