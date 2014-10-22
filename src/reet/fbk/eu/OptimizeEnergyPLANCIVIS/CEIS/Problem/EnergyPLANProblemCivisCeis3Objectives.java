@@ -46,6 +46,9 @@ public class EnergyPLANProblemCivisCeis3Objectives extends Problem {
 	public static final int currentHydroCapcity = 4000;
 	public static final int currentNumberOfBoilers = 12220;
 	public static final double maxHeatDemandInScaleOf1=0.000312745;
+	public static final int currentNumberOfBiomassBoiler = 7290;
+	public static final int currentNumberOfOilBoiler = 3055;
+	public static final int currentNumberOfNgasBoiler = 1875;
 
 	/**
 	 * Creates a new instance of problem ZDT1.
@@ -232,6 +235,38 @@ public class EnergyPLANProblemCivisCeis3Objectives extends Problem {
 			}
 
 			
+			//additional cost for extra installaition of Biomass boiler
+			double additionalCostForBiomassBoiler=0.0;
+			double numberOfBiomassBoilerforNewHeatDemand = Math
+					.round(maxHeatDemandInScaleOf1
+							* ( boilerHeatDemands[2])
+							* Math.pow(10, 6) * 1.5);
+			if(numberOfBiomassBoilerforNewHeatDemand>currentNumberOfBiomassBoiler)
+				additionalCostForBiomassBoiler=0.933*(numberOfBoilerforNewHeatDemand-currentNumberOfBiomassBoiler);
+			double annualInvestmentcostForBiomassBoiler = (additionalCostForBiomassBoiler*interest)/(1 - Math.pow((1 + interest), -boilerLifeTime));
+			
+			//additional cost for extra installaition of Oil boiler
+			double additionalCostForOilBoiler=0.0;
+			double numberOfOilBoilerforNewHeatDemand = Math
+					.round(maxHeatDemandInScaleOf1
+							* ( boilerHeatDemands[0])
+							* Math.pow(10, 6) * 1.5);
+			if(numberOfOilBoilerforNewHeatDemand>currentNumberOfOilBoiler)
+				additionalCostForOilBoiler=0.833*(numberOfOilBoilerforNewHeatDemand-currentNumberOfOilBoiler);
+			double annualInvestmentcostForOilBoiler = (additionalCostForOilBoiler*interest)/(1 - Math.pow((1 + interest), -boilerLifeTime));
+			
+			//additional cost for extra installaition of Ngas boiler
+			double additionalCostForNgasBoiler=0.0;
+			double numberOfNgasBoilerforNewHeatDemand = Math
+					.round(maxHeatDemandInScaleOf1
+							* ( boilerHeatDemands[1])
+							* Math.pow(10, 6) * 1.5);
+			if(numberOfNgasBoilerforNewHeatDemand>currentNumberOfNgasBoiler)
+				additionalCostForNgasBoiler=0.333*(numberOfNgasBoilerforNewHeatDemand-currentNumberOfNgasBoiler);
+			double annualInvestmentcostForNgasBoiler = (additionalCostForNgasBoiler*interest)/(1 - Math.pow((1 + interest), -boilerLifeTime));
+
+			
+			
 			double numberOfHeatPump = Math.round(maxHeatDemandInScaleOf1 * HPheatDemand
 					* Math.pow(10, 6) / COP);
 			double geoBoreHoleInvestmentCost = (numberOfHeatPump * 3.2 * interest)
@@ -246,7 +281,8 @@ public class EnergyPLANProblemCivisCeis3Objectives extends Problem {
 					invest.lastIndexOf("1000"));
 			double investmentCost = Double.parseDouble(investmentCostStr);
 			double realInvestmentCost = investmentCost
-					- reductionInvestmentCost + geoBoreHoleInvestmentCost;
+					- reductionInvestmentCost + geoBoreHoleInvestmentCost + annualInvestmentcostForOilBoiler +annualInvestmentcostForNgasBoiler+annualInvestmentcostForBiomassBoiler;
+
 
 			double actualAnnualCost = totalVariableCost + fixedOperationalCost
 					+ realInvestmentCost + additionalCost;
