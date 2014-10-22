@@ -242,7 +242,7 @@ public class EnergyPLANProblemCivisCeis3Objectives extends Problem {
 							* ( boilerHeatDemands[2])
 							* Math.pow(10, 6) * 1.5);
 			if(numberOfBiomassBoilerforNewHeatDemand>currentNumberOfBiomassBoiler)
-				additionalCostForBiomassBoiler=0.933*(numberOfBoilerforNewHeatDemand-currentNumberOfBiomassBoiler);
+				additionalCostForBiomassBoiler=0.933*(numberOfBiomassBoilerforNewHeatDemand-currentNumberOfBiomassBoiler);
 			double annualInvestmentcostForBiomassBoiler = (additionalCostForBiomassBoiler*interest)/(1 - Math.pow((1 + interest), -boilerLifeTime));
 			
 			//additional cost for extra installaition of Oil boiler
