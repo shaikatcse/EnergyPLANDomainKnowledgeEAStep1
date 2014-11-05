@@ -152,6 +152,24 @@ public class EnergyPLANFileParseForCivis{
 
 				}
 			}
+			
+			//read hour values
+			/*line = br.readLine();
+			line = br.readLine();
+			for (int j = 0; j < 8784; j++) {
+				line = br.readLine();
+				lineTmp = line.split("\0");
+				for (int i = 0; i < lineTmp.length; i++) {
+					lineTmp[i] = lineTmp[i].trim();
+				}
+				for (int i = 1; i < lineTmp.length; i++) {
+					String key = lineTmp[0] + l1[i] + l2[i];
+					String value = lineTmp[i];
+					multiMap.put(key, value);
+
+				}
+			}*/
+			
 
 		} catch (IOException e) {
 			e.printStackTrace();
@@ -165,6 +183,12 @@ public class EnergyPLANFileParseForCivis{
 			}
 		}
 		return multiMap;
+	}
+	
+	public static void main(String args[]){
+		MultiMap energyplanmMap;
+		EnergyPLANFileParseForCivis epfp = new EnergyPLANFileParseForCivis(".\\result.txt");
+		energyplanmMap = epfp.parseFile();
 	}
 
 }
