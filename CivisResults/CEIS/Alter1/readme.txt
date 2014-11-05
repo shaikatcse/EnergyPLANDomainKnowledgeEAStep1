@@ -1,0 +1,1 @@
+In this result all boiler parameters are free. They can be choose any way. Unlikely other simulation where the HP replace oil boiler and then Ngas boiler.
