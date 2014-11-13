@@ -63,7 +63,7 @@ public class EnergyPLANProblemCivisCeisWithDH extends Problem {
 		 * 0-> chp2 1 -> hp2 2 -> pv capacity 3 -> electrolyser 2 4 -> hydrogen
 		 * strage 2
 		 */
-		numberOfVariables_ = 5;
+		numberOfVariables_ = 3;
 		/*
 		 * 0 -> CO2 emission 1 -> annual cost 2 -> load following capccity
 		 */
@@ -78,25 +78,25 @@ public class EnergyPLANProblemCivisCeisWithDH extends Problem {
 		// Establishes upper and lower limits for the variables
 		int var;
 
-		// chp2 capacity (KEe)
+		// chp2 capacity (KWe)
 		lowerLimit_[0] = 0;
-		upperLimit_[0] = 5000;
+		upperLimit_[0] = 6000;
 
 		// hp2 capacity (KWe)
 		lowerLimit_[1] = 0;
-		upperLimit_[1] = 5000;
+		upperLimit_[1] = 6000;
 
 		// pv cacpity (KWe)
 		lowerLimit_[2] = 5328.0;
 		upperLimit_[2] = 15000.0;
 
-		// electrolyser 2 (KWe)
+		/*// electrolyser 2 (KWe)
 		lowerLimit_[3] = 0;
 		upperLimit_[3] = 500;
 
 		// hydrogen storage 2 (MWh)
 		lowerLimit_[4] = 0;
-		upperLimit_[4] = 2000;
+		upperLimit_[4] = 2000;*/
 
 		if (solutionType.compareTo("Real") == 0)
 			solutionType_ = new RealSolutionType(this);
@@ -192,12 +192,20 @@ public class EnergyPLANProblemCivisCeisWithDH extends Problem {
 			col = (Collection<String>) energyplanmMap.get("Annualexport");
 			it = col.iterator();
 			double Export = Double.parseDouble(it.next().toString());
+			
+			col = (Collection<String>) energyplanmMap.get("Annualchpelec.");
+			it = col.iterator();
+			double chpElecProduction = Double.parseDouble(it.next().toString());
+			
+			col = (Collection<String>) energyplanmMap.get("Annualhpelec.");
+			it = col.iterator();
+			double hpElecConsumption = Double.parseDouble(it.next().toString());
 
 			// calculate additional cost
 			// (hydroProduction+PVproduction+Import-Export)*average additional
 			// cost (85.74)
 			double additionalCost = Math.round((hydroPowerProduction
-					+ PVproduction + Import - Export) * 85.74);
+					+ PVproduction + Import - Export + chpElecProduction ) * 85.74);
 
 			double reductionInvestmentCost;
 			// reduced investment cost = current PV
@@ -213,16 +221,16 @@ public class EnergyPLANProblemCivisCeisWithDH extends Problem {
 			// extracting maximum Boiler configuration (group # 3)
 			col = (Collection<String>) energyplanmMap.get("Maximumboilerheat");
 			it = col.iterator();
-			double maximumBoilerGroup3 = Double.parseDouble(it.next()
+			double maximumBoilerGroup2 = Double.parseDouble(it.next()
 					.toString());
 
-			reductionInvestmentCost = Math
-					.round(((largeValueOfBoiler - maximumBoilerGroup3)
+			reductionInvestmentCost = reductionInvestmentCost + Math
+					.round(((largeValueOfBoiler - maximumBoilerGroup2)
 							* boilerCostInKEuro * interest)
 							/ (1 - Math.pow((1 + interest), -boilerLifeTime)));
 
 			double reduceFixedOMCost = Math
-					.round(((largeValueOfBoiler - maximumBoilerGroup3)
+					.round(((largeValueOfBoiler - maximumBoilerGroup2)
 							* boilerCostInKEuro * fixedMOForBoilerinPercentage));
 
 			//double numberOfHeatPump = Math.round(maxHeatDemandInScaleOf1
@@ -241,8 +249,8 @@ public class EnergyPLANProblemCivisCeisWithDH extends Problem {
 			double realInvestmentCost = investmentCost
 					- reductionInvestmentCost ;//+ geoBoreHoleInvestmentCost;
 
-			double actualAnnualCost = totalVariableCost + fixedOperationalCost
-					+ realInvestmentCost + additionalCost;
+			double actualAnnualCost = totalVariableCost + fixedOperationalCost -reduceFixedOMCost
+					+ realInvestmentCost + additionalCost ;
 
 			solution.setObjective(1, actualAnnualCost);
 
@@ -314,10 +322,10 @@ public class EnergyPLANProblemCivisCeisWithDH extends Problem {
 		double hp2 = solution.getDecisionVariables()[1].getValue();
 		// PV
 		double pv = solution.getDecisionVariables()[2].getValue();
-		// electrolyser 2
+		/*// electrolyser 2
 		double electroluser2 = solution.getDecisionVariables()[3].getValue();
 		// hydrogen storage 2
-		double hs2 = solution.getDecisionVariables()[0].getValue();
+		double hs2 = solution.getDecisionVariables()[0].getValue();*/
 
 		try {
 
@@ -370,7 +378,7 @@ public class EnergyPLANProblemCivisCeisWithDH extends Problem {
 			bw.write(str);
 			bw.newLine();
 
-			str = "input_cap_elt2_el=";
+		/*	str = "input_cap_elt2_el=";
 			bw.write(str);
 			bw.newLine();
 			str = "" + (int) Math.round(electroluser2);
@@ -382,7 +390,7 @@ public class EnergyPLANProblemCivisCeisWithDH extends Problem {
 			bw.newLine();
 			str = "" + (int) Math.round(hs2);
 			bw.write(str);
-			bw.newLine();
+			bw.newLine();*/
 
 			/*
 			 * double OilBoilerHeatdemand = 6.51, nGasBoilerHeatDemand=4.00,

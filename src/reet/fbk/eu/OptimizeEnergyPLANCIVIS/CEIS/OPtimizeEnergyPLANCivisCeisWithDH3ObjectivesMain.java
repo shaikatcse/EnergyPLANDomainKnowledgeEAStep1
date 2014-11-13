@@ -2,22 +2,18 @@ package reet.fbk.eu.OptimizeEnergyPLANCIVIS.CEIS;
 
 
 import java.io.IOException;
-
 import java.util.HashMap;
 import java.util.logging.FileHandler;
 
 import jmetal.core.Algorithm;
 import jmetal.core.Operator;
 import jmetal.core.Problem;
-
 import jmetal.core.SolutionSet;
-
 import jmetal.operators.crossover.CrossoverFactory;
 import jmetal.operators.selection.SelectionFactory;
 import jmetal.qualityIndicator.QualityIndicator;
 import jmetal.util.Configuration;
 import jmetal.util.JMException;
-
 import reet.fbk.eu.jmetal.operators.mutation.MutationFactory;
 
 
@@ -25,6 +21,8 @@ import reet.fbk.eu.OptimizeEnergyPLANCIVIS.CEIS.Problem.EnergyPLANProblemCivisCe
 import reet.fbk.eu.OptimizeEnergyPLANCIVIS.metaheuristics.NSGAIIForDK;
 //import reet.fbk.eu.jmetal.operators.mutation.MutationFactory;
 
+
+import reet.fbk.eu.OptimizeEnergyPLANCIVIS.metaheuristics.NSGAIIForDKTest;
 
 import java.util.logging.Logger;
 
@@ -80,8 +78,8 @@ public class OPtimizeEnergyPLANCivisCeisWithDH3ObjectivesMain {
 			// ;
 
 			// Algorithm parameters
-			algorithm.setInputParameter("populationSize", 10);
-			algorithm.setInputParameter("maxEvaluations", 100);
+			algorithm.setInputParameter("populationSize", 100);
+			algorithm.setInputParameter("maxEvaluations", 10000);
 			// for spea2
 			// algorithm.setInputParameter("archiveSize",100);
 
@@ -98,12 +96,12 @@ public class OPtimizeEnergyPLANCivisCeisWithDH3ObjectivesMain {
 			parameters.put("maximum generation", (int) algorithm.getInputParameter("maxEvaluations")/(int) algorithm.getInputParameter("populationSize")-1);
 			
 			/*
-			 * 0-> chp2 1 -> hp2 2 -> pv capacity 3 -> electrolyser 2 4 -> hydrogen
-			 * strage 2
+			 * 0-> chp2 1 -> hp2 2 -> pv capacity 
 			 */
-			Boolean favorGenesforRE[] ={true, true, true, true, true};
-			Boolean favorGenesforConventionalPP[] ={null,null, null, null, null};
-			Boolean favorGenesforLFC[]={true, true, false, null, null};
+			
+			Boolean favorGenesforRE[] ={true, true, true };
+			Boolean favorGenesforConventionalPP[] ={null,null, false };
+			Boolean favorGenesforLFC[]={true, true, false};
 			
 			parameters.put("favorGenesforRE", favorGenesforRE);
 			parameters.put("favorGenesForConventioanlPP", favorGenesforConventionalPP);
@@ -143,11 +141,11 @@ public class OPtimizeEnergyPLANCivisCeisWithDH3ObjectivesMain {
 			// Result messages
 			logger_.info("Total execution time: " + estimatedTime + "ms");
 			logger_.info("Variables values have been writen to file VAR");
-			//population.printVariablesToFile("AalborgNewResults\\VAR" + i);
-			population.printFeasibleVAR("CivisResults\\CEIS\\3Objectives\\VAR" + i);
+			population.printFeasibleVAR("CivisResults\\CEIS\\DH_3Objectives\\VAR" + i);
+			//population.printFeasibleVAR("VAR");
 			logger_.info("Objectives values have been writen to file FUN");
-			//population.printObjectivesToFile("AalborgNewResults\\FUN" + i);
-			population.printFeasibleFUN("CivisResults\\CEIS\\3Objectives\\FUN" + i);
+			population.printFeasibleFUN("CivisResults\\CEIS\\DH_3Objectives\\FUN" + i);
+			//population.printFeasibleFUN("FUN");
 		}
 	}
 }
