@@ -30,6 +30,20 @@ public class EnergyPLANProblemCivisCeis extends Problem {
 
 	MultiMap energyplanmMap;
 
+
+	public static final double interest =0.04;
+	
+	public static final double COP=2.2;
+	public static final int geoBoreHoleLifeTime=100;
+	public static final int boilerLifeTime=20;
+	public static final int PVLifeTime = 25;
+	public static final int HydroLifeTime=20;
+	public static final int currentPVCapacity=5328;
+	public static final int currentHydroCapacity=4000;
+	public static final double maxHeatDemandInDistribution=0.000312745, sumOfHeatDistribution=1.0;
+	public static final double OilBoilerHeatdemand = 6.51, nGasBoilerHeatDemand=4.00, biomassBoilerHeatDemand = 15.54;
+	public static final double PVInvestmentCost=3.978, hydroInvestmentCost=3.51, boilerInvestmentCost=0.625, geoBoreHoleInvestmentCost=3.2;
+	
 	/**
 	 * Creates a new instance of problem ZDT1.
 	 * 
@@ -91,7 +105,7 @@ public class EnergyPLANProblemCivisCeis extends Problem {
 
 		writeModificationFile(solution);
 		String energyPLANrunCommand = ".\\EnergyPLAN_SEP_2013\\EnergyPLAN.exe -i "
-				+ "\".\\src\\reet\\fbk\\eu\\OptimizeEnergyPLANCIVIS\\CEIS\\data\\Civis_CEIS.txt\" "
+				+ "\".\\src\\reet\\fbk\\eu\\OptimizeEnergyPLANCIVIS\\CEIS\\data\\Civis_CEISNewCap.txt\" "
 				+ "-m \"modification.txt\" -ascii \"result.txt\" ";
 		try {
 			// Process process = new
@@ -168,34 +182,27 @@ public class EnergyPLANProblemCivisCeis extends Problem {
 			//(hydroProduction+PVproduction+Import-Export)*average additional cost (85.74)
 			double additionalCost = Math.round((hydroPowerProduction+PVproduction+Import-Export)*85.74);
 			
-			
 			/*
 			 * now, calculte how many boiler need to diassamble 
 			 */
-			double OilBoilerHeatdemand = 6.51, nGasBoilerHeatDemand=4.00, biomassBoilerHeatDemand = 15.54;
 			// total heat demand=Oil boiler + Ngas boiler + Biomass boiler
 			double totalHeatDemand = OilBoilerHeatdemand + nGasBoilerHeatDemand + biomassBoilerHeatDemand;
 			// HP
 			double HP = solution.getDecisionVariables()[1].getValue();
 
 			double reducedHeatdemand = totalHeatDemand - HP;
-			double numberOfBoilerforNewHeatDemand = Math.round(0.00312745 * reducedHeatdemand*Math.pow(10, 6)*1.5);
+			//Inst Cap= Aggregated yearly demand * Max yearly dist value/Sum of all hourly distribution values (+50% in this case)
+			double installedBoilerCapacityforNewHeatDemand = Math.round(maxHeatDemandInDistribution * reducedHeatdemand*Math.pow(10, 6)*1.5/sumOfHeatDistribution );
 			
-			double interest =0.04;
-			
-			double COP=3.2;
-			int geoBoreHoleLifeTime=100;
-			double numberOfHeatPump =  Math.round(0.000312745 * HP *Math.pow(10, 6)/ COP );
-			double geoBoreHoleInvestmentCost = (numberOfHeatPump * 3.2 * interest)/(1-Math.pow((1+interest),-geoBoreHoleLifeTime));
+			double installedCapacityOfHeatPump =  Math.round(maxHeatDemandInDistribution * HP *Math.pow(10, 6)/ (COP*sumOfHeatDistribution)  );
+			double annualGeoBoreHoleInvestmentCost = (installedCapacityOfHeatPump * geoBoreHoleInvestmentCost * interest)/(1-Math.pow((1+interest),-geoBoreHoleLifeTime));
 			
 			//reduced investment cost = number of boiler to meet new heat demand after introducing HP* boiler cost + current PV capccity * pv cost + Hydro * hydro cost  
 			//see anual investment cost formual in EnergyPLAN manual 
 			
-			int boilerLifeTime=20;
-			int PVLifeTime = 25;
-			int HydroLifeTime=20;
-			double reductionInvestmentCost = (numberOfBoilerforNewHeatDemand * 0.625 *interest)/(1-Math.pow((1+interest),-boilerLifeTime)) + (5328 * 3.978 * interest)/(1-Math.pow((1+interest),-PVLifeTime)) +
-					(4000*3.51*interest)/(1-Math.pow((1+interest), -HydroLifeTime)) ;
+			
+			double reductionInvestmentCost = (installedBoilerCapacityforNewHeatDemand * boilerInvestmentCost *interest)/(1-Math.pow((1+interest),-boilerLifeTime)) + (currentPVCapacity * PVInvestmentCost * interest)/(1-Math.pow((1+interest),-PVLifeTime)) +
+					(currentHydroCapacity*hydroInvestmentCost*interest)/(1-Math.pow((1+interest), -HydroLifeTime)) ;
 			
 			//extract 
 			col = (Collection<String>) energyplanmMap
@@ -204,7 +211,7 @@ public class EnergyPLANProblemCivisCeis extends Problem {
 			String invest= it.next().toString();
 			String investmentCostStr = invest.substring(0, invest.lastIndexOf("1000") );
 			double investmentCost = Double.parseDouble(investmentCostStr);
-			double realInvestmentCost = investmentCost-reductionInvestmentCost +geoBoreHoleInvestmentCost;
+			double realInvestmentCost = investmentCost-reductionInvestmentCost +annualGeoBoreHoleInvestmentCost;
 			
 			double actualAnnualCost = totalVariableCost + fixedOperationalCost + realInvestmentCost + additionalCost;
 			
@@ -342,8 +349,6 @@ public class EnergyPLANProblemCivisCeis extends Problem {
 			bw.newLine();
 			
 			
-		
-			double OilBoilerHeatdemand = 6.51, nGasBoilerHeatDemand=4.00, biomassBoilerHeatDemand = 15.54;
 			// total heat demand=Oil boiler + Ngas boiler + Biomass boiler
 			double totalHeatDemand = OilBoilerHeatdemand + nGasBoilerHeatDemand + biomassBoilerHeatDemand;
 			

@@ -23,6 +23,7 @@ import jmetal.util.RandomGenerator;
 import reet.fbk.eu.jmetal.operators.mutation.MutationFactory;
 import reet.fbk.eu.OptimizeEnergyPLANAalborg.problem.EnergyPLANProblemAalborg;
 import reet.fbk.eu.OptimizeEnergyPLANAalborg.problem.EnergyPLANProblemAalborg2Objectives;
+import reet.fbk.eu.OptimizeEnergyPLANCIVIS.CEIS.Problem.EnergyPLANProblemCivisCeis;
 import reet.fbk.eu.OptimizeEnergyPLANCIVIS.CEIS.Problem.EnergyPLANProblemCivisCeisAlter1;
 import reet.fbk.eu.OptimizeEnergyPLANCIVIS.metaheuristics.NSGAIIForDK;
 //import reet.fbk.eu.jmetal.operators.mutation.MutationFactory;
@@ -70,7 +71,7 @@ public class OPtimizeEnergyPLANCivisCeisMain {
 			indicators = null;
 
 			//problems for 2 objectives
-			problem=new EnergyPLANProblemCivisCeisAlter1("Real");
+			problem=new EnergyPLANProblemCivisCeis("Real");
 			
 			//problem for 3 objectives
 			//problem = new EnergyPLANProblemAalborg("Real");
@@ -101,8 +102,17 @@ public class OPtimizeEnergyPLANCivisCeisMain {
 			parameters.put("distributionIndex", 10.0);
 			parameters.put("maximum generation", (int) algorithm.getInputParameter("maxEvaluations")/(int) algorithm.getInputParameter("populationSize")-1);
 			
+			/*
+			 * only two variables: PV and HP 
+			 * HP replace Oil, Ngas and Biomass boiler one after another
+			 */
+			Boolean favorGenesforRE[] ={true, true};
+			Boolean favorGenesforConventionalPP[] ={false, false};
+			/*
+			 * for Alternet approach (all heat variables are free)
 			Boolean favorGenesforRE[] ={true, true, false, false, null};
-			Boolean favorGenesforConventionalPP[] ={false, false, true, true, null};
+			Boolean favorGenesforConventionalPP[] ={false, false, true, true, null};*/
+			
 			parameters.put("favorGenesforRE", favorGenesforRE);
 			parameters.put("favorGenesForConventioanlPP", favorGenesforConventionalPP);
 			
@@ -141,10 +151,10 @@ public class OPtimizeEnergyPLANCivisCeisMain {
 			logger_.info("Total execution time: " + estimatedTime + "ms");
 			logger_.info("Variables values have been writen to file VAR");
 			//population.printVariablesToFile("AalborgNewResults\\VAR" + i);
-			population.printFeasibleVAR("CivisResults\\CEIS\\Alter1\\VAR" + i);
+			population.printFeasibleVAR("CivisResults\\CEIS\\ASHP\\VAR" + i);
 			logger_.info("Objectives values have been writen to file FUN");
 			//population.printObjectivesToFile("AalborgNewResults\\FUN" + i);
-			population.printFeasibleFUN("CivisResults\\CEIS\\Alter1\\FUN" + i);
+			population.printFeasibleFUN("CivisResults\\CEIS\\ASHP\\FUN" + i);
 		}
 	}
 }
