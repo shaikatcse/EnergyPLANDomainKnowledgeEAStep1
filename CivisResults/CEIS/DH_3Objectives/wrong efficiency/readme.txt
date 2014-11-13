@@ -9,10 +9,11 @@ Objectives:
 Constraints:
 Biomass consumption<=56.78 GWh
 
-EnergyPLAN configuration
-CHP efficiency:
-Elec eff: 0.2
-Th eff: 0.7
 
-Regulation: technical optimization
-technical regulation: 1 (balacing heat demands)
+EnergyPLAN configuration:
+CHP efficiency was wrong.
+Elec eff: 0.4 shoulkd be 0.2
+TH eff: 0.5 should be 0.7
+
+Technical optimization
+Technical optimization Regulation : 2 (balancing both electricity and heat demand)
