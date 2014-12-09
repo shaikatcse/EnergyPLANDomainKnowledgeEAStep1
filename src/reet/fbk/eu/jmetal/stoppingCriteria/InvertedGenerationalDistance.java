@@ -46,6 +46,58 @@ public class InvertedGenerationalDistance {
     utils_ = new jmetal.qualityIndicator.util.MetricsUtil();
   } // GenerationalDistance
   
+  public double [] getMaximumValues(double [][] front1, double [][] front2, int noObjectives) {
+	    double [] maximumValue = new double[noObjectives];
+	    for (int i = 0; i < noObjectives; i++)
+	      maximumValue[i] =  Double.NEGATIVE_INFINITY;
+
+
+	    for (double[] aFront : front1) {
+	      for (int j = 0; j < aFront.length; j++) {
+	        if (aFront[j] > maximumValue[j])
+	          maximumValue[j] = aFront[j];
+	      }
+	    }
+	    
+	    for (double[] aFront : front2) {
+		      for (int j = 0; j < aFront.length; j++) {
+		        if (aFront[j] > maximumValue[j])
+		          maximumValue[j] = aFront[j];
+		      }
+		    }
+	    
+	    return maximumValue;
+	  } // getMaximumValues
+	  
+	  
+	  /** Gets the minimun values for each objectives in a given pareto
+	   *  front
+	   *  @param front The pareto front
+	   *  @param noObjectives Number of objectives in the pareto front
+	   *  @return double [] An array of noOjectives values whit the minimum values
+	   *  for each objective
+	   **/
+	  public double [] getMinimumValues(double [][] front1, double [][] front2,  int noObjectives) {
+	    double [] minimumValue = new double[noObjectives];
+	    for (int i = 0; i < noObjectives; i++)
+	      minimumValue[i] = Double.MAX_VALUE;
+
+	    for (double[] aFront : front1) {
+	      for (int j = 0; j < aFront.length; j++) {
+	        if (aFront[j] < minimumValue[j])
+	          minimumValue[j] = aFront[j];
+	      }
+	    }
+	    
+	    for (double[] aFront : front2) {
+		      for (int j = 0; j < aFront.length; j++) {
+		        if (aFront[j] < minimumValue[j])
+		          minimumValue[j] = aFront[j];
+		      }
+		    }
+	    return minimumValue;
+	  } // getMinimumValues
+  
   /**
    * Returns the inverted generational distance value for a given front
    * @param front The front 
@@ -76,8 +128,8 @@ public class InvertedGenerationalDistance {
     double [][] normalizedParetoFront ; 
     
     // STEP 1. Obtain the maximum and minimum values of the Pareto front
-    maximumValue = utils_.getMaximumValues(trueParetoFront, numberOfObjectives);
-    minimumValue = utils_.getMinimumValues(trueParetoFront, numberOfObjectives);
+    maximumValue = getMaximumValues(front, trueParetoFront, numberOfObjectives);
+    minimumValue = getMinimumValues(front, trueParetoFront, numberOfObjectives);
     
     // STEP 2. Get the normalized front and true Pareto fronts
     normalizedFront       = utils_.getNormalizedFront(front, 
@@ -97,7 +149,11 @@ public class InvertedGenerationalDistance {
    
     
     // STEP 4. Obtain the sqrt of the sum
-    //sum = Math.pow(sum,1.0/pow_);
+  //  sum = Math.pow(sum,1.0/pow_);
+    
+  /*double generationalDistance = sum / normalizedParetoFront.length;
+    
+    return generationalDistance;*/
     
     // STEP 5. Divide the sum by the maximum number of points of the front
     double modifiedInvertedgenerationalDistance = Math.pow(sum / normalizedParetoFront.length, 1.0/pow_);

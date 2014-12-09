@@ -157,6 +157,9 @@ public class RunExperiment extends Thread {
 						", run: " + runs);
 				try {
 					try {
+						//added by shahriar to send run info to algorithm
+						algorithm[alg].setInputParameter("run", runs); 
+						
 						resultFront= algorithm[alg].execute();
 					} catch (ClassNotFoundException e) {
 						// TODO Auto-generated catch block

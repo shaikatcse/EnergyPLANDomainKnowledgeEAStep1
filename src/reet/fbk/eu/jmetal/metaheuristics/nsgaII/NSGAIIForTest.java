@@ -25,11 +25,20 @@ import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.util.StringTokenizer;
 
+import org.apache.commons.collections.MultiMap;
+import org.apache.commons.collections.map.MultiValueMap;
+
+import com.sun.org.apache.xalan.internal.xsltc.runtime.Parameter;
 
 import reet.fbk.eu.OptimizeEnergyPLANWithAccuracy.util.RepairDVGene;
 import reet.fbk.eu.OptimizeEnergyPLANWithAccuracy.util.RepairFuelGene;
 import reet.fbk.eu.OptimizeEnergyPLANWithAccuracy.util.RepairSolution;
+import reet.fbk.eu.jmetal.stoppingCriteria.AveragedHausdroffDistance;
+import reet.fbk.eu.jmetal.stoppingCriteria.CalculateDiversity;
+import reet.fbk.eu.jmetal.stoppingCriteria.GenerationHypervolume;
+import reet.fbk.eu.qualityIndicator.CalculateAllQualityIndicatorValue;
 import jmetal.core.*;
 import jmetal.metaheuristics.nsgaII.NSGAII;
 import jmetal.qualityIndicator.QualityIndicator;
@@ -68,33 +77,33 @@ public class NSGAIIForTest extends NSGAII {
 
 	public NSGAIIForTest(Problem problem) {
 		super(problem);
-		//repairSolution = new RepairSolution();
+		// repairSolution = new RepairSolution();
 
 	} // NSGAII
 
 	public NSGAIIForTest(Problem problem, long seed, String folderName) {
 		super(problem);
 		repairSolution = new RepairSolution();
-		if(!(new File(folderName+"\\HV").exists()))
-			new File(folderName+"\\HV").mkdirs();
-		if(!(new File(folderName+"\\GD").exists()))
-			new File(folderName+"\\GD").mkdirs();
-		if(!(new File(folderName+"\\IGD").exists()))
-			new File(folderName+"\\IGD").mkdirs();
-		if(!(new File(folderName+"\\Spread").exists()))
-			new File(folderName+"\\Spread").mkdirs();
-		if(!(new File(folderName+"\\Epsilon").exists()))
-			new File(folderName+"\\Epsilon").mkdirs();
-		if(!(new File(folderName+"\\GenSpread").exists()))
-			new File(folderName+"\\GenSpread").mkdirs();
-		
-		
+		if (!(new File(folderName + "\\HV").exists()))
+			new File(folderName + "\\HV").mkdirs();
+		if (!(new File(folderName + "\\GD").exists()))
+			new File(folderName + "\\GD").mkdirs();
+		if (!(new File(folderName + "\\IGD").exists()))
+			new File(folderName + "\\IGD").mkdirs();
+		if (!(new File(folderName + "\\Spread").exists()))
+			new File(folderName + "\\Spread").mkdirs();
+		if (!(new File(folderName + "\\Epsilon").exists()))
+			new File(folderName + "\\Epsilon").mkdirs();
+		if (!(new File(folderName + "\\GenSpread").exists()))
+			new File(folderName + "\\GenSpread").mkdirs();
+
 		fileHV = new File(folderName + "\\HV\\trackHV_" + seed);
 		fileGD = new File(folderName + "\\GD\\trackGD_" + seed);
 		fileIGD = new File(folderName + "\\IGD\\trackIGD_" + seed);
 		fileSpread = new File(folderName + "\\Spread\\trackSpread_" + seed);
 		fileEpsilon = new File(folderName + "\\Epsilon\\trackEpsilon_" + seed);
-		fileGenSpread = new File(folderName + "\\GenSpread\\trackGenSpread_" + seed);
+		fileGenSpread = new File(folderName + "\\GenSpread\\trackGenSpread_"
+				+ seed);
 		// if file doesnt exists, then create it
 		try {
 			if (!fileHV.exists()) {
@@ -152,6 +161,10 @@ public class NSGAIIForTest extends NSGAII {
 
 		Distance distance = new Distance();
 
+		// read the bas directory
+		String baseDirectory = ((String) getInputParameter("baseDirectory"));
+		//String paretoFrontFile = ((String)("paretoFrontFile_"));
+		
 		// Read the parameters
 		populationSize = ((Integer) getInputParameter("populationSize"))
 				.intValue();
@@ -175,7 +188,7 @@ public class NSGAIIForTest extends NSGAII {
 		for (int i = 0; i < populationSize; i++) {
 			newSolution = new Solution(problem_);
 
-			//repairSolution.doRepair(newSolution);
+			// repairSolution.doRepair(newSolution);
 
 			problem_.evaluate(newSolution);
 			problem_.evaluateConstraints(newSolution);
@@ -183,37 +196,46 @@ public class NSGAIIForTest extends NSGAII {
 			population.add(newSolution);
 		} // for
 
-		/*if (indicators != null) {
-			int genNo = (int) evaluations / populationSize;
-			double hyperVolume = indicators.getHypervolume(population);
-			double gd = indicators.getGD(population);
-			double igd = indicators.getIGD(population);
-			double spread = indicators.getSpread(population);
-			double epsilon = indicators.getEpsilon(population);
-			double genSpread = indicators.getGeneralizedSpread(population);
-
-			try {
-				bwHV.write(genNo + " " + hyperVolume + "\n");
-				bwGD.write(genNo + " " + gd + "\n");
-				bwIGD.write(genNo + " " + igd + "\n");
-				bwSpread.write(genNo + " " + spread + "\n");
-				bwEpsilon.write(genNo + " " + epsilon + "\n");
-				bwGenSpread.write(genNo + " " + genSpread + "\n");
-
-			} catch (IOException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-		}*/
+		/*
+		 * if (indicators != null) { int genNo = (int) evaluations /
+		 * populationSize; double hyperVolume =
+		 * indicators.getHypervolume(population); double gd =
+		 * indicators.getGD(population); double igd =
+		 * indicators.getIGD(population); double spread =
+		 * indicators.getSpread(population); double epsilon =
+		 * indicators.getEpsilon(population); double genSpread =
+		 * indicators.getGeneralizedSpread(population);
+		 * 
+		 * try { bwHV.write(genNo + " " + hyperVolume + "\n"); bwGD.write(genNo
+		 * + " " + gd + "\n"); bwIGD.write(genNo + " " + igd + "\n");
+		 * bwSpread.write(genNo + " " + spread + "\n"); bwEpsilon.write(genNo +
+		 * " " + epsilon + "\n"); bwGenSpread.write(genNo + " " + genSpread +
+		 * "\n");
+		 * 
+		 * } catch (IOException e) { // TODO Auto-generated catch block
+		 * e.printStackTrace(); } }
+		 */
 		// Generations
+		int runs=((Integer) getInputParameter("run"))
+				.intValue();
+		String runDirectory="C:/Users/mahbub/Documents/GitHub/EnergyPLANDomainKnowledgeEAStep1"
+		+ "/StoppingCriteriaStudies/data/StoppingCriteriaAnalysis/"
+		+ problem_.getName()+"/run"+runs;
+		File runDir = new File(runDirectory);
+		if (!runDir.exists()) {
+			runDir.mkdir();
+		
+		}
+		
 		while (evaluations < maxEvaluations) {
 
-			
-			//write FUN and VAR for each generation
+			// write FUN and VAR for each generation
 			Ranking generationRanking = new Ranking(population);
-			generationRanking.getSubfront(0).printFeasibleFUN("generationFun\\FUN"+(int)evaluations/populationSize);
-			population.printFeasibleVAR("generationVar\\VAR"+(int)evaluations/populationSize);
-			
+			generationRanking.getSubfront(0).printFeasibleFUN(
+					runDirectory+"\\FUN" + (int) evaluations / populationSize);
+			population.printVariablesToFile(runDirectory+"\\VAR"
+					+ (int) evaluations / populationSize);
+
 			// Create the offSpring solutionSet
 			offspringPopulation = new SolutionSet(populationSize);
 			Solution[] parents = new Solution[2];
@@ -227,15 +249,16 @@ public class NSGAIIForTest extends NSGAII {
 					Solution[] offSpring = (Solution[]) crossoverOperator
 							.execute(parents);
 
-					//repairSolution.doRepair(offSpring[0]);
-					//repairSolution.doRepair(offSpring[1]);
+					// repairSolution.doRepair(offSpring[0]);
+					// repairSolution.doRepair(offSpring[1]);
 
-					mutationOperator.setParameter("current generation", (int) evaluations / populationSize);
+					mutationOperator.setParameter("current generation",
+							(int) evaluations / populationSize);
 					mutationOperator.execute(offSpring[0]);
 					mutationOperator.execute(offSpring[1]);
 
-					//repairSolution.doRepair(offSpring[0]);
-					//repairSolution.doRepair(offSpring[1]);
+					// repairSolution.doRepair(offSpring[0]);
+					// repairSolution.doRepair(offSpring[1]);
 
 					problem_.evaluate(offSpring[0]);
 					problem_.evaluateConstraints(offSpring[0]);
@@ -292,8 +315,6 @@ public class NSGAIIForTest extends NSGAII {
 				remain = 0;
 			} // if
 
-			
-			
 			// This piece of code shows how to use the indicator object into the
 			// code
 			// of NSGA-II. In particular, it finds the number of evaluations
@@ -359,6 +380,73 @@ public class NSGAIIForTest extends NSGAII {
 			}
 		}
 
+		
+		ranking.getSubfront(0).printFeasibleFUN(
+				runDirectory+"\\FUN" + (int) evaluations / populationSize);
+		population.printVariablesToFile(runDirectory+"\\VAR"
+				+ (int) evaluations / populationSize);
+		
+		// stopping criteria analysis
+		MultiMap map = new MultiValueMap(); 
+		AveragedHausdroffDistance averageHD = new AveragedHausdroffDistance();
+		CalculateDiversity calDV = new CalculateDiversity();
+		GenerationHypervolume hv = new GenerationHypervolume();
+		map = averageHD.calcualteAverageHausdroffDistance(problem_.getNumberOfObjectives(), map);
+		map=calDV.diversityStatisticalTest(problem_.getNumberOfVariables(), map);
+		map = hv.calculateHyperVolume(problem_, map);
+		
+		String fileName = "C:/Users/mahbub/Documents/GitHub/EnergyPLANDomainKnowledgeEAStep1"
+				+ "/StoppingCriteriaStudies/data/StoppingCriteriaAnalysis/"
+				+ problem_.getName() + "/HausdroffDiversity"+"."+problem_.getName();
+		File f = new File(fileName);
+
+		try {
+			FileWriter fw;
+			if (f.exists() && !f.isDirectory()) {
+
+				fw = new FileWriter(f, true);
+							
+			} else {
+				f.createNewFile();
+				 fw = new FileWriter(f, false);
+			}
+			
+			final double distaceConstant =0.0005;
+			final double pValueConstant=0.2;
+			double [] parameters = new double[8];
+			Boolean track=new Boolean(false);
+			
+			for(int i=1;i<=30;i++){
+				StringTokenizer st = new StringTokenizer(map.get(i).toString(), "[],");
+				String aLine=i+" ";
+								
+				int j=0;
+				if(!track)
+					parameters[j++]=(int) i;
+				
+				while(st.hasMoreTokens()){
+					String str=st.nextToken();
+					aLine+=str;
+					if(!track)
+						parameters[j++]=Double.parseDouble(str);
+				}
+				fw.write(aLine+"\n");
+				if(parameters[1]<distaceConstant && parameters[2]>pValueConstant)
+					track=true;
+				
+			}
+			fw.write("cut-off point\n");
+			fw.write(parameters[0]+" "+parameters[1]+" "+parameters[2]+" "+parameters[3]+"\n\n" );
+			fw.close();
+			
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+		
+		
+		
 		return ranking.getSubfront(0);
 	} // execute
 } // NSGA-II

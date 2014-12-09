@@ -32,10 +32,11 @@ import reet.fbk.eu.OptimizeEnergyPLANCIVIS.ParseFile.*;
 public class EnergyPLANProblemCivisCeisWithDH extends Problem {
 
 	MultiMap energyplanmMap;
-	public static final double totalHeatdemand = 55.77;
+	public static final double totalHeatdemand = 42.37;
 	public static final int boilerLifeTime = 20;
 	public static final int PVLifeTime = 25;
 	public static final int HydroLifeTime = 20;
+	public static final int hp2LifeTime = 20;
 	public static final int geoBoreHoleLifeTime = 100;
 	public static final double COP = 3.1;
 	public static final double interest = 0.04;
@@ -48,6 +49,8 @@ public class EnergyPLANProblemCivisCeisWithDH extends Problem {
 	// public static final int currentNumberOfNgasBoiler = 1875;
 	public static final int largeValueOfBoiler = 17500;
 	public static final double boilerCostInKEuro = 0.15;
+	public static final double hp2CostInKEuro = 2.7;
+	public static final double fixedMOForHP2Percentage = 0.002;
 	public static final double fixedMOForBoilerinPercentage=0.03;
 
 	/**
@@ -233,6 +236,29 @@ public class EnergyPLANProblemCivisCeisWithDH extends Problem {
 					.round(((largeValueOfBoiler - maximumBoilerGroup2)
 							* boilerCostInKEuro * fixedMOForBoilerinPercentage));
 
+			//checking for HP2's access capacity
+			if(maximumBoilerGroup2==0){
+				col = (Collection<String>) energyplanmMap.get("Maximumhpelec.");
+				it = col.iterator();
+				double maximumHP2elec = Double.parseDouble(it.next()
+						.toString());
+				
+
+				reductionInvestmentCost = reductionInvestmentCost + Math
+						.round(((solution.getDecisionVariables()[1].getValue() - maximumHP2elec)
+								* hp2CostInKEuro * interest)
+								/ (1 - Math.pow((1 + interest), -hp2LifeTime)));
+
+				reduceFixedOMCost = reduceFixedOMCost+ Math
+						.round(((solution.getDecisionVariables()[1].getValue() - maximumHP2elec)
+								* hp2CostInKEuro * fixedMOForHP2Percentage));
+
+				//set the decision variable accordingly
+				solution.getDecisionVariables()[1].setValue(maximumHP2elec);
+				
+			}
+			
+			
 			//double numberOfHeatPump = Math.round(maxHeatDemandInScaleOf1
 					//* HPheatDemand * Math.pow(10, 6) / COP);
 			//double geoBoreHoleInvestmentCost = (numberOfHeatPump * 3.2 * interest)

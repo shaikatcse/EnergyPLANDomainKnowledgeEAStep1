@@ -99,7 +99,7 @@ public class NSGAII_main {
       //problem = new Kursawe("Real", 3);
       //problem = new Kursawe("BinaryReal", 3);
       //problem = new Water("Real");
-      problem = new ZDT1("ArrayReal", 100);
+      problem = new ZDT1("ArrayReal", 30);
       //problem = new ConstrEx("Real");
       //problem = new DTLZ1("Real");
       //problem = new OKA2("Real") ;
@@ -108,9 +108,10 @@ public class NSGAII_main {
     algorithm = new NSGAIIForTest(problem);
     //algorithm = new ssNSGAII(problem);
 
+    algorithm.setInputParameter("baseDirectory", "C:/Users/mahbub/Documents/GitHub/EnergyPLANDomainKnowledgeEAStep1");
     // Algorithm parameters
     algorithm.setInputParameter("populationSize",100);
-    algorithm.setInputParameter("maxEvaluations",25000);
+    algorithm.setInputParameter("maxEvaluations",20000);
 
     // Mutation and Crossover for Real codification 
     parameters = new HashMap() ;

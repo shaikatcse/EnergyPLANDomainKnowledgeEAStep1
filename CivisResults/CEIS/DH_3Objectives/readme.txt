@@ -16,3 +16,10 @@ Th eff: 0.7
 
 Regulation: technical optimization
 technical regulation: 1 (balacing heat demands)
+
+New demands are:
+Transport:
+Diesel: 15.59 GWh
+Petrol: 11.44 GWh
+
+Heat demand: 42.37 GWh

@@ -1,16 +1,8 @@
 EnergyPLAN version
 698
-input_cap_chp3_el=
-1
-input_cap_hp3_el=
-5
-input_cap_pp_el=
-263
 input_RES1_capacity=
-1498
-input_RES2_capacity=
-507
-input_RES3_capacity=
-328
-input_cap_boiler3_th=
-168
+13406
+input_cap_chp2_el=
+5799
+input_cap_hp2_el=
+1921

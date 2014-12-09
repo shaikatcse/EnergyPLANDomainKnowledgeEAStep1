@@ -2,11 +2,21 @@ package reet.fbk.eu.jmetal.stoppingCriteria;
 
 import java.io.BufferedReader;
 import java.io.FileReader;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import java.util.StringTokenizer;
 
 import javax.swing.plaf.basic.BasicInternalFrameTitlePane.MaximizeAction;
+
+import jmetal.core.Problem;
+
+import org.apache.commons.collections.MultiMap;
+import org.apache.commons.collections.map.MultiValueMap;
+import org.apache.commons.math3.stat.descriptive.moment.StandardDeviation;
 
 public class AveragedHausdroffDistance {
 
@@ -17,6 +27,113 @@ public class AveragedHausdroffDistance {
 	 * ArrayList<Solution> Z) { this.X=X; this.Y=Y; this.Z=Z; }
 	 */
 
+	public MultiMap calcualteAverageHausdroffDistance(int numberOfObjectives, MultiMap map) {
+		GenerationalDistance gd = new GenerationalDistance();
+		InvertedGenerationalDistance igd = new InvertedGenerationalDistance();
+	    
+	    // STEP 2. Read the fronts from the files
+	   /* double [][] solutionFrontX = gd.utils_.readFront(args[0]);
+	    double [][] solutionFrontY = gd.utils_.readFront(args[1]);
+	    double [][] trueFront     = gd.utils_.readFront(args[2]);*/
+	    
+	    /*String directoryName="generationFun\\";
+	   String fileName = "FUN"; 
+	    
+	   for(int i=4;i<300;i++){
+	    
+		   double [][] solutionFront4 = gd.utils_.readFront(directoryName+fileName+(i-3));
+		   double [][] solutionFront3 = gd.utils_.readFront(directoryName+fileName+(i-2));
+		    
+		   double [][] solutionFront2 = gd.utils_.readFront(directoryName+fileName+(i-1));
+	    double [][] solutionFront1 = gd.utils_.readFront(directoryName+fileName+(i));
+	    double [][] trueFront     = gd.utils_.readFront(directoryName+fileName+(i));
+	   //    double [][] trueFront     = gd.utils_.readFront(directoryName+"reference.txt");
+	    
+	    trueFront = buildNewFront(trueFront, problem.getNumberOfObjectives());
+	    
+	    double gdValue1 = gd.generationalDistance( solutionFront1, trueFront,problem.getNumberOfObjectives());
+	    double igdValue1 = igd.invertedGenerationalDistance(solutionFront1,trueFront,problem.getNumberOfObjectives());
+	    
+	    double gdValue2 = gd.generationalDistance( solutionFront2, trueFront,problem.getNumberOfObjectives());
+	    double igdValue2 = igd.invertedGenerationalDistance(solutionFront2,trueFront,problem.getNumberOfObjectives());
+	    
+	    double gdValue3 = gd.generationalDistance( solutionFront3, trueFront,problem.getNumberOfObjectives());
+	    double igdValue3 = igd.invertedGenerationalDistance(solutionFront3,trueFront,problem.getNumberOfObjectives());
+	    
+	    double gdValue4 = gd.generationalDistance( solutionFront4, trueFront,problem.getNumberOfObjectives());
+	    double igdValue4 = igd.invertedGenerationalDistance(solutionFront4,trueFront,problem.getNumberOfObjectives());
+	    
+	    //System.out.println("Average (Z,X)"+Math.max(gdValue, igdValue));
+	    
+	  map.put(i,Math.max(gdValue2, igdValue2) - Math.max(gdValue1, igdValue1));
+	  map.put(i, Math.max(gdValue3, igdValue3)-Math.max(gdValue2, igdValue2) );
+	  map.put(i, Math.max(gdValue4, igdValue4)-Math.max(gdValue3, igdValue3) );
+	  
+	  //  map.put(i,Math.max(gdValue1, igdValue1)+" "+ Math.max(gdValue2, igdValue2)
+	    	//	+ " " +Math.max(gdValue3, igdValue3)+ " "+Math.max(gdValue4, igdValue4) );
+	    
+	   }
+		
+	   return map;
+	   */
+		
+		   String directoryName="generationFun\\";
+		   String fileName = "FUN"; 
+		    
+		   double [] averageHD = new double[10];
+		   int j=1;
+		   for(int i=3;i<=300;i++){
+		    
+			 //  double [][] solutionFront4 = gd.utils_.readFront(directoryName+fileName+(i-3));
+			   double [][] solutionFront3 = gd.utils_.readFront(directoryName+fileName+(i-2));
+			    
+			   double [][] solutionFront2 = gd.utils_.readFront(directoryName+fileName+(i-1));
+		  //  double [][] solutionFront1 = gd.utils_.readFront(directoryName+fileName+(i));
+		    double [][] trueFront     = gd.utils_.readFront(directoryName+fileName+(i));
+		   //    double [][] trueFront     = gd.utils_.readFront(directoryName+"reference.txt");
+		    
+		 //  trueFront = buildNewFront(trueFront, 2);
+		    
+		   // double gdValue1 = gd.generationalDistance( solutionFront1, trueFront,3);
+		   // double igdValue1 = igd.invertedGenerationalDistance(solutionFront1,trueFront,3);
+		    
+		    double gdValue2 = gd.generationalDistance( solutionFront2, trueFront,numberOfObjectives);
+		    double igdValue2 = igd.invertedGenerationalDistance(solutionFront2,trueFront,numberOfObjectives);
+		    
+		    double gdValue3 = gd.generationalDistance( solutionFront3, trueFront,3);
+		    double igdValue3 = igd.invertedGenerationalDistance(solutionFront3,trueFront,3);
+		    
+		    //double gdValue4 = gd.generationalDistance( solutionFront4, trueFront,3);
+		    //double igdValue4 = igd.invertedGenerationalDistance(solutionFront4,trueFront,3);
+		    
+		    //System.out.println("Average (Z,X)"+Math.max(gdValue, igdValue));
+		    
+		    
+		    
+		    /*System.out.println(i+" "+Math.max(gdValue1, igdValue1)+" "+ Math.max(gdValue2, igdValue2)
+		    		+ " " +Math.max(gdValue3, igdValue3)+ " "+Math.max(gdValue4, igdValue4));*/
+		    
+		//    System.out.println(i+" "/*+Math.max(gdValue1, igdValue1)+" "*/+ Math.max(gdValue2 , igdValue2));
+		    	//	+ " " +(gdValue3 + igdValue3)+ " "+(gdValue4+ igdValue4));
+		    
+		    /*averageHD[i%10] = Math.max(gdValue2 , igdValue2);
+		    if(i%10==0){
+		    	StandardDeviation sd = new StandardDeviation();
+		    	map.put((int)i/10, sd.evaluate(averageHD));
+		    	
+		    }*/
+		    
+		    
+		    
+		   }
+		    
+		   
+		   return map;
+	   
+	   
+	   
+	  
+	}
 	public static void main(String[] args) {
 		
 		
@@ -31,12 +148,13 @@ public class AveragedHausdroffDistance {
 	    double [][] solutionFrontY = gd.utils_.readFront(args[1]);
 	    double [][] trueFront     = gd.utils_.readFront(args[2]);*/
 	    
-	    String directoryName="generationFun\\CEIS\\";
+	    String directoryName="C:/Users/mahbub/Documents/GitHub/EnergyPLANDomainKnowledgeEAStep1/StoppingCriteriaStudies/data/StoppingCriteriaAnalysis/ZDT1/run1/";
 	   String fileName = "FUN"; 
 	    
-	   for(int i=4;i<100;i++){
+	   double [] averageHD = new double[10];
+	   for(int i=4;i<=300;i++){
 	    
-		   double [][] solutionFront4 = gd.utils_.readFront(directoryName+fileName+(i-3));
+		 double [][] solutionFront4 = gd.utils_.readFront(directoryName+fileName+(i-3));
 		   double [][] solutionFront3 = gd.utils_.readFront(directoryName+fileName+(i-2));
 		    
 		   double [][] solutionFront2 = gd.utils_.readFront(directoryName+fileName+(i-1));
@@ -44,7 +162,7 @@ public class AveragedHausdroffDistance {
 	    double [][] trueFront     = gd.utils_.readFront(directoryName+fileName+(i));
 	   //    double [][] trueFront     = gd.utils_.readFront(directoryName+"reference.txt");
 	    
-	    trueFront = buildNewFront(trueFront);
+	   //trueFront = buildNewFront(trueFront, 2);
 	    
 	    double gdValue1 = gd.generationalDistance( solutionFront1, trueFront,2);
 	    double igdValue1 = igd.invertedGenerationalDistance(solutionFront1,trueFront,2);
@@ -62,20 +180,65 @@ public class AveragedHausdroffDistance {
 	    
 	    
 	    
-	    System.out.println(i+" "+Math.max(gdValue1, igdValue1)+" "+ Math.max(gdValue2, igdValue2)
-	    		+ " " +Math.max(gdValue3, igdValue3)+ " "+Math.max(gdValue4, igdValue4));
-	}}
+	    /*System.out.println(i+" "+Math.max(gdValue1, igdValue1)+" "+ Math.max(gdValue2, igdValue2)
+	    		+ " " +Math.max(gdValue3, igdValue3)+ " "+Math.max(gdValue4, igdValue4));*/
+	    
+	//    System.out.println(i+" "/*+Math.max(gdValue1, igdValue1)+" "*/+ Math.max(gdValue2 , igdValue2));
+	    	//	+ " " +(gdValue3 + igdValue3)+ " "+(gdValue4+ igdValue4));
+	    
+	   /* averageHD[i%10] = Math.max(gdValue2 , igdValue2);
+	    if(i%10==0){
+	    	StandardDeviation sd = new StandardDeviation();
+	    	
+	    	System.out.println(sd.evaluate(averageHD));
+	    }*/
+	    System.out.println(i+" "+Math.max(gdValue1,igdValue1)+" "+Math.max(gdValue2,igdValue2)+" "+Math.max(gdValue3,igdValue3) );
+	}
+	   
+	   /*double [][] X = gd.utils_.readFront(directoryName+"/Test/X.txt");
+	   double [][] Y = gd.utils_.readFront(directoryName+"/Test/Y.txt");
+	   double [][] Z = gd.utils_.readFront(directoryName+"/Test/Z.txt");
+	   
+	   double gdValue1 = gd.generationalDistance( X, Z,2);
+	    double igdValue1 = igd.invertedGenerationalDistance(X,Z,2);
+	    
+	    double gdValue2 = gd.generationalDistance( Y, Z,2);
+	    double igdValue2 = igd.invertedGenerationalDistance(Y,Z,2);
+	    
+	   
+	   
+	   System.out.println("(X,Z)"+Math.max(gdValue1	, igdValue1)+" "+"(Y,Z)"+Math.max(gdValue2	, igdValue2)+" ");
+	   
+	   System.out.println("(X,Z)"+(gdValue1	+ igdValue1)+" "+"(Y,Z)"+(gdValue2	+ igdValue2)+" ");*/
+	   
+	   
+		
+	}
 
-	public static double[][] buildNewFront (double [][] front ){
+	public static double[][] buildNewFront (double [][] front, int numberOfObjectives ){
 		double [] maximumValue;
 		GenerationalDistance gd = new GenerationalDistance();
-		maximumValue = gd.utils_.getMaximumValues(front, 2);
-		double scaleFactor = 1.5;
+		maximumValue = gd.utils_.getMaximumValues(front, numberOfObjectives);
+		double scaleFactor = 1.1;
 		for(int i=0;i<front.length;i++){
-			front[i][0]=(front[i][0]-maximumValue[0])*scaleFactor+maximumValue[0];
-			front[i][1]=(front[i][1]-maximumValue[1])*scaleFactor+maximumValue[1];
+			for(int j=0; j<numberOfObjectives;j++){
+				front[i][j]=(front[i][j]-maximumValue[j])*scaleFactor+maximumValue[j];
+			}
+			//front[i][0]=(front[i][0]-maximumValue[0])*scaleFactor+maximumValue[0];
+			//front[i][1]=(front[i][1]-maximumValue[1])*scaleFactor+maximumValue[1];
 		}
-		
+		/*for(int i=0;i<front.length;i++){
+			for(int j=0; j<numberOfObjectives;j++){
+				System.out.print(front[i][j]+" ");
+			}
+			System.out.println("");
+		}*/
 		return front;
 	}
+	
+	public static double[][] buildReferenceFront(double [][] fornt, int numberOfObjectives){
+		
+	}
+	
+	
 }

@@ -70,7 +70,7 @@ public class ExtractEnergyPLANParametersWithDH {
 		if (siteName.equals("CEIS")) {
 
 			MultiMap energyplanmMap;
-			totalHeatdemand = 55.77;
+		//	totalHeatdemand = 55.77;
 			boilerLifeTime = 20;
 			PVLifeTime = 25;
 			HydroLifeTime = 20;

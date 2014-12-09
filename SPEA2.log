@@ -2,331 +2,67 @@
 <!DOCTYPE log SYSTEM "logger.dtd">
 <log>
 <record>
-  <date>2014-04-21T20:24:21</date>
-  <millis>1398104661895</millis>
+  <date>2014-05-30T16:22:24</date>
+  <millis>1401459744758</millis>
   <sequence>0</sequence>
   <logger>jMetal</logger>
   <level>INFO</level>
-  <class>reet.fbk.eu.OptimizeEnergyPLANWithAccuracy.problem.EnergyPLANProblemStep1WithDKOperatorMain</class>
+  <class>reet.fbk.eu.OptimizeEnergyPLANAalborg.OPtimizeEnergyPLANAalborgMain</class>
   <method>main</method>
   <thread>1</thread>
-  <message>Total execution time: 9845444ms</message>
+  <message>Total execution time: 31429ms</message>
 </record>
 <record>
-  <date>2014-04-21T20:24:21</date>
-  <millis>1398104661906</millis>
+  <date>2014-05-30T16:22:24</date>
+  <millis>1401459744774</millis>
   <sequence>1</sequence>
   <logger>jMetal</logger>
   <level>INFO</level>
-  <class>reet.fbk.eu.OptimizeEnergyPLANWithAccuracy.problem.EnergyPLANProblemStep1WithDKOperatorMain</class>
+  <class>reet.fbk.eu.OptimizeEnergyPLANAalborg.OPtimizeEnergyPLANAalborgMain</class>
   <method>main</method>
   <thread>1</thread>
   <message>Variables values have been writen to file VAR</message>
 </record>
 <record>
-  <date>2014-04-21T20:24:21</date>
-  <millis>1398104661908</millis>
+  <date>2014-05-30T16:22:24</date>
+  <millis>1401459744776</millis>
   <sequence>2</sequence>
   <logger>jMetal</logger>
   <level>INFO</level>
-  <class>reet.fbk.eu.OptimizeEnergyPLANWithAccuracy.problem.EnergyPLANProblemStep1WithDKOperatorMain</class>
+  <class>reet.fbk.eu.OptimizeEnergyPLANAalborg.OPtimizeEnergyPLANAalborgMain</class>
   <method>main</method>
   <thread>1</thread>
   <message>Objectives values have been writen to file FUN</message>
 </record>
 <record>
-  <date>2014-04-21T23:08:45</date>
-  <millis>1398114525120</millis>
+  <date>2014-05-30T16:22:56</date>
+  <millis>1401459776130</millis>
   <sequence>3</sequence>
   <logger>jMetal</logger>
   <level>INFO</level>
-  <class>reet.fbk.eu.OptimizeEnergyPLANWithAccuracy.problem.EnergyPLANProblemStep1WithDKOperatorMain</class>
+  <class>reet.fbk.eu.OptimizeEnergyPLANAalborg.OPtimizeEnergyPLANAalborgMain</class>
   <method>main</method>
   <thread>1</thread>
-  <message>Total execution time: 9863209ms</message>
+  <message>Total execution time: 31353ms</message>
 </record>
 <record>
-  <date>2014-04-21T23:08:45</date>
-  <millis>1398114525121</millis>
+  <date>2014-05-30T16:22:56</date>
+  <millis>1401459776130</millis>
   <sequence>4</sequence>
   <logger>jMetal</logger>
   <level>INFO</level>
-  <class>reet.fbk.eu.OptimizeEnergyPLANWithAccuracy.problem.EnergyPLANProblemStep1WithDKOperatorMain</class>
+  <class>reet.fbk.eu.OptimizeEnergyPLANAalborg.OPtimizeEnergyPLANAalborgMain</class>
   <method>main</method>
   <thread>1</thread>
   <message>Variables values have been writen to file VAR</message>
 </record>
 <record>
-  <date>2014-04-21T23:08:45</date>
-  <millis>1398114525123</millis>
+  <date>2014-05-30T16:22:56</date>
+  <millis>1401459776131</millis>
   <sequence>5</sequence>
   <logger>jMetal</logger>
   <level>INFO</level>
-  <class>reet.fbk.eu.OptimizeEnergyPLANWithAccuracy.problem.EnergyPLANProblemStep1WithDKOperatorMain</class>
-  <method>main</method>
-  <thread>1</thread>
-  <message>Objectives values have been writen to file FUN</message>
-</record>
-<record>
-  <date>2014-04-22T01:53:08</date>
-  <millis>1398124388672</millis>
-  <sequence>6</sequence>
-  <logger>jMetal</logger>
-  <level>INFO</level>
-  <class>reet.fbk.eu.OptimizeEnergyPLANWithAccuracy.problem.EnergyPLANProblemStep1WithDKOperatorMain</class>
-  <method>main</method>
-  <thread>1</thread>
-  <message>Total execution time: 9863535ms</message>
-</record>
-<record>
-  <date>2014-04-22T01:53:08</date>
-  <millis>1398124388673</millis>
-  <sequence>7</sequence>
-  <logger>jMetal</logger>
-  <level>INFO</level>
-  <class>reet.fbk.eu.OptimizeEnergyPLANWithAccuracy.problem.EnergyPLANProblemStep1WithDKOperatorMain</class>
-  <method>main</method>
-  <thread>1</thread>
-  <message>Variables values have been writen to file VAR</message>
-</record>
-<record>
-  <date>2014-04-22T01:53:08</date>
-  <millis>1398124388675</millis>
-  <sequence>8</sequence>
-  <logger>jMetal</logger>
-  <level>INFO</level>
-  <class>reet.fbk.eu.OptimizeEnergyPLANWithAccuracy.problem.EnergyPLANProblemStep1WithDKOperatorMain</class>
-  <method>main</method>
-  <thread>1</thread>
-  <message>Objectives values have been writen to file FUN</message>
-</record>
-<record>
-  <date>2014-04-22T04:37:30</date>
-  <millis>1398134250838</millis>
-  <sequence>9</sequence>
-  <logger>jMetal</logger>
-  <level>INFO</level>
-  <class>reet.fbk.eu.OptimizeEnergyPLANWithAccuracy.problem.EnergyPLANProblemStep1WithDKOperatorMain</class>
-  <method>main</method>
-  <thread>1</thread>
-  <message>Total execution time: 9862159ms</message>
-</record>
-<record>
-  <date>2014-04-22T04:37:30</date>
-  <millis>1398134250839</millis>
-  <sequence>10</sequence>
-  <logger>jMetal</logger>
-  <level>INFO</level>
-  <class>reet.fbk.eu.OptimizeEnergyPLANWithAccuracy.problem.EnergyPLANProblemStep1WithDKOperatorMain</class>
-  <method>main</method>
-  <thread>1</thread>
-  <message>Variables values have been writen to file VAR</message>
-</record>
-<record>
-  <date>2014-04-22T04:37:30</date>
-  <millis>1398134250840</millis>
-  <sequence>11</sequence>
-  <logger>jMetal</logger>
-  <level>INFO</level>
-  <class>reet.fbk.eu.OptimizeEnergyPLANWithAccuracy.problem.EnergyPLANProblemStep1WithDKOperatorMain</class>
-  <method>main</method>
-  <thread>1</thread>
-  <message>Objectives values have been writen to file FUN</message>
-</record>
-<record>
-  <date>2014-04-22T07:21:56</date>
-  <millis>1398144116507</millis>
-  <sequence>12</sequence>
-  <logger>jMetal</logger>
-  <level>INFO</level>
-  <class>reet.fbk.eu.OptimizeEnergyPLANWithAccuracy.problem.EnergyPLANProblemStep1WithDKOperatorMain</class>
-  <method>main</method>
-  <thread>1</thread>
-  <message>Total execution time: 9865663ms</message>
-</record>
-<record>
-  <date>2014-04-22T07:21:56</date>
-  <millis>1398144116507</millis>
-  <sequence>13</sequence>
-  <logger>jMetal</logger>
-  <level>INFO</level>
-  <class>reet.fbk.eu.OptimizeEnergyPLANWithAccuracy.problem.EnergyPLANProblemStep1WithDKOperatorMain</class>
-  <method>main</method>
-  <thread>1</thread>
-  <message>Variables values have been writen to file VAR</message>
-</record>
-<record>
-  <date>2014-04-22T07:21:56</date>
-  <millis>1398144116510</millis>
-  <sequence>14</sequence>
-  <logger>jMetal</logger>
-  <level>INFO</level>
-  <class>reet.fbk.eu.OptimizeEnergyPLANWithAccuracy.problem.EnergyPLANProblemStep1WithDKOperatorMain</class>
-  <method>main</method>
-  <thread>1</thread>
-  <message>Objectives values have been writen to file FUN</message>
-</record>
-<record>
-  <date>2014-04-22T10:07:05</date>
-  <millis>1398154025836</millis>
-  <sequence>15</sequence>
-  <logger>jMetal</logger>
-  <level>INFO</level>
-  <class>reet.fbk.eu.OptimizeEnergyPLANWithAccuracy.problem.EnergyPLANProblemStep1WithDKOperatorMain</class>
-  <method>main</method>
-  <thread>1</thread>
-  <message>Total execution time: 9909323ms</message>
-</record>
-<record>
-  <date>2014-04-22T10:07:05</date>
-  <millis>1398154025836</millis>
-  <sequence>16</sequence>
-  <logger>jMetal</logger>
-  <level>INFO</level>
-  <class>reet.fbk.eu.OptimizeEnergyPLANWithAccuracy.problem.EnergyPLANProblemStep1WithDKOperatorMain</class>
-  <method>main</method>
-  <thread>1</thread>
-  <message>Variables values have been writen to file VAR</message>
-</record>
-<record>
-  <date>2014-04-22T10:07:05</date>
-  <millis>1398154025838</millis>
-  <sequence>17</sequence>
-  <logger>jMetal</logger>
-  <level>INFO</level>
-  <class>reet.fbk.eu.OptimizeEnergyPLANWithAccuracy.problem.EnergyPLANProblemStep1WithDKOperatorMain</class>
-  <method>main</method>
-  <thread>1</thread>
-  <message>Objectives values have been writen to file FUN</message>
-</record>
-<record>
-  <date>2014-04-22T12:58:33</date>
-  <millis>1398164313273</millis>
-  <sequence>18</sequence>
-  <logger>jMetal</logger>
-  <level>INFO</level>
-  <class>reet.fbk.eu.OptimizeEnergyPLANWithAccuracy.problem.EnergyPLANProblemStep1WithDKOperatorMain</class>
-  <method>main</method>
-  <thread>1</thread>
-  <message>Total execution time: 10287432ms</message>
-</record>
-<record>
-  <date>2014-04-22T12:58:33</date>
-  <millis>1398164313274</millis>
-  <sequence>19</sequence>
-  <logger>jMetal</logger>
-  <level>INFO</level>
-  <class>reet.fbk.eu.OptimizeEnergyPLANWithAccuracy.problem.EnergyPLANProblemStep1WithDKOperatorMain</class>
-  <method>main</method>
-  <thread>1</thread>
-  <message>Variables values have been writen to file VAR</message>
-</record>
-<record>
-  <date>2014-04-22T12:58:33</date>
-  <millis>1398164313276</millis>
-  <sequence>20</sequence>
-  <logger>jMetal</logger>
-  <level>INFO</level>
-  <class>reet.fbk.eu.OptimizeEnergyPLANWithAccuracy.problem.EnergyPLANProblemStep1WithDKOperatorMain</class>
-  <method>main</method>
-  <thread>1</thread>
-  <message>Objectives values have been writen to file FUN</message>
-</record>
-<record>
-  <date>2014-04-22T15:52:30</date>
-  <millis>1398174750370</millis>
-  <sequence>21</sequence>
-  <logger>jMetal</logger>
-  <level>INFO</level>
-  <class>reet.fbk.eu.OptimizeEnergyPLANWithAccuracy.problem.EnergyPLANProblemStep1WithDKOperatorMain</class>
-  <method>main</method>
-  <thread>1</thread>
-  <message>Total execution time: 10437091ms</message>
-</record>
-<record>
-  <date>2014-04-22T15:52:30</date>
-  <millis>1398174750370</millis>
-  <sequence>22</sequence>
-  <logger>jMetal</logger>
-  <level>INFO</level>
-  <class>reet.fbk.eu.OptimizeEnergyPLANWithAccuracy.problem.EnergyPLANProblemStep1WithDKOperatorMain</class>
-  <method>main</method>
-  <thread>1</thread>
-  <message>Variables values have been writen to file VAR</message>
-</record>
-<record>
-  <date>2014-04-22T15:52:30</date>
-  <millis>1398174750372</millis>
-  <sequence>23</sequence>
-  <logger>jMetal</logger>
-  <level>INFO</level>
-  <class>reet.fbk.eu.OptimizeEnergyPLANWithAccuracy.problem.EnergyPLANProblemStep1WithDKOperatorMain</class>
-  <method>main</method>
-  <thread>1</thread>
-  <message>Objectives values have been writen to file FUN</message>
-</record>
-<record>
-  <date>2014-04-22T18:45:23</date>
-  <millis>1398185123485</millis>
-  <sequence>24</sequence>
-  <logger>jMetal</logger>
-  <level>INFO</level>
-  <class>reet.fbk.eu.OptimizeEnergyPLANWithAccuracy.problem.EnergyPLANProblemStep1WithDKOperatorMain</class>
-  <method>main</method>
-  <thread>1</thread>
-  <message>Total execution time: 10373109ms</message>
-</record>
-<record>
-  <date>2014-04-22T18:45:23</date>
-  <millis>1398185123486</millis>
-  <sequence>25</sequence>
-  <logger>jMetal</logger>
-  <level>INFO</level>
-  <class>reet.fbk.eu.OptimizeEnergyPLANWithAccuracy.problem.EnergyPLANProblemStep1WithDKOperatorMain</class>
-  <method>main</method>
-  <thread>1</thread>
-  <message>Variables values have been writen to file VAR</message>
-</record>
-<record>
-  <date>2014-04-22T18:45:23</date>
-  <millis>1398185123488</millis>
-  <sequence>26</sequence>
-  <logger>jMetal</logger>
-  <level>INFO</level>
-  <class>reet.fbk.eu.OptimizeEnergyPLANWithAccuracy.problem.EnergyPLANProblemStep1WithDKOperatorMain</class>
-  <method>main</method>
-  <thread>1</thread>
-  <message>Objectives values have been writen to file FUN</message>
-</record>
-<record>
-  <date>2014-04-22T21:39:46</date>
-  <millis>1398195586914</millis>
-  <sequence>27</sequence>
-  <logger>jMetal</logger>
-  <level>INFO</level>
-  <class>reet.fbk.eu.OptimizeEnergyPLANWithAccuracy.problem.EnergyPLANProblemStep1WithDKOperatorMain</class>
-  <method>main</method>
-  <thread>1</thread>
-  <message>Total execution time: 10463423ms</message>
-</record>
-<record>
-  <date>2014-04-22T21:39:46</date>
-  <millis>1398195586915</millis>
-  <sequence>28</sequence>
-  <logger>jMetal</logger>
-  <level>INFO</level>
-  <class>reet.fbk.eu.OptimizeEnergyPLANWithAccuracy.problem.EnergyPLANProblemStep1WithDKOperatorMain</class>
-  <method>main</method>
-  <thread>1</thread>
-  <message>Variables values have been writen to file VAR</message>
-</record>
-<record>
-  <date>2014-04-22T21:39:46</date>
-  <millis>1398195586917</millis>
-  <sequence>29</sequence>
-  <logger>jMetal</logger>
-  <level>INFO</level>
-  <class>reet.fbk.eu.OptimizeEnergyPLANWithAccuracy.problem.EnergyPLANProblemStep1WithDKOperatorMain</class>
+  <class>reet.fbk.eu.OptimizeEnergyPLANAalborg.OPtimizeEnergyPLANAalborgMain</class>
   <method>main</method>
   <thread>1</thread>
   <message>Objectives values have been writen to file FUN</message>

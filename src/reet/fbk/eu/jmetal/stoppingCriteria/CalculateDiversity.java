@@ -7,16 +7,24 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Map;
 import java.util.StringTokenizer;
 
 import org.apache.commons.math3.stat.inference.KolmogorovSmirnovTest;
+import org.apache.commons.math3.stat.inference.MannWhitneyUTest;
+import org.apache.commons.math3.stat.inference.WilcoxonSignedRankTest;
 
+import jmetal.core.Problem;
 import jmetal.core.Solution;
 
-class SolutionVariables {
-	double variable[] = new double[3] ;
+import org.apache.commons.collections.MultiMap;
+import org.apache.commons.collections.map.MultiValueMap;
 
-	public SolutionVariables() {
+class SolutionVariables {
+	double variable[] ;
+
+	public SolutionVariables(int numberOfVariables) {
+		variable = new double[30] ;
 
 		// TODO Auto-generated constructor stub
 	}
@@ -31,7 +39,40 @@ class SolutionVariables {
 }
 
 public class CalculateDiversity {
+	
+	public static void main(String[] args){
+		CalculateDiversity cd = new CalculateDiversity();
+		MultiMap map = new MultiValueMap();
+		map = cd.diversityStatisticalTest(7, map);
+		
+		/*//cd.solutionList.clear();
+		String output="";
+		double [] array = new double[200];
+		for(int i=1;i<200;i++){
+			cd.solutionList.clear();;
+			cd.readVARFiles("generationVar\\VAR"+i);
+			output=output+","+cd.calculateDiversity();
+			array[i-1]=cd.calculateDiversity();
+			
+		}
+		KolmogorovSmirnovTest kst =  new KolmogorovSmirnovTest();
+		for(int i=30;i<200;i++){
+			double []x = Arrays.copyOfRange(array, (i-30), i);
+			double []y=Arrays.copyOfRange(array, i-5, i);
+			//System.out.println(Arrays.toString(x));
+			//System.out.println(Arrays.toString(y));
+			double pValue=kst.kolmogorovSmirnovTest(x, y);
+			System.out.println(i+" "+pValue);
+		}
+		//System.out.println(output);*/
+		cd.printDiversity();
+		
+		for(int i=2;i<31;i++){
+			System.out.println(i+ " "+ map.get(i).toString());
+		}
+	}
 
+	double [] array = new double[300];
 	List<SolutionVariables> solutionList;
 
 	public CalculateDiversity() {
@@ -40,7 +81,7 @@ public class CalculateDiversity {
 		// TODO Auto-generated constructor stub
 	}
 
-	void readVARFiles(String fileName) {
+	void readVARFiles(String fileName, int numberOfVariables) {
 		try {
 			BufferedReader br = new BufferedReader(new FileReader(fileName));
 			String line;
@@ -49,7 +90,7 @@ public class CalculateDiversity {
 				//System.out.println(line);
 				StringTokenizer st = new StringTokenizer(line);
 				int i = 0;
-				SolutionVariables sv = new SolutionVariables() ;
+				SolutionVariables sv = new SolutionVariables(numberOfVariables) ;
 				while (st.hasMoreTokens()) {
 					sv.setVariable(Double.parseDouble(st.nextToken()), i);
 					i++;
@@ -82,8 +123,7 @@ public class CalculateDiversity {
 		return XkSquareSum/solutionList.size();
 	}
 	
-	double calculateDiversity(){
-		final int numberOfVariables=3;
+	double calculateDiversity(int numberOfVariables){
 		double total=0;
 		for(int i=0;i<numberOfVariables;i++){
 			total+=(calculateXkSquareVar(i) -Math.pow(calculationXkvar(i),2));
@@ -92,27 +132,53 @@ public class CalculateDiversity {
 		double diversity = Math.sqrt(total)/numberOfVariables;
 		return diversity;
 	}
-	public static void main(String[] args){
-		CalculateDiversity cd = new CalculateDiversity();
-		//cd.solutionList.clear();
-		String output="";
-		double [] array = new double[100];
-		for(int i=1;i<100;i++){
-			cd.solutionList.clear();;
-			cd.readVARFiles("generationVar\\VAR"+i);
-			output=output+","+cd.calculateDiversity();
-			array[i-1]=cd.calculateDiversity();
+	
+
+	
+	public void printDiversity(){
+		for(int i=0;i<this.array.length;i++){
+			//System.out.println(i+" "+this.array[i]);
+			System.out.println(this.array[i]);
+		}
+			
+	}
+	
+	public MultiMap diversityStatisticalTest(int numberOfVariables, MultiMap map){
+		double [] array = new double[500];
+		for(int i=1;i<=500;i++){
+			solutionList.clear();
+			readVARFiles("C:/Users/mahbub/Documents/GitHub/EnergyPLANDomainKnowledgeEAStep1/StoppingCriteriaStudies/data/StoppingCriteriaAnalysis/DTLZ1/run0/VAR"+i, numberOfVariables);
+			array[i-1]=calculateDiversity(numberOfVariables);
 			
 		}
+		this.array=array;
+		
 		KolmogorovSmirnovTest kst =  new KolmogorovSmirnovTest();
-		for(int i=30;i<100;i++){
-			double []x = Arrays.copyOfRange(array, 0/*(i-30)*/, i);
-			double []y=Arrays.copyOfRange(array, i, i+5);
+		//MannWhitneyUTest kst =  new MannWhitneyUTest();
+		
+		for(int i=2;i<31;i+=1){
+			
+			double []x = Arrays.copyOfRange(array, i*10-2*10, i*10-10);
+			double []y=Arrays.copyOfRange(array, i*10-10, i*10);
+			
 			//System.out.println(Arrays.toString(x));
 			//System.out.println(Arrays.toString(y));
-			double pValue=kst.kolmogorovSmirnovTest(x, y);
-			System.out.println(pValue);
-		}
-		//System.out.println(output);
+		
+						
+			//double pValue=kst.kolmogorovSmirnovTest(x, y, false);
+			//double dValue = kst.kolmogorovSmirnovStatistic(x, y);
+		
+			
+			
+			final double d = kst.kolmogorovSmirnovStatistic(y, x);
+			double p=kst.exactP(d, x.length, y.length, false);
+			
+			//double p =kst.mannWhitneyUTest(x, y);
+			
+			//String str = p;
+			map.put(i, p);
 	}
+	
+		return map;
+}
 }
