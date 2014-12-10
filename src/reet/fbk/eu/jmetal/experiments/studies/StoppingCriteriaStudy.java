@@ -33,7 +33,8 @@ import java.util.HashMap;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import reet.fbk.eu.jmetal.experiments.settings.NSGAIIForTest_Settings;
+import reet.fbk.eu.jmetal.experiments.settings.NSGAIIForSC_Settings;
+import reet.fbk.eu.jmetal.experiments.settings.SPEA2ForSC_Settings;
 
 /**
  * Class implementing an example of experiment using NSGA-II as base algorithm.
@@ -73,8 +74,9 @@ public class StoppingCriteriaStudy extends Experiment {
           parameters[i].put("paretoFrontFile_",  paretoFrontFile_[problemIndex]);
       } // if*/
  
-      for (int i = 0; i < numberOfAlgorithms; i++)
-        algorithm[i] = new NSGAIIForTest_Settings(problemName).configure(parameters[i]);
+      //for (int i = 0; i < numberOfAlgorithms; i++)
+        algorithm[0] = new NSGAIIForSC_Settings(problemName).configure(parameters[0]);
+      	algorithm[1] = new SPEA2ForSC_Settings(problemName).configure(parameters[0]);
       
     } catch (IllegalArgumentException ex) {
       Logger.getLogger(StoppingCriteriaStudy.class.getName()).log(Level.SEVERE, null, ex);
@@ -90,9 +92,9 @@ public class StoppingCriteriaStudy extends Experiment {
     
     exp.experimentName_  = "StoppingCriteriaStudies" ;
     exp.algorithmNameList_   = new String[] {
-      "StoppingCriteriaAnalysis"} ;
+      "NSGAIISC", "SPEA2SC"} ;
     exp.problemList_     = new String[] {
-      "DTLZ1"};/* "ZDT2"};/*,"ZDT2","ZDT3","ZDT4"};/*,"ZDT2", "ZDT3", "ZDT4", "ZDT6"} ;"
+      "ZDT6", "ZDT4"};/* "ZDT2"};/*,"ZDT2","ZDT3","ZDT4"};/*,"ZDT2", "ZDT3", "ZDT4", "ZDT6"} ;"
       		 
     /*exp.paretoFrontFile_ = new String[] {
       "ZDT1.pf", "ZDT2.pf", "ZDT3.pf","ZDT4.pf", "DTLZ1.2D.pf", "WFG2.2D.pf"} ;

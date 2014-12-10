@@ -60,7 +60,7 @@ import jmetal.util.comparators.CrowdingComparator;
  * Print each generation of Pareto-front and population in desision space
  */
 
-public class NSGAIIForTest extends NSGAII {
+public class NSGAIIForSC extends NSGAII {
 
 	RepairSolution repairSolution;
 
@@ -68,6 +68,7 @@ public class NSGAIIForTest extends NSGAII {
 	FileWriter fwHV, fwGD, fwIGD, fwSpread, fwEpsilon, fwGenSpread;;
 	BufferedWriter bwHV, bwGD, bwIGD, bwSpread, bwEpsilon, bwGenSpread;;
 
+	String algoName;
 	/**
 	 * Constructor
 	 * 
@@ -75,13 +76,14 @@ public class NSGAIIForTest extends NSGAII {
 	 *            Problem to solve
 	 */
 
-	public NSGAIIForTest(Problem problem) {
+	public NSGAIIForSC(Problem problem) {
 		super(problem);
 		// repairSolution = new RepairSolution();
+		algoName="NSGAIISC";
 
 	} // NSGAII
 
-	public NSGAIIForTest(Problem problem, long seed, String folderName) {
+	public NSGAIIForSC(Problem problem, long seed, String folderName) {
 		super(problem);
 		repairSolution = new RepairSolution();
 		if (!(new File(folderName + "\\HV").exists()))
@@ -218,12 +220,11 @@ public class NSGAIIForTest extends NSGAII {
 		// Generations
 		int runs=((Integer) getInputParameter("run"))
 				.intValue();
-		String runDirectory="C:/Users/mahbub/Documents/GitHub/EnergyPLANDomainKnowledgeEAStep1"
-		+ "/StoppingCriteriaStudies/data/StoppingCriteriaAnalysis/"
+		String runDirectory="C:/Users/mahbub/Documents/GitHub/EnergyPLANDomainKnowledgeEAStep1/StoppingCriteriaStudies/data/"+algoName+"/"
 		+ problem_.getName()+"/run"+runs;
 		File runDir = new File(runDirectory);
 		if (!runDir.exists()) {
-			runDir.mkdir();
+			System.out.println(runDir.mkdir());
 		
 		}
 		
@@ -387,7 +388,7 @@ public class NSGAIIForTest extends NSGAII {
 				+ (int) evaluations / populationSize);
 		
 		// stopping criteria analysis
-		MultiMap map = new MultiValueMap(); 
+	/*	MultiMap map = new MultiValueMap(); 
 		AveragedHausdroffDistance averageHD = new AveragedHausdroffDistance();
 		CalculateDiversity calDV = new CalculateDiversity();
 		GenerationHypervolume hv = new GenerationHypervolume();
@@ -442,7 +443,7 @@ public class NSGAIIForTest extends NSGAII {
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
-		}
+		}*/
 
 		
 		

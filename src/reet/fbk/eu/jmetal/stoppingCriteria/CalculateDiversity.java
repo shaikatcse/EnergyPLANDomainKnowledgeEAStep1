@@ -43,7 +43,7 @@ public class CalculateDiversity {
 	public static void main(String[] args){
 		CalculateDiversity cd = new CalculateDiversity();
 		MultiMap map = new MultiValueMap();
-		map = cd.diversityStatisticalTest(7, map);
+		map = cd.diversityStatisticalTest(10, map);
 		
 		/*//cd.solutionList.clear();
 		String output="";
@@ -147,7 +147,7 @@ public class CalculateDiversity {
 		double [] array = new double[500];
 		for(int i=1;i<=500;i++){
 			solutionList.clear();
-			readVARFiles("C:/Users/mahbub/Documents/GitHub/EnergyPLANDomainKnowledgeEAStep1/StoppingCriteriaStudies/data/StoppingCriteriaAnalysis/DTLZ1/run0/VAR"+i, numberOfVariables);
+			readVARFiles("C:/Users/mahbub/Documents/GitHub/EnergyPLANDomainKnowledgeEAStep1/StoppingCriteriaStudies/data/StoppingCriteriaAnalysis/ZDT6/run0/VAR"+i, numberOfVariables);
 			array[i-1]=calculateDiversity(numberOfVariables);
 			
 		}

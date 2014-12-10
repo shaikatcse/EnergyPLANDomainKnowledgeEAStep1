@@ -35,12 +35,13 @@ import jmetal.util.JMException;
 
 import java.util.HashMap;
 
-import reet.fbk.eu.jmetal.metaheuristics.nsgaII.NSGAIIForTest;
+import reet.fbk.eu.jmetal.metaheuristics.nsgaII.NSGAIIForSC;
+
 
 /**
  * Settings class of algorithm NSGA-II (real encoding)
  */
-public class NSGAIIForTest_Settings extends Settings {
+public class NSGAIIForSC_Settings extends Settings {
   private int populationSize_                 ;
   private int maxEvaluations_                 ;
   private double mutationProbability_         ;
@@ -51,7 +52,7 @@ public class NSGAIIForTest_Settings extends Settings {
   /**
    * Constructor
    */
-  public NSGAIIForTest_Settings(String problem) {
+  public NSGAIIForSC_Settings(String problem) {
     super(problem) ;
 
     Object [] problemParams = {"Real"};
@@ -63,7 +64,7 @@ public class NSGAIIForTest_Settings extends Settings {
     }
     // Default experiments.settings
     populationSize_              = 100   ;
-    maxEvaluations_              = 50000 ;
+    maxEvaluations_              = 30000 ;
     mutationProbability_         = 1.0/problem_.getNumberOfVariables() ;
     crossoverProbability_        = 0.9   ;
     mutationDistributionIndex_   = 20.0  ;
@@ -86,7 +87,7 @@ public class NSGAIIForTest_Settings extends Settings {
 
     // Creating the algorithm. There are two choices: NSGAII and its steady-
     // state variant ssNSGAII
-    algorithm = new NSGAIIForTest(problem_) ;
+    algorithm = new NSGAIIForSC(problem_) ;
     //algorithm = new ssNSGAII(problem_) ;
 
     // Algorithm parameters

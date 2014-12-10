@@ -15,13 +15,16 @@ import jmetal.core.Problem;
 import jmetal.problems.DTLZ.DTLZ1;
 import jmetal.problems.ZDT.ZDT1;
 import jmetal.problems.ZDT.ZDT2;
+import jmetal.problems.ZDT.ZDT3;
+import jmetal.problems.ZDT.ZDT4;
+import jmetal.problems.ZDT.ZDT6;
 import jmetal.qualityIndicator.Hypervolume;
 
 public class GenerationHypervolume {
 
 	public MultiMap calculateHyperVolume(Problem problem, MultiMap map){
 		 
-		String directoryName="C:/Users/mahbub/Documents/GitHub/EnergyPLANDomainKnowledgeEAStep1/StoppingCriteriaStudies/data/StoppingCriteriaAnalysis/DTLZ1/run0/";
+		String directoryName="C:/Users/mahbub/Documents/GitHub/EnergyPLANDomainKnowledgeEAStep1/StoppingCriteriaStudies/data/StoppingCriteriaAnalysis/ZDT6/run0/";
 		   String fileName = "FUN"; 
 		   
 		   Hypervolume qualityIndicator = new Hypervolume();
@@ -64,11 +67,11 @@ public class GenerationHypervolume {
 		GenerationHypervolume gHV= new GenerationHypervolume();
 		MultiMap map = new MultiValueMap();
 		
-		Problem problem = new DTLZ1("Real");
+		Problem problem = new ZDT6("Real");
 		gHV.calculateHyperVolume(problem, map);
 		
 		
-		for(int i=4;i<=500;i++){
+		for(int i=1;i<=500;i++){
 			String str=map.get(i).toString().replaceAll("\\[|\\]","");
 			System.out.println(str);
 		}
