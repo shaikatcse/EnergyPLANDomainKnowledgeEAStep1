@@ -1,8 +1,10 @@
 package reet.fbk.eu.jmetal.stoppingCriteria;
 
 import java.io.BufferedReader;
+import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
+import java.io.FilenameFilter;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -40,10 +42,29 @@ class SolutionVariables {
 
 public class CalculateDiversity {
 	
+	double [] array;
+	double [] sum;
+	int numberOfGenerations;
+	
+	List<SolutionVariables> solutionList;
+
+	public CalculateDiversity(String path) {
+		solutionList = new ArrayList<SolutionVariables>();
+
+		int totalNumberOfFiles = new File(path+"/run0").listFiles().length;
+		array = new double[totalNumberOfFiles/2];
+		sum = new double[totalNumberOfFiles/2];
+		numberOfGenerations = totalNumberOfFiles/2;
+		
+		// TODO Auto-generated constructor stub
+	}
+	
 	public static void main(String[] args){
-		CalculateDiversity cd = new CalculateDiversity();
-		MultiMap map = new MultiValueMap();
-		map = cd.diversityStatisticalTest(10, map);
+		CalculateDiversity cd = new CalculateDiversity("C:/Users/mahbub/Documents/GitHub/EnergyPLANDomainKnowledgeEAStep1/StoppingCriteriaStudies/data/NSGAIISC/ZDT6");
+		cd.calculateAverageOfDiversityOfAllGenerations("C:/Users/mahbub/Documents/GitHub/EnergyPLANDomainKnowledgeEAStep1/StoppingCriteriaStudies/data/NSGAIISC/ZDT6",10);
+		
+		//MultiMap map = new MultiValueMap();
+		//map = cd.diversityStatisticalTest(10, map);
 		
 		/*//cd.solutionList.clear();
 		String output="";
@@ -65,20 +86,44 @@ public class CalculateDiversity {
 			System.out.println(i+" "+pValue);
 		}
 		//System.out.println(output);*/
-		cd.printDiversity();
+	/*	cd.printDiversity();
 		
 		for(int i=2;i<31;i++){
 			System.out.println(i+ " "+ map.get(i).toString());
-		}
+		}*/
 	}
 
-	double [] array = new double[300];
-	List<SolutionVariables> solutionList;
-
-	public CalculateDiversity() {
-		solutionList = new ArrayList<SolutionVariables>();
-
-		// TODO Auto-generated constructor stub
+	
+	
+	void calculateDiversityOfAllGenerations(String path,int numberOfVariables){
+		
+		for(int i=0;i<array.length;i++){
+			solutionList.clear();
+			readVARFiles(path+"/VAR"+(i+1), numberOfVariables);
+			array[i]=calculateDiversity(numberOfVariables);
+			
+		}
+		
+	}
+	
+	void calculateAverageOfDiversityOfAllGenerations(String path, int numberOfVariables){
+		File file = new File(path); 
+		String[] directories = file.list(new FilenameFilter() {
+		  @Override
+		  public boolean accept(File current, String name) {
+		    return new File(current, name).isDirectory();
+		  }
+		});
+		
+		for(int i=0;i<directories.length;i++){
+			calculateDiversityOfAllGenerations(path+"/"+directories[i], numberOfVariables);
+			for(int j=0;j<numberOfGenerations;j++){
+				sum[j]+=array[j];
+			}
+		}
+		for(int i=0;i<numberOfGenerations;i++){
+			System.out.println((i+1)+ " "+sum[i]/directories.length);
+		}
 	}
 
 	void readVARFiles(String fileName, int numberOfVariables) {
@@ -144,14 +189,7 @@ public class CalculateDiversity {
 	}
 	
 	public MultiMap diversityStatisticalTest(int numberOfVariables, MultiMap map){
-		double [] array = new double[500];
-		for(int i=1;i<=500;i++){
-			solutionList.clear();
-			readVARFiles("C:/Users/mahbub/Documents/GitHub/EnergyPLANDomainKnowledgeEAStep1/StoppingCriteriaStudies/data/StoppingCriteriaAnalysis/ZDT6/run0/VAR"+i, numberOfVariables);
-			array[i-1]=calculateDiversity(numberOfVariables);
-			
-		}
-		this.array=array;
+		
 		
 		KolmogorovSmirnovTest kst =  new KolmogorovSmirnovTest();
 		//MannWhitneyUTest kst =  new MannWhitneyUTest();

@@ -175,10 +175,11 @@ public class SPEA2ForSC extends Algorithm {
 			// write FUN and VAR for each generation
 			Ranking generationRanking = new Ranking(archive);
 			generationRanking.getSubfront(0).printFeasibleFUN(
-					runDirectory+"\\FUN" + (int) evaluations / populationSize);
-			archive.printVariablesToFile(runDirectory+"\\VAR"
+					runDirectory+"/FUN" + (int) evaluations / populationSize);
+			archive.printVariablesToFile(runDirectory+"/VAR"
 					+ (int) evaluations / populationSize);
-			
+			if((int) evaluations / populationSize == 299)
+			 System.out.println("hi");
 			
 			// Create a new offspringPopulation
 			offSpringSolutionSet = new SolutionSet(populationSize);

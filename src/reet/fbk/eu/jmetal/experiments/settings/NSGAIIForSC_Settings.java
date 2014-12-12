@@ -64,7 +64,7 @@ public class NSGAIIForSC_Settings extends Settings {
     }
     // Default experiments.settings
     populationSize_              = 100   ;
-    maxEvaluations_              = 30000 ;
+    maxEvaluations_              = 50000 ;
     mutationProbability_         = 1.0/problem_.getNumberOfVariables() ;
     crossoverProbability_        = 0.9   ;
     mutationDistributionIndex_   = 20.0  ;

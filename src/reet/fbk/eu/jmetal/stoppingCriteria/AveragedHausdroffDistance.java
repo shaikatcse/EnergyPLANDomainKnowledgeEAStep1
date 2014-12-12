@@ -1,8 +1,10 @@
 package reet.fbk.eu.jmetal.stoppingCriteria;
 
 import java.io.BufferedReader;
+import java.io.File;
 import java.io.FileReader;
 import java.io.FileWriter;
+import java.io.FilenameFilter;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -13,6 +15,12 @@ import java.util.StringTokenizer;
 import javax.swing.plaf.basic.BasicInternalFrameTitlePane.MaximizeAction;
 
 import jmetal.core.Problem;
+import jmetal.problems.ZDT.ZDT1;
+import jmetal.problems.ZDT.ZDT2;
+import jmetal.problems.ZDT.ZDT3;
+import jmetal.problems.ZDT.ZDT4;
+import jmetal.problems.ZDT.ZDT6;
+import jmetal.qualityIndicator.Hypervolume;
 
 import org.apache.commons.collections.MultiMap;
 import org.apache.commons.collections.map.MultiValueMap;
@@ -26,6 +34,26 @@ public class AveragedHausdroffDistance {
 	 * public HausdroffDistance(ArrayList<Solution> X, ArrayList<Solution> Y,
 	 * ArrayList<Solution> Z) { this.X=X; this.Y=Y; this.Z=Z; }
 	 */
+	double [] array;
+	double [] sum;
+	int numberOfGenerations;
+	
+	Problem problem;
+	String path;
+	
+	GenerationalDistance gd;
+	InvertedGenerationalDistance igd;
+	
+	AveragedHausdroffDistance(String path, Problem problem){
+		int totalNumberOfFiles = new File(path+"/run0").listFiles().length;
+		array = new double[totalNumberOfFiles/2];
+		sum = new double[totalNumberOfFiles/2];
+		numberOfGenerations = totalNumberOfFiles/2;
+		this.problem = problem;
+		this.path = path;
+		gd = new GenerationalDistance();
+		igd = new InvertedGenerationalDistance();
+	}
 
 	public MultiMap calcualteAverageHausdroffDistance(int numberOfObjectives, MultiMap map) {
 		GenerationalDistance gd = new GenerationalDistance();
@@ -134,13 +162,51 @@ public class AveragedHausdroffDistance {
 	   
 	  
 	}
-	public static void main(String[] args) {
+	
+	double  calclulate_ithGenerationHD(String path, int i){
+		
+		  double [][] solutionFront2 = gd.utils_.readFront(path+"/FUN"+i);
+		    double [][] solutionFront1 = gd.utils_.readFront(path+"/FUN"+(i-1));
+		    
+		    double gdValue = gd.generationalDistance( solutionFront1, solutionFront2,problem.getNumberOfObjectives());
+		    double igdValue = igd.invertedGenerationalDistance( solutionFront1, solutionFront2,problem.getNumberOfObjectives());
+		    return Math.max(gdValue,igdValue);
+	}
+	
+	void calculateAllGenerationsHD(String path){
+		for(int i=1;i<numberOfGenerations;i++){
+			array[i]=calclulate_ithGenerationHD(path, (i+1));
+		}
+	}
+	
+	void calculateAverageHDOfAllGenerations(){
+		File file = new File(path); 
+		String[] directories = file.list(new FilenameFilter() {
+		  @Override
+		  public boolean accept(File current, String name) {
+		    return new File(current, name).isDirectory();
+		  }
+		});
+		
+		for(int i=0;i<directories.length;i++){
+			calculateAllGenerationsHD(path+"/"+directories[i]);
+			for(int j=0;j<numberOfGenerations;j++){
+				sum[j]+=array[j];
+			}
+		}
+		for(int i=1;i<numberOfGenerations;i++){
+			System.out.println((i+1)+ " "+sum[i]/directories.length);
+		}
+	}
+	
+	
+	public static void main(String[] args) throws ClassNotFoundException {
 		
 		
 		 // STEP 1. Create an instance of Generational Distance
 		//jmetal.qualityIndicator.util.MetricsUtil utils_= new jmetal.qualityIndicator.util.MetricsUtil();;
 	    
-		GenerationalDistance gd = new GenerationalDistance();
+		/*GenerationalDistance gd = new GenerationalDistance();
 	    InvertedGenerationalDistance igd = new InvertedGenerationalDistance();
 	    
 	    // STEP 2. Read the fronts from the files
@@ -148,23 +214,23 @@ public class AveragedHausdroffDistance {
 	    double [][] solutionFrontY = gd.utils_.readFront(args[1]);
 	    double [][] trueFront     = gd.utils_.readFront(args[2]);*/
 	    
-	    String directoryName="C:/Users/mahbub/Documents/GitHub/EnergyPLANDomainKnowledgeEAStep1/StoppingCriteriaStudies/data/StoppingCriteriaAnalysis/ZDT1/run1/";
+	/*    String directoryName="C:/Users/mahbub/Documents/GitHub/EnergyPLANDomainKnowledgeEAStep1/StoppingCriteriaStudies/data/NSGAIISC/ZDT4/run2/";
 	   String fileName = "FUN"; 
 	    
 	   double [] averageHD = new double[10];
-	   for(int i=4;i<=300;i++){
+	   for(int i=2;i<=300;i++){
 	    
-		 double [][] solutionFront4 = gd.utils_.readFront(directoryName+fileName+(i-3));
-		   double [][] solutionFront3 = gd.utils_.readFront(directoryName+fileName+(i-2));
+		 //double [][] solutionFront4 = gd.utils_.readFront(directoryName+fileName+(i-3));
+		   //double [][] solutionFront3 = gd.utils_.readFront(directoryName+fileName+(i-2));
 		    
 		   double [][] solutionFront2 = gd.utils_.readFront(directoryName+fileName+(i-1));
 	    double [][] solutionFront1 = gd.utils_.readFront(directoryName+fileName+(i));
-	    double [][] trueFront     = gd.utils_.readFront(directoryName+fileName+(i));
+	   // double [][] trueFront     = gd.utils_.readFront(directoryName+fileName+(i));
 	   //    double [][] trueFront     = gd.utils_.readFront(directoryName+"reference.txt");
 	    
 	   //trueFront = buildNewFront(trueFront, 2);
 	    
-	    double gdValue1 = gd.generationalDistance( solutionFront1, trueFront,2);
+	    /*double gdValue1 = gd.generationalDistance( solutionFront1, trueFront,2);
 	    double igdValue1 = igd.invertedGenerationalDistance(solutionFront1,trueFront,2);
 	    
 	    double gdValue2 = gd.generationalDistance( solutionFront2, trueFront,2);
@@ -174,7 +240,11 @@ public class AveragedHausdroffDistance {
 	    double igdValue3 = igd.invertedGenerationalDistance(solutionFront3,trueFront,2);
 	    
 	    double gdValue4 = gd.generationalDistance( solutionFront4, trueFront,2);
-	    double igdValue4 = igd.invertedGenerationalDistance(solutionFront4,trueFront,2);
+	    double igdValue4 = igd.invertedGenerationalDistance(solutionFront4,trueFront,2);*/
+	    
+	  /*  double gdValue = gd.generationalDistance( solutionFront1, solutionFront2,2);
+	    double igdValue = igd.invertedGenerationalDistance( solutionFront1, solutionFront2,2);
+	    
 	    
 	    //System.out.println("Average (Z,X)"+Math.max(gdValue, igdValue));
 	    
@@ -192,8 +262,13 @@ public class AveragedHausdroffDistance {
 	    	
 	    	System.out.println(sd.evaluate(averageHD));
 	    }*/
-	    System.out.println(i+" "+Math.max(gdValue1,igdValue1)+" "+Math.max(gdValue2,igdValue2)+" "+Math.max(gdValue3,igdValue3) );
-	}
+	   // System.out.println(i+" "+Math.max(gdValue1,igdValue1)+" "+Math.max(gdValue2,igdValue2)+" "+Math.max(gdValue3,igdValue3) );
+	   /* System.out.println(Math.max(gdValue,igdValue));*/
+		
+		Problem problem = new ZDT6("Real");
+		AveragedHausdroffDistance avghd = new AveragedHausdroffDistance("C:/Users/mahbub/Documents/GitHub/EnergyPLANDomainKnowledgeEAStep1/StoppingCriteriaStudies/data/NSGAIISC/ZDT6", problem);
+		avghd.calculateAverageHDOfAllGenerations();
+	   }
 	   
 	   /*double [][] X = gd.utils_.readFront(directoryName+"/Test/X.txt");
 	   double [][] Y = gd.utils_.readFront(directoryName+"/Test/Y.txt");
@@ -213,7 +288,7 @@ public class AveragedHausdroffDistance {
 	   
 	   
 		
-	}
+	
 
 	public static double[][] buildNewFront (double [][] front, int numberOfObjectives ){
 		double [] maximumValue;

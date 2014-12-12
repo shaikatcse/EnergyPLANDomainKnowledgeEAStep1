@@ -64,7 +64,7 @@ public class SPEA2ForSC_Settings extends Settings {
 
     populationSize_           = 100   ;
     archiveSize_              = 100   ;
-    maxEvaluations_           = 25000 ;
+    maxEvaluations_           = 30000 ;
     mutationProbability_   = 1.0/problem_.getNumberOfVariables() ;
     crossoverProbability_  = 0.9   ;
     crossoverDistributionIndex_ = 20.0  ;

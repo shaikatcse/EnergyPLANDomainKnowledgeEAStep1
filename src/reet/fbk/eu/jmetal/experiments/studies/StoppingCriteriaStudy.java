@@ -76,7 +76,7 @@ public class StoppingCriteriaStudy extends Experiment {
  
       //for (int i = 0; i < numberOfAlgorithms; i++)
         algorithm[0] = new NSGAIIForSC_Settings(problemName).configure(parameters[0]);
-      	algorithm[1] = new SPEA2ForSC_Settings(problemName).configure(parameters[0]);
+      //	algorithm[0] = new SPEA2ForSC_Settings(problemName).configure(parameters[0]);
       
     } catch (IllegalArgumentException ex) {
       Logger.getLogger(StoppingCriteriaStudy.class.getName()).log(Level.SEVERE, null, ex);
@@ -92,9 +92,9 @@ public class StoppingCriteriaStudy extends Experiment {
     
     exp.experimentName_  = "StoppingCriteriaStudies" ;
     exp.algorithmNameList_   = new String[] {
-      "NSGAIISC", "SPEA2SC"} ;
+      "NSGAIISC"/*, "SPEA2SC"*/} ;
     exp.problemList_     = new String[] {
-      "ZDT6", "ZDT4"};/* "ZDT2"};/*,"ZDT2","ZDT3","ZDT4"};/*,"ZDT2", "ZDT3", "ZDT4", "ZDT6"} ;"
+     "ZDT1", "ZDT2", "ZDT3", "ZDT4", "ZDT6"};/* "ZDT2"};/*,"ZDT2","ZDT3","ZDT4"};/*,"ZDT2", "ZDT3", "ZDT4", "ZDT6"} ;"
       		 
     /*exp.paretoFrontFile_ = new String[] {
       "ZDT1.pf", "ZDT2.pf", "ZDT3.pf","ZDT4.pf", "DTLZ1.2D.pf", "WFG2.2D.pf"} ;
@@ -108,7 +108,7 @@ public class StoppingCriteriaStudy extends Experiment {
     
     exp.algorithmSettings_ = new Settings[numberOfAlgorithms] ;
     
-    exp.independentRuns_ = 3 ;
+    exp.independentRuns_ = 10 ;
 
     exp.initExperiment();
 
