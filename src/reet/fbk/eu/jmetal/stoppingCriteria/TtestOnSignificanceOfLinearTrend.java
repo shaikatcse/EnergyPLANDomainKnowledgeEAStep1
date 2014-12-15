@@ -61,8 +61,44 @@ public class TtestOnSignificanceOfLinearTrend {
 
 	    return min_value;
 	}
+
 	
+public static double doSignificanceTest(double []array){
+		
+		Mean mean = new Mean();
+		StandardDeviation sd = new StandardDeviation(true/*means sample standardDeviation*/);
+		
+		double x[] = new double[array.length];
+		for(int i=0;i<array.length;i++){
+			x[i]=i+1;
+		}
+				
+		double [] normlizedArray = new double[array.length];
+		int degreesOfFreedom = array.length - 1;
+		double statsMean=mean.evaluate(array);
+		double statSD=sd.evaluate(array);
+		double xMean = mean.evaluate(x);
+		double xStd = sd.evaluate(x);
+		for(int i=0;i<array.length;i++){
+			normlizedArray[i]= (array[i]- statsMean)/statSD;
+			x[i]=(x[i]-xMean)/xStd;
+		}
 	
+		RealMatrix  PIStar = MatrixUtils.createRowRealMatrix(normlizedArray) ;
+		RealMatrix X = MatrixUtils.createRowRealMatrix(x);
+		RealMatrix XInv =(new LUDecomposition(X.multiply(X.transpose()))).getSolver().getInverse();
+		RealMatrix betaHat = XInv.multiply(X.multiply(PIStar.transpose()));
+		RealMatrix eta = PIStar.subtract(betaHat.multiply(X));
+		RealMatrix S2 = (eta.multiply(eta.transpose())).scalarMultiply(1.0/degreesOfFreedom);
+		S2 = S2.multiply(XInv);
+		double t = betaHat.getEntry(0, 0) / Math.sqrt(S2.getEntry(0, 0));
+		
+		TDistribution td = new TDistribution(degreesOfFreedom);
+		double cdf=td.cumulativeProbability(t);
+		double pValue =2*Math.min(cdf, 1-cdf);
+		return pValue;
+}
+
 	void doSignificanceTest(){
 		
 		for(int j=10;j<300;j++){

@@ -54,6 +54,11 @@ public class AveragedHausdroffDistance {
 		gd = new GenerationalDistance();
 		igd = new InvertedGenerationalDistance();
 	}
+	
+	public AveragedHausdroffDistance() {
+		gd = new GenerationalDistance();
+		igd = new InvertedGenerationalDistance();
+	}
 
 	public MultiMap calcualteAverageHausdroffDistance(int numberOfObjectives, MultiMap map) {
 		GenerationalDistance gd = new GenerationalDistance();
@@ -163,23 +168,23 @@ public class AveragedHausdroffDistance {
 	  
 	}
 	
-	double  calclulate_ithGenerationHD(String path, int i){
+	double  calclulate_ithGenerationHD(String path, int i,int numberOfObjectives){
 		
 		  double [][] solutionFront2 = gd.utils_.readFront(path+"/FUN"+i);
 		    double [][] solutionFront1 = gd.utils_.readFront(path+"/FUN"+(i-1));
 		    
-		    double gdValue = gd.generationalDistance( solutionFront1, solutionFront2,problem.getNumberOfObjectives());
-		    double igdValue = igd.invertedGenerationalDistance( solutionFront1, solutionFront2,problem.getNumberOfObjectives());
+		    double gdValue = gd.generationalDistance( solutionFront1, solutionFront2,numberOfObjectives);
+		    double igdValue = igd.invertedGenerationalDistance( solutionFront1, solutionFront2,numberOfObjectives);
 		    return Math.max(gdValue,igdValue);
 	}
 	
-	void calculateAllGenerationsHD(String path){
+	void calculateAllGenerationsHD(String path, int numberOfObjectives){
 		for(int i=1;i<numberOfGenerations;i++){
-			array[i]=calclulate_ithGenerationHD(path, (i+1));
+			array[i]=calclulate_ithGenerationHD(path, (i+1), numberOfObjectives);
 		}
 	}
 	
-	void calculateAverageHDOfAllGenerations(){
+	void calculateAverageHDOfAllGenerations(int numberOfObjectives){
 		File file = new File(path); 
 		String[] directories = file.list(new FilenameFilter() {
 		  @Override
@@ -189,7 +194,7 @@ public class AveragedHausdroffDistance {
 		});
 		
 		for(int i=0;i<directories.length;i++){
-			calculateAllGenerationsHD(path+"/"+directories[i]);
+			calculateAllGenerationsHD(path+"/"+directories[i], numberOfObjectives);
 			for(int j=0;j<numberOfGenerations;j++){
 				sum[j]+=array[j];
 			}
@@ -199,6 +204,12 @@ public class AveragedHausdroffDistance {
 		}
 	}
 	
+	void printAllGenrationHD(){
+		for(int i=0;i<array.length;i++){
+			System.out.println(array[i]);
+		}
+			
+	}
 	
 	public static void main(String[] args) throws ClassNotFoundException {
 		
@@ -265,10 +276,12 @@ public class AveragedHausdroffDistance {
 	   // System.out.println(i+" "+Math.max(gdValue1,igdValue1)+" "+Math.max(gdValue2,igdValue2)+" "+Math.max(gdValue3,igdValue3) );
 	   /* System.out.println(Math.max(gdValue,igdValue));*/
 		
-		Problem problem = new ZDT6("Real");
-		AveragedHausdroffDistance avghd = new AveragedHausdroffDistance("C:/Users/mahbub/Documents/GitHub/EnergyPLANDomainKnowledgeEAStep1/StoppingCriteriaStudies/data/NSGAIISC/ZDT6", problem);
-		avghd.calculateAverageHDOfAllGenerations();
-	   }
+		Problem problem = new ZDT4("Real");
+		AveragedHausdroffDistance avghd = new AveragedHausdroffDistance("C:/Users/mahbub/Documents/GitHub/EnergyPLANDomainKnowledgeEAStep1/StoppingCriteriaStudies/data/NSGAIISC/ZDT4", problem);
+		//avghd.calculateAverageHDOfAllGenerations(problem.getNumberOfObjectives());
+		avghd.calculateAllGenerationsHD("C:/Users/mahbub/Documents/GitHub/EnergyPLANDomainKnowledgeEAStep1/StoppingCriteriaStudies/data/NSGAIISC/ZDT4/run4", 2);
+		avghd.printAllGenrationHD();
+	}
 	   
 	   /*double [][] X = gd.utils_.readFront(directoryName+"/Test/X.txt");
 	   double [][] Y = gd.utils_.readFront(directoryName+"/Test/Y.txt");

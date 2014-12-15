@@ -94,7 +94,7 @@ public class StoppingCriteriaStudy extends Experiment {
     exp.algorithmNameList_   = new String[] {
       "NSGAIISC"/*, "SPEA2SC"*/} ;
     exp.problemList_     = new String[] {
-     "ZDT1", "ZDT2", "ZDT3", "ZDT4", "ZDT6"};/* "ZDT2"};/*,"ZDT2","ZDT3","ZDT4"};/*,"ZDT2", "ZDT3", "ZDT4", "ZDT6"} ;"
+     "Fonseca"};/* "ZDT2"};/*,"ZDT2","ZDT3","ZDT4"};/*,"ZDT2", "ZDT3", "ZDT4", "ZDT6"} ;"
       		 
     /*exp.paretoFrontFile_ = new String[] {
       "ZDT1.pf", "ZDT2.pf", "ZDT3.pf","ZDT4.pf", "DTLZ1.2D.pf", "WFG2.2D.pf"} ;

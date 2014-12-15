@@ -58,6 +58,10 @@ public class CalculateDiversity {
 		
 		// TODO Auto-generated constructor stub
 	}
+	public CalculateDiversity(){
+		solutionList = new ArrayList<SolutionVariables>();
+
+	}
 	
 	public static void main(String[] args){
 		CalculateDiversity cd = new CalculateDiversity("C:/Users/mahbub/Documents/GitHub/EnergyPLANDomainKnowledgeEAStep1/StoppingCriteriaStudies/data/NSGAIISC/ZDT6");
@@ -93,14 +97,18 @@ public class CalculateDiversity {
 		}*/
 	}
 
-	
+	double calculateDiversityOf_ithGeneration(String path, int i, int numberOfVariables){
+		solutionList.clear();
+		readVARFiles(path+"/VAR"+(i), numberOfVariables);
+		return calculateDiversity(numberOfVariables);
+		
+	}
 	
 	void calculateDiversityOfAllGenerations(String path,int numberOfVariables){
 		
 		for(int i=0;i<array.length;i++){
-			solutionList.clear();
-			readVARFiles(path+"/VAR"+(i+1), numberOfVariables);
-			array[i]=calculateDiversity(numberOfVariables);
+			
+			array[i]=calculateDiversityOf_ithGeneration(path, i, numberOfVariables);
 			
 		}
 		

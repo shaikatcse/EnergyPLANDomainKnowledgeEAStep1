@@ -49,9 +49,23 @@ public class GenerationHypervolume {
 			    trueFront     = qualityIndicator.utils_.readFront("paretoFronts/"+problem.getName()+".pf");
 			   }else if(problem.getName().startsWith("DTL")){
 				   trueFront     = qualityIndicator.utils_.readFront("paretoFronts/"+problem.getName()+".3D.pf");
+			   }else{
+				   trueFront  = qualityIndicator.utils_.readFront("paretoFronts/"+problem.getName()+".pf");
 			   }
 		 trueHV= qualityIndicator.hypervolume(trueFront, trueFront, problem.getNumberOfObjectives());
 	
+	}
+	
+	public GenerationHypervolume(Problem problem){
+		qualityIndicator = new Hypervolume();		 
+		this.problem = problem;
+		
+		if(problem.getName().startsWith("ZDT")){
+			    trueFront     = qualityIndicator.utils_.readFront("paretoFronts/"+problem.getName()+".pf");
+			   }else if(problem.getName().startsWith("DTL")){
+				   trueFront     = qualityIndicator.utils_.readFront("paretoFronts/"+problem.getName()+".3D.pf");
+			   }
+		 trueHV= qualityIndicator.hypervolume(trueFront, trueFront, problem.getNumberOfObjectives());
 	}
 	
 	public static void main(String[] args) throws ClassNotFoundException {
@@ -77,7 +91,7 @@ public class GenerationHypervolume {
 		double [][] solutionFront = qualityIndicator.utils_.readFront(path+"/FUN"+i);
 		 double value = qualityIndicator.hypervolume(solutionFront,
                  trueFront, problem.getNumberOfObjectives());
-		 return value/trueHV;
+		 return value;
 	}
 	
 	void calculateAllGenerationsHV(String path){
