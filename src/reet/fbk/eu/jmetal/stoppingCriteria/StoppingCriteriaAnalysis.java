@@ -3,9 +3,11 @@ package reet.fbk.eu.jmetal.stoppingCriteria;
 import java.io.File;
 import java.io.FilenameFilter;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 
 import jmetal.core.Problem;
 import jmetal.problems.Fonseca;
@@ -20,15 +22,38 @@ import jmetal.qualityIndicator.Hypervolume;
 
 public class StoppingCriteriaAnalysis {
 
-	static final int nPreGen = 30, noGenCheck = 5;
+	/*
+	 * perform good: static final int nPreGen = 30, noGenCheck = 10; static
+	 * final double significanceValue = 0.05;
+	 */
+
+	static final int nPreGen = 30, noGenCheck = 10;
 	static final double significanceValue = 0.05;
+
+	/*
+	 * static final int nPreGen = 30, noGenCheck = 5; static final double
+	 * significanceValue = 0.05;
+	 */
+
+	static int numberOfPopulation = 100;
+	static final Map<String, Integer> defaultNoOfGeneration;
+	static {
+		defaultNoOfGeneration = new HashMap<String, Integer>();
+		defaultNoOfGeneration.put("ZDT1", 200);
+		defaultNoOfGeneration.put("ZDT2", 200);
+		defaultNoOfGeneration.put("ZDT3", 200);
+		defaultNoOfGeneration.put("ZDT4", 200);
+		defaultNoOfGeneration.put("ZDT6", 200);
+		defaultNoOfGeneration.put("DTLZ2", 300);
+
+	}
 
 	public StoppingCriteriaAnalysis() {
 		// TODO Auto-generated constructor stub
 	}
 
 	public static void main(String args[]) throws ClassNotFoundException {
-		Problem problem = new ZDT4("Real");
+		Problem problem = new DTLZ2("Real");
 
 		doAnalysis(
 				"C:/Users/mahbub/Documents/GitHub/EnergyPLANDomainKnowledgeEAStep1/StoppingCriteriaStudies/data/NSGAIISC/"
@@ -39,6 +64,7 @@ public class StoppingCriteriaAnalysis {
 		AveragedHausdroffDistance ahd = new AveragedHausdroffDistance();
 		CalculateDiversity cdv = new CalculateDiversity();
 		GenerationHypervolume HV = new GenerationHypervolume(problem);
+		GenerationEpsilon eps = new GenerationEpsilon(problem);
 
 		// double ahdArray[] = new double [maxGeneration];
 		// double dvArray[] = new double[maxGeneration];
@@ -57,6 +83,8 @@ public class StoppingCriteriaAnalysis {
 			}
 		});
 
+		System.out.println(HV.trueHV);
+
 		for (int i = 0; i < directories.length; i++) {
 			ahdList.clear();
 			dvList.clear();
@@ -68,6 +96,7 @@ public class StoppingCriteriaAnalysis {
 			int totalNumberOfFiles = new File(extPath).listFiles().length;
 			double pValueHD = -1.0, pValueDV = -1.0;
 
+			boolean track = false;
 			for (int j = 1; j <= totalNumberOfFiles / 2; j++) {
 				Double ahdValue = -1.0, dvVAlue = -1.0;
 				if (j != 1) {
@@ -112,16 +141,80 @@ public class StoppingCriteriaAnalysis {
 
 				}
 				if (pValueDVList.size() >= noGenCheck) {
-					if (!checkSignificance(pValueDVList, pValueHDList)) {
-						System.out.println("generation " + j);
-						System.out.println("SC: "+HV.calculate_ithGenerationHypervolume(extPath, j)+ " percentage: "+HV.calculate_ithGenerationHypervolume(extPath, j)/HV.trueHV);
-						System.out.println("Without SC: "+HV.calculate_ithGenerationHypervolume(extPath, 200));
+					// if (!checkSignificanceTwoList(pValueDVList,
+					// pValueHDList)) {
+					if (!checkSignificanceOneList(pValueDVList)) {
+						/*
+						 * System.out.println("generation " + j);
+						 * System.out.println
+						 * ("SC: "+HV.calculate_ithGenerationHypervolume
+						 * (extPath, j)+
+						 * " percentage: "+HV.calculate_ithGenerationHypervolume
+						 * (extPath,
+						 * j)/HV.trueHV+" "+eps.calculate_ithGenerationEpsilon
+						 * (extPath, j)); System.out.println("Without SC: "+HV.
+						 * calculate_ithGenerationHypervolume(extPath,
+						 * defaultNoOfGeneration.get(problem.getName()))+ " " +
+						 * eps.calculate_ithGenerationEpsilon(extPath,
+						 * defaultNoOfGeneration.get(problem.getName()))) ;
+						 */
+
+						System.out
+								.println(i
+										+ " "
+										+ j
+										+ " "
+										+ ((defaultNoOfGeneration.get(problem
+												.getName()) - j) * numberOfPopulation)
+										+ " "
+										+ (HV.calculate_ithGenerationHypervolume(
+												extPath, defaultNoOfGeneration
+														.get(problem.getName())) - HV
+												.calculate_ithGenerationHypervolume(
+														extPath, j))
+										+ " "
+										+ HV.calculate_ithGenerationHypervolume(
+												extPath, j)
+										/ HV.trueHV
+										+ " "
+										+ (eps.calculate_ithGenerationEpsilon(
+												extPath, defaultNoOfGeneration
+														.get(problem.getName())) - eps
+												.calculate_ithGenerationEpsilon(
+														extPath, j)));
+
+						track = true;
+
 						break;
 					}
 				}
-				
 
 			}
+			if (!track) {
+				System.out
+						.println(i
+								+ " "
+								+ 500
+								+ " "
+								+ ((defaultNoOfGeneration.get(problem.getName()) - 500) * numberOfPopulation)
+								+ " "
+								+ (HV.calculate_ithGenerationHypervolume(
+										extPath, defaultNoOfGeneration
+												.get(problem.getName())) - HV
+										.calculate_ithGenerationHypervolume(
+												extPath, 500))
+								+ " "
+								+ HV.calculate_ithGenerationHypervolume(
+										extPath, 500)
+								/ HV.trueHV
+								+ " "
+								+ (eps.calculate_ithGenerationEpsilon(extPath,
+										defaultNoOfGeneration.get(problem
+												.getName())) - eps
+										.calculate_ithGenerationEpsilon(
+												extPath, 500)));
+			}
+
 			/*
 			 * System.out.println("Hausdroff"); for(int
 			 * z=0;z<ahdList.size();z++) System.out.println(ahdList.get(z));
@@ -132,7 +225,7 @@ public class StoppingCriteriaAnalysis {
 		}
 	}
 
-	public static boolean checkSignificance(List<Double> pValueDVList,
+	public static boolean checkSignificanceTwoList(List<Double> pValueDVList,
 			List<Double> pValueHDList) {
 		boolean track = false;
 		for (int i = 0; i < pValueDVList.size(); i++) {
@@ -142,6 +235,17 @@ public class StoppingCriteriaAnalysis {
 				break;
 			}
 
+		}
+		return track;
+	}
+
+	public static boolean checkSignificanceOneList(List<Double> pValue) {
+		boolean track = false;
+		for (int i = 0; i < pValue.size(); i++) {
+			if (pValue.get(i) < significanceValue) {
+				track = true;
+				break;
+			}
 		}
 		return track;
 	}
