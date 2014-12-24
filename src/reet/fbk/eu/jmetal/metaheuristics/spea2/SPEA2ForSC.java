@@ -178,8 +178,7 @@ public class SPEA2ForSC extends Algorithm {
 					runDirectory+"/FUN" + (int) evaluations / populationSize);
 			archive.printVariablesToFile(runDirectory+"/VAR"
 					+ (int) evaluations / populationSize);
-			if((int) evaluations / populationSize == 299)
-			 System.out.println("hi");
+		
 			
 			// Create a new offspringPopulation
 			offSpringSolutionSet = new SolutionSet(populationSize);
@@ -210,7 +209,14 @@ public class SPEA2ForSC extends Algorithm {
 				// End Create a offSpring solutionSet
 			solutionSet = offSpringSolutionSet;
 		} // while
-
+		
+		//added by shariar
+		SolutionSet union = ((SolutionSet) solutionSet).union(archive);
+		Spea2Fitness spea = new Spea2Fitness(union);
+		spea.fitnessAssign();
+		archive = spea.environmentalSelection(archiveSize);
+		//until now
+		
 		Ranking ranking = new Ranking(archive);
 		
 		ranking.getSubfront(0).printFeasibleFUN(
