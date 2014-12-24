@@ -75,8 +75,8 @@ public class StoppingCriteriaStudy extends Experiment {
       } // if*/
  
       //for (int i = 0; i < numberOfAlgorithms; i++)
-        algorithm[0] = new NSGAIIForSC_Settings(problemName).configure(parameters[0]);
-      //	algorithm[0] = new SPEA2ForSC_Settings(problemName).configure(parameters[0]);
+       // algorithm[0] = new NSGAIIForSC_Settings(problemName).configure(parameters[0]);
+      	algorithm[0] = new SPEA2ForSC_Settings(problemName).configure(parameters[0]);
       
     } catch (IllegalArgumentException ex) {
       Logger.getLogger(StoppingCriteriaStudy.class.getName()).log(Level.SEVERE, null, ex);
@@ -92,7 +92,7 @@ public class StoppingCriteriaStudy extends Experiment {
     
     exp.experimentName_  = "StoppingCriteriaStudies" ;
     exp.algorithmNameList_   = new String[] {
-      "NSGAIISC"/*, "SPEA2SC"*/} ;
+     /* "NSGAIISC",*/ "SPEA2SC"} ;
     exp.problemList_     = new String[] {
       "ZDT1","ZDT2","ZDT3","ZDT4", "ZDT6", "DTLZ2"};/*,"ZDT2", "ZDT3", "ZDT4", "ZDT6"} ;"
       		 

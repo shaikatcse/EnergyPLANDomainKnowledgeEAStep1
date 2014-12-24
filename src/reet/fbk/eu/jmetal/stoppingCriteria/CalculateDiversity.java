@@ -64,8 +64,10 @@ public class CalculateDiversity {
 	}
 	
 	public static void main(String[] args){
-		CalculateDiversity cd = new CalculateDiversity("C:/Users/mahbub/Documents/GitHub/EnergyPLANDomainKnowledgeEAStep1/StoppingCriteriaStudies/data/NSGAIISC/ZDT6");
-		cd.calculateAverageOfDiversityOfAllGenerations("C:/Users/mahbub/Documents/GitHub/EnergyPLANDomainKnowledgeEAStep1/StoppingCriteriaStudies/data/NSGAIISC/ZDT6",10);
+		CalculateDiversity cd = new CalculateDiversity("C:/Users/mahbub/Documents/GitHub/EnergyPLANDomainKnowledgeEAStep1/StoppingCriteriaStudies/data/NSGAIISC/ZDT1");
+		//cd.calculateAverageOfDiversityOfAllGenerations("C:/Users/mahbub/Documents/GitHub/EnergyPLANDomainKnowledgeEAStep1/StoppingCriteriaStudies/data/NSGAIISC/ZDT6",10);
+		cd.calculateDiversityOfAllGenerations("C:/Users/mahbub/Documents/GitHub/EnergyPLANDomainKnowledgeEAStep1/StoppingCriteriaStudies/data/NSGAIISC/ZDT1/run1", 10);
+		cd.printDiversity();
 		
 		//MultiMap map = new MultiValueMap();
 		//map = cd.diversityStatisticalTest(10, map);

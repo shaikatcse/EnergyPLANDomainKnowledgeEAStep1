@@ -1,13 +1,18 @@
 package reet.fbk.eu.jmetal.stoppingCriteria;
 
+import java.io.BufferedWriter;
 import java.io.File;
+import java.io.FileWriter;
 import java.io.FilenameFilter;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+
+import javax.swing.text.DefaultEditorKit.BeepAction;
 
 import jmetal.core.Problem;
 import jmetal.problems.Fonseca;
@@ -51,8 +56,11 @@ public class StoppingCriteriaAnalysis {
 	public StoppingCriteriaAnalysis() {
 		// TODO Auto-generated constructor stub
 	}
-
-	public static void main(String args[]) throws ClassNotFoundException {
+	
+	static double HVD[] = new double [100];
+	static double epsD[] = new double [100];
+	
+	public static void main(String args[]) throws ClassNotFoundException, IOException {
 		Problem problem = new DTLZ2("Real");
 
 		doAnalysis(
@@ -60,7 +68,7 @@ public class StoppingCriteriaAnalysis {
 						+ problem.getName() + "/", problem);
 	}
 
-	public static void doAnalysis(String path, Problem problem) {
+	public static void doAnalysis(String path, Problem problem) throws IOException {
 		AveragedHausdroffDistance ahd = new AveragedHausdroffDistance();
 		CalculateDiversity cdv = new CalculateDiversity();
 		GenerationHypervolume HV = new GenerationHypervolume(problem);
@@ -141,9 +149,9 @@ public class StoppingCriteriaAnalysis {
 
 				}
 				if (pValueDVList.size() >= noGenCheck) {
-					// if (!checkSignificanceTwoList(pValueDVList,
-					// pValueHDList)) {
-					if (!checkSignificanceOneList(pValueDVList)) {
+					 if (!checkSignificanceTwoList(pValueDVList,
+					 pValueHDList)) {
+					//if (!checkSignificanceOneList(pValueDVList)) {
 						/*
 						 * System.out.println("generation " + j);
 						 * System.out.println
@@ -182,6 +190,9 @@ public class StoppingCriteriaAnalysis {
 														.get(problem.getName())) - eps
 												.calculate_ithGenerationEpsilon(
 														extPath, j)));
+						
+						HVD[i]=(HV.calculate_ithGenerationHypervolume(extPath, defaultNoOfGeneration.get(problem.getName())) - HV.calculate_ithGenerationHypervolume(extPath, j));
+						epsD[i]= eps.calculate_ithGenerationEpsilon(extPath, defaultNoOfGeneration.get(problem.getName())) - eps.calculate_ithGenerationEpsilon(extPath, j);
 
 						track = true;
 
@@ -213,6 +224,9 @@ public class StoppingCriteriaAnalysis {
 												.getName())) - eps
 										.calculate_ithGenerationEpsilon(
 												extPath, 500)));
+				HVD[i]=(HV.calculate_ithGenerationHypervolume(extPath, defaultNoOfGeneration.get(problem.getName())) - HV.calculate_ithGenerationHypervolume(extPath, 500));
+				epsD[i]= eps.calculate_ithGenerationEpsilon(extPath, defaultNoOfGeneration.get(problem.getName())) - eps.calculate_ithGenerationEpsilon(extPath, 500);
+
 			}
 
 			/*
@@ -223,8 +237,37 @@ public class StoppingCriteriaAnalysis {
 			 */
 
 		}
+		
+		writeIntoFile(path, problem);
 	}
 
+	public static void writeIntoFile(String path, Problem problem) throws IOException{
+		File file = new File(path);
+		String[] directories = file.list(new FilenameFilter() {
+			@Override
+			public boolean accept(File current, String name) {
+				return new File(current, name).isDirectory();
+			}
+		});
+
+		File fileHV = new File(path+"HVD");
+		File fileEps = new File(path+"EpsD");
+		
+		FileWriter fwHV = new FileWriter(fileHV.getAbsoluteFile());
+		BufferedWriter bwHV = new BufferedWriter(fwHV);
+		
+		FileWriter fwEps = new FileWriter(fileEps.getAbsoluteFile());
+		BufferedWriter bwEps = new BufferedWriter(fwEps);
+		
+		for (int i = 0; i < directories.length; i++) {
+			bwHV.write(HVD[i]+"\n");
+			bwEps.write(epsD[i]+"\n");
+		}
+		
+		bwHV.close();
+		bwEps.close();
+	}
+	
 	public static boolean checkSignificanceTwoList(List<Double> pValueDVList,
 			List<Double> pValueHDList) {
 		boolean track = false;

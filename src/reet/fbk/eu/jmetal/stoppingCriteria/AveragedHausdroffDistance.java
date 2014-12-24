@@ -277,9 +277,9 @@ public class AveragedHausdroffDistance {
 	   /* System.out.println(Math.max(gdValue,igdValue));*/
 		
 		Problem problem = new ZDT6("Real");
-		AveragedHausdroffDistance avghd = new AveragedHausdroffDistance("C:/Users/mahbub/Documents/GitHub/EnergyPLANDomainKnowledgeEAStep1/StoppingCriteriaStudies/data/NSGAIISC/ZDT6", problem);
+		AveragedHausdroffDistance avghd = new AveragedHausdroffDistance("C:/Users/mahbub/Documents/GitHub/EnergyPLANDomainKnowledgeEAStep1/StoppingCriteriaStudies/data/NSGAIISC/ZDT1", problem);
 		//avghd.calculateAverageHDOfAllGenerations(problem.getNumberOfObjectives());
-		avghd.calculateAllGenerationsHD("C:/Users/mahbub/Documents/GitHub/EnergyPLANDomainKnowledgeEAStep1/StoppingCriteriaStudies/data/NSGAIISC/ZDT4/run1", 2);
+		avghd.calculateAllGenerationsHD("C:/Users/mahbub/Documents/GitHub/EnergyPLANDomainKnowledgeEAStep1/StoppingCriteriaStudies/data/NSGAIISC/ZDT1/run1", 2);
 		avghd.printAllGenrationHD();
 	}
 	   
