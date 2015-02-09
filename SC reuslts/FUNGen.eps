@@ -1,7 +1,7 @@
 %!PS-Adobe-2.0 EPSF-2.0
-%%Title: AhdAndDiv.eps
-%%Creator: gnuplot 4.4 patchlevel 3
-%%CreationDate: Tue Dec 30 17:38:22 2014
+%%Title: FUNGen.eps
+%%Creator: gnuplot 4.6 patchlevel 3
+%%CreationDate: Tue Feb 03 10:53:48 2015
 %%DocumentFonts: (atend)
 %%BoundingBox: 50 50 410 302
 %%EndComments
@@ -20,10 +20,12 @@ gnudict begin
 /Level1 false def
 /Rounded false def
 /ClipToBoundingBox false def
+/SuppressPDFMark false def
 /TransparentPatterns false def
 /gnulinewidth 5.000 def
 /userlinewidth gnulinewidth def
 /Gamma 1.0 def
+/BackgroundColor {-1.000 -1.000 -1.000} def
 %
 /vshift -46 def
 /dl1 {
@@ -38,22 +40,6 @@ gnudict begin
 /vpt_ 31.5 def
 /hpt hpt_ def
 /vpt vpt_ def
-Level1 {} {
-/SDict 10 dict def
-systemdict /pdfmark known not {
-  userdict /pdfmark systemdict /cleartomark get put
-} if
-SDict begin [
-  /Title (AhdAndDiv.eps)
-  /Subject (gnuplot plot)
-  /Creator (gnuplot 4.4 patchlevel 3)
-  /Author (shaikat)
-%  /Producer (gnuplot)
-%  /Keywords ()
-  /CreationDate (Tue Dec 30 17:38:22 2014)
-  /DOCINFO pdfmark
-end
-} ifelse
 /doclip {
   ClipToBoundingBox {
     newpath 50 50 moveto 410 50 lineto 410 302 lineto 50 302 lineto closepath
@@ -61,7 +47,7 @@ end
   } if
 } def
 %
-% Gnuplot Prolog Version 4.4 (August 2010)
+% Gnuplot Prolog Version 4.6 (September 2012)
 %
 %/SuppressPDFMark true def
 %
@@ -328,7 +314,8 @@ end
 /PatternFill {gsave /PFa [ 9 2 roll ] def
   PFa 0 get PFa 2 get 2 div add PFa 1 get PFa 3 get 2 div add translate
   PFa 2 get -2 div PFa 3 get -2 div PFa 2 get PFa 3 get Rec
-  gsave 1 setgray fill grestore clip
+  TransparentPatterns {} {gsave 1 setgray fill grestore} ifelse
+  clip
   currentlinewidth 0.5 mul setlinewidth
   /PFs PFa 2 get dup mul PFa 3 get dup mul add sqrt def
   0 0 M PFa 5 get rotate PFs -2 div dup translate
@@ -433,8 +420,26 @@ Level1 {Level1PatternFill} {Level2PatternFill} ifelse
 /Symbol-Oblique /Symbol findfont [1 0 .167 1 0 0] makefont
 dup length dict begin {1 index /FID eq {pop pop} {def} ifelse} forall
 currentdict end definefont pop
+Level1 SuppressPDFMark or 
+{} {
+/SDict 10 dict def
+systemdict /pdfmark known not {
+  userdict /pdfmark systemdict /cleartomark get put
+} if
+SDict begin [
+  /Title (FUNGen.eps)
+  /Subject (gnuplot plot)
+  /Creator (gnuplot 4.6 patchlevel 3)
+  /Author (mahbub)
+%  /Producer (gnuplot)
+%  /Keywords ()
+  /CreationDate (Tue Feb 03 10:53:48 2015)
+  /DOCINFO pdfmark
+end
+} ifelse
 end
 %%EndProlog
+%%Page: 1 1
 gnudict begin
 gsave
 doclip
@@ -443,17 +448,18 @@ doclip
 0 setgray
 newpath
 (Helvetica) findfont 140 scalefont setfont
+BackgroundColor 0 lt 3 1 roll 0 lt exch 0 lt or or not {BackgroundColor C 1.000 0 0 7200.00 5040.00 BoxColFill} if
 1.000 UL
 LTb
-546 448 M
+546 280 M
 63 0 V
 6338 0 R
 -63 0 V
-462 448 M
+462 280 M
 ( 0) Rshow
 1.000 UL
 LTb
-546 1333 M
+546 1154 M
 63 0 V
 6338 0 R
 -63 0 V
@@ -461,7 +467,7 @@ LTb
 ( 0.2) Rshow
 1.000 UL
 LTb
-546 2217 M
+546 2029 M
 63 0 V
 6338 0 R
 -63 0 V
@@ -469,7 +475,7 @@ LTb
 ( 0.4) Rshow
 1.000 UL
 LTb
-546 3102 M
+546 2903 M
 63 0 V
 6338 0 R
 -63 0 V
@@ -477,7 +483,7 @@ LTb
 ( 0.6) Rshow
 1.000 UL
 LTb
-546 3986 M
+546 3778 M
 63 0 V
 6338 0 R
 -63 0 V
@@ -485,7 +491,7 @@ LTb
 ( 0.8) Rshow
 1.000 UL
 LTb
-546 4871 M
+546 4652 M
 63 0 V
 6338 0 R
 -63 0 V
@@ -493,1177 +499,326 @@ LTb
 ( 1) Rshow
 1.000 UL
 LTb
-1175 448 M
+546 280 M
 0 63 V
-0 4360 R
+0 4528 R
 0 -63 V
-0 -4500 R
-( 50) Cshow
+546 140 M
+( 0) Cshow
 1.000 UL
 LTb
-1816 448 M
+1801 280 M
 0 63 V
-0 4360 R
+0 4528 R
 0 -63 V
-0 -4500 R
-( 100) Cshow
+0 -4668 R
+( 0.2) Cshow
 1.000 UL
 LTb
-2457 448 M
+3056 280 M
 0 63 V
-0 4360 R
+0 4528 R
 0 -63 V
-0 -4500 R
-( 150) Cshow
+0 -4668 R
+( 0.4) Cshow
 1.000 UL
 LTb
-3099 448 M
+4311 280 M
 0 63 V
-0 4360 R
+0 4528 R
 0 -63 V
-0 -4500 R
-( 200) Cshow
+0 -4668 R
+( 0.6) Cshow
 1.000 UL
 LTb
-3740 448 M
+5566 280 M
 0 63 V
-0 4360 R
+0 4528 R
 0 -63 V
-0 -4500 R
-( 250) Cshow
+0 -4668 R
+( 0.8) Cshow
 1.000 UL
 LTb
-4381 448 M
+6821 280 M
 0 63 V
-0 4360 R
+0 4528 R
 0 -63 V
-0 -4500 R
-( 300) Cshow
-1.000 UL
-LTb
-5023 448 M
-0 63 V
-0 4360 R
-0 -63 V
-0 -4500 R
-( 350) Cshow
-1.000 UL
-LTb
-5664 448 M
-0 63 V
-0 4360 R
-0 -63 V
-0 -4500 R
-( 400) Cshow
-1.000 UL
-LTb
-6306 448 M
-0 63 V
-0 4360 R
-0 -63 V
-0 -4500 R
-( 450) Cshow
-1.000 UL
-LTb
-6947 448 M
-0 63 V
-0 4360 R
-0 -63 V
-0 -4500 R
-( 500) Cshow
+0 -4668 R
+( 1) Cshow
 1.000 UL
 LTb
 1.000 UL
 LTb
 546 4871 N
-546 448 L
+546 280 L
 6401 0 V
-0 4423 V
+0 4591 V
 -6401 0 V
 Z stroke
-LCb setrgbcolor
-3746 98 M
-(Generations) Cshow
-LTb
-1.000 UP
-6434 3544 M
-(Stopping generation for Diversity) Rshow
-6434 3323 M
-(Stopping generation for AHD) Rshow
-6434 3102 M
-(Stopping generation for both) Rshow
-2.000 UL
-LT0
-0.73 0.00 0.73 C 6562 3544 M
-257 0 V
-stroke
-LT0
-0.00 0.00 0.00 C 6562 3323 M
-257 0 V
-stroke
-LT0
-0.73 0.37 0.00 C 6562 3102 M
-257 0 V
-stroke
-LT0
-0.00 0.00 0.00 C 2368 448 M
-0 1327 V
-stroke
-LT0
-0.73 0.37 0.00 C 2714 448 M
-0 1327 V
-stroke
-LT0
-0.73 0.00 0.73 C 2085 448 M
-0 1327 V
-stroke
-LT0
-0.73 0.00 0.73 C 6562 3544 M
-257 0 V
-stroke
-LT0
-0.00 0.00 0.00 C 6562 3323 M
-257 0 V
-stroke
-LT0
-0.73 0.37 0.00 C 6562 3102 M
-257 0 V
-stroke
 1.000 UL
+LTw
+1.000 2052 2248 314 437 BoxColFill
+LCb setrgbcolor
+2052 2248 M
+0 437 V
+314 0 V
+0 -437 V
+-314 0 V
+stroke
+LTw
+1.000 2805 1810 251 350 BoxColFill
+LCb setrgbcolor
+2805 1810 M
+0 350 V
+251 0 V
+0 -350 V
+-251 0 V
+stroke
+LTw
+1.000 5629 367 816 525 BoxColFill
+LCb setrgbcolor
+5629 367 M
+0 525 V
+816 0 V
+0 -525 V
+-816 0 V
+1.000 UP
+stroke
 LTb
 % Begin plot #1
+1.000 UP
 1.000 UL
 LT0
 0.00 0.00 0.00 C LCb setrgbcolor
+/Helvetica findfont 180 scalefont setfont
+/vshift -60 def
 6296 4738 M
-(Average Haussdorff Distance) Rshow
+(140th generation) Rshow
+/Helvetica findfont 140 scalefont setfont
+/vshift -46 def
 LT0
-0.00 0.00 0.00 C 6380 4738 M
-399 0 V
-559 2157 M
-13 1229 V
-12 -238 V
-13 -350 V
-13 -603 V
-13 -475 V
-13 3151 V
-649 2135 L
-12 1584 V
-13 -856 V
-687 1531 L
-13 1237 V
-13 -801 V
-13 -88 V
-12 -91 V
-13 891 V
-13 -479 V
-13 113 V
-13 -510 V
-13 -484 V
-12 2371 V
-828 1383 L
-13 386 V
-13 368 V
-13 -681 V
-880 978 L
-12 436 V
-13 -43 V
-13 1783 V
-931 1972 L
-13 -650 V
-12 1258 V
-13 -956 V
-13 -77 V
-13 160 V
-13 -386 V
-13 -102 V
-12 -124 V
-13 17 V
-13 -38 V
-13 -124 V
-13 262 V
-13 -277 V
-12 -160 V
-13 180 V
-13 129 V
-13 -170 V
-13 17 V
-13 -127 V
-12 167 V
-13 -193 V
-13 -40 V
-13 159 V
-13 -76 V
-13 51 V
-12 -51 V
-13 118 V
-13 -81 V
-13 -182 V
-13 153 V
-12 -171 V
-13 36 V
-13 19 V
-13 94 V
-13 -86 V
-13 -51 V
-12 23 V
-13 -28 V
-13 7 V
-13 -11 V
-13 6 V
-13 4 V
-12 -29 V
-13 -15 V
-13 34 V
-13 -68 V
-13 3 V
-13 14 V
-12 25 V
-13 21 V
-13 -22 V
-13 -32 V
-13 -16 V
-13 18 V
-12 -29 V
-13 27 V
-13 -4 V
-13 -4 V
-13 -2 V
-12 -29 V
-13 25 V
-13 -1 V
-13 44 V
-13 -70 V
-13 15 V
-12 33 V
-13 -59 V
-13 27 V
-13 6 V
-13 -14 V
-13 -31 V
-12 49 V
-13 -10 V
-13 -6 V
-13 2 V
-13 10 V
-13 8 V
-12 -40 V
-13 26 V
-13 -6 V
-13 12 V
-13 -12 V
-13 -24 V
-12 10 V
-13 18 V
-13 9 V
-13 -30 V
-13 16 V
-12 -3 V
-13 4 V
-13 6 V
-13 -48 V
-13 18 V
-13 16 V
-12 -29 V
-13 25 V
-13 17 V
-13 4 V
-13 -44 V
-13 29 V
-12 -30 V
-13 20 V
-13 37 V
-13 -31 V
-stroke 2265 561 M
-13 -13 V
-13 31 V
-12 -14 V
-13 40 V
-13 -51 V
-13 8 V
-13 0 V
-13 10 V
-12 -20 V
-13 28 V
-13 -28 V
-13 4 V
-13 37 V
-12 -27 V
-13 -26 V
-13 8 V
-13 7 V
-13 18 V
-13 -29 V
-12 51 V
-13 -26 V
-13 25 V
-13 -3 V
-13 -29 V
-13 -30 V
-12 62 V
-13 -22 V
-13 -13 V
-13 -5 V
-13 50 V
-13 -29 V
-12 4 V
-13 -16 V
-13 -33 V
-13 25 V
-13 20 V
-13 -26 V
-12 15 V
-13 -1 V
-13 10 V
-13 -24 V
-13 60 V
-12 -61 V
-13 7 V
-13 -5 V
-13 15 V
-13 -9 V
-13 47 V
-12 -44 V
-13 -41 V
-13 45 V
-13 -1 V
-13 -9 V
-13 -17 V
-12 17 V
-13 26 V
-13 3 V
-13 -13 V
-13 -10 V
-13 1 V
-12 16 V
-13 10 V
-13 -20 V
-13 -27 V
-13 16 V
-13 26 V
-12 -29 V
-13 25 V
-13 32 V
-13 -48 V
-13 -3 V
-12 23 V
-13 -10 V
-13 15 V
-13 -21 V
-13 4 V
-13 -18 V
-12 17 V
-13 -8 V
-13 -10 V
-13 -7 V
-13 65 V
-13 -54 V
-12 21 V
-13 -4 V
-13 -23 V
-13 61 V
-13 -42 V
-13 -12 V
-12 28 V
-13 -17 V
-13 19 V
-13 -2 V
-13 -23 V
-13 26 V
-12 33 V
-13 -38 V
-13 13 V
-13 12 V
-13 -55 V
-12 36 V
-13 26 V
-13 -56 V
-13 26 V
-stroke 3599 583 M
-13 2 V
-13 -4 V
-12 -3 V
-13 6 V
-13 -11 V
-13 -28 V
-13 21 V
-13 -46 V
-12 18 V
-13 49 V
-13 -27 V
-13 15 V
-13 17 V
-13 -12 V
-12 28 V
-13 -47 V
-13 -22 V
-13 40 V
-13 -29 V
-13 14 V
-12 -19 V
-13 18 V
-13 10 V
-13 -1 V
-13 -38 V
-13 66 V
-12 -4 V
-13 -42 V
-13 -7 V
-13 37 V
-13 -44 V
-12 14 V
-13 60 V
-13 -38 V
-13 -18 V
-13 22 V
-13 6 V
-12 -15 V
-13 -22 V
-13 21 V
-13 2 V
-13 -9 V
-13 1 V
-12 -3 V
-13 32 V
-13 -30 V
-13 4 V
-13 -15 V
-13 17 V
-12 -29 V
-13 47 V
-13 3 V
-13 -47 V
-13 17 V
-13 57 V
-12 -64 V
-13 42 V
-13 -12 V
-13 3 V
-13 15 V
-12 -58 V
-13 17 V
-13 -15 V
-13 37 V
-13 -3 V
-13 33 V
-12 -37 V
-13 -25 V
-13 56 V
-13 -57 V
-13 2 V
-13 37 V
-12 -35 V
-13 21 V
-13 -17 V
-13 6 V
-13 -35 V
-13 24 V
-12 16 V
-13 -5 V
-13 -7 V
-13 -25 V
-13 30 V
-13 -21 V
-12 25 V
-13 28 V
-13 -38 V
-13 -3 V
-13 1 V
-12 3 V
-13 41 V
-13 -46 V
-13 17 V
-13 5 V
-13 -3 V
-12 -6 V
-13 -5 V
-13 32 V
-13 2 V
-13 -50 V
-13 22 V
-12 -30 V
-13 39 V
-13 13 V
-stroke 4933 587 M
-13 10 V
-13 -47 V
-13 11 V
-12 33 V
-13 -48 V
-13 45 V
-13 -28 V
-13 17 V
-13 -3 V
-12 -4 V
-13 -17 V
-13 10 V
-13 -13 V
-13 2 V
-12 -2 V
-13 -18 V
-13 65 V
-13 -32 V
-13 9 V
-13 -15 V
-12 24 V
-13 -4 V
-13 -46 V
-13 53 V
-13 -25 V
-13 -6 V
-12 -7 V
-13 -5 V
-13 28 V
-13 -14 V
-13 11 V
-13 -9 V
-12 -26 V
-13 30 V
-13 -54 V
-13 47 V
-13 14 V
-13 -23 V
-12 14 V
-13 -2 V
-13 31 V
-13 -52 V
-13 64 V
-12 -1 V
-13 -42 V
-13 1 V
-13 27 V
-13 -23 V
-13 3 V
-12 -45 V
-13 84 V
-13 -49 V
-13 -6 V
-13 36 V
-13 -30 V
-12 8 V
-13 -9 V
-13 -2 V
-13 27 V
-13 -27 V
-13 -3 V
-12 7 V
-13 16 V
-13 -2 V
-13 -24 V
-13 9 V
-13 11 V
-12 6 V
-13 3 V
-13 -23 V
-13 -7 V
-13 29 V
-12 13 V
-13 -28 V
-13 12 V
-13 -2 V
-13 -28 V
-13 17 V
-12 34 V
-13 -53 V
-13 11 V
-13 28 V
-13 5 V
-13 -32 V
-12 30 V
-13 -17 V
-13 -17 V
-13 5 V
-13 -7 V
-13 54 V
-12 -58 V
-13 30 V
-13 -41 V
-13 38 V
-13 6 V
-13 43 V
-12 -35 V
-13 -3 V
-13 6 V
-13 -36 V
-13 -1 V
-12 17 V
-13 10 V
-13 -5 V
-stroke 6267 575 M
-13 -14 V
-13 18 V
-13 0 V
-12 -3 V
-13 4 V
-13 2 V
-13 -22 V
-13 4 V
-13 23 V
-12 0 V
-13 -38 V
-13 -14 V
-13 41 V
-13 -38 V
-13 13 V
-12 -16 V
-13 58 V
-13 -17 V
-13 47 V
-13 -55 V
-13 1 V
-12 -22 V
-13 28 V
-13 -8 V
-13 -16 V
-13 22 V
-12 -28 V
-13 58 V
-13 -24 V
-13 -32 V
-13 22 V
-13 21 V
-12 -9 V
-13 2 V
-13 -36 V
-13 23 V
-13 -29 V
-13 24 V
-12 11 V
-13 14 V
-13 -53 V
-13 16 V
-13 12 V
-13 44 V
-12 -66 V
-13 25 V
-13 8 V
-13 60 V
-13 -75 V
-13 7 V
-12 -8 V
-13 7 V
-13 -32 V
+0.00 0.00 0.00 C 546 4687 Pls
+6818 303 Pls
+2805 2068 Pls
+5499 792 Pls
+5871 653 Pls
+3011 1961 Pls
+6054 582 Pls
+1389 3105 Pls
+5333 866 Pls
+3753 1563 Pls
+580 4368 Pls
+737 3950 Pls
+1296 3195 Pls
+2115 2506 Pls
+3195 1854 Pls
+1226 3300 Pls
+1054 3442 Pls
+2222 2450 Pls
+3112 1942 Pls
+1497 2998 Pls
+2475 2266 Pls
+6591 384 Pls
+2382 2328 Pls
+6517 428 Pls
+797 3823 Pls
+2051 2555 Pls
+2522 2225 Pls
+550 4597 Pls
+4304 1305 Pls
+2697 2133 Pls
+614 4252 Pls
+5626 758 Pls
+1140 3361 Pls
+1539 2949 Pls
+2275 2400 Pls
+5144 954 Pls
+3887 1537 Pls
+652 4127 Pls
+3320 1806 Pls
+6256 513 Pls
+3639 1634 Pls
+4691 1164 Pls
+1331 3148 Pls
+853 3730 Pls
+4538 1203 Pls
+4726 1120 Pls
+6123 563 Pls
+3655 1616 Pls
+1706 2810 Pls
+6350 482 Pls
+4577 1170 Pls
+6697 354 Pls
+2325 2359 Pls
+4474 1252 Pls
+691 4047 Pls
+6203 534 Pls
+1610 2883 Pls
+1027 3502 Pls
+1626 2868 Pls
+4058 1419 Pls
+955 3586 Pls
+3516 1674 Pls
+1779 2758 Pls
+3376 1744 Pls
+894 3682 Pls
+3252 1816 Pls
+5207 921 Pls
+4242 1331 Pls
+2618 2183 Pls
+1988 2606 Pls
+1908 2658 Pls
+4997 1002 Pls
+3428 1717 Pls
+4827 1106 Pls
+5069 988 Pls
+4398 1265 Pls
+6402 447 Pls
+560 4514 Pls
+649 4177 Pls
+570 4463 Pls
+4006 1443 Pls
+5657 730 Pls
+4909 1036 Pls
+1960 2618 Pls
+816 3782 Pls
+3506 1678 Pls
+1829 2724 Pls
+1758 2810 Pls
+5789 678 Pls
+617 4220 Pls
+3956 1464 Pls
+6733 338 Pls
+1188 3340 Pls
+714 3997 Pls
+4894 1043 Pls
+3026 1952 Pls
+4118 1384 Pls
+1874 2683 Pls
+5261 882 Pls
+5725 711 Pls
+6579 4738 Pls
 % End plot #1
 % Begin plot #2
-stroke
-LT0
-0.00 0.00 1.00 C LCb setrgbcolor
+1.000 UP
+1.000 UL
+LT3
+0.00 0.00 0.00 C LCb setrgbcolor
+/Helvetica findfont 180 scalefont setfont
+/vshift -60 def
 6296 4598 M
-(Diversity) Rshow
-LT0
-0.00 0.00 1.00 C 6380 4598 M
-399 0 V
-546 4871 M
-13 -10 V
-13 -64 V
-12 -25 V
-13 -16 V
-13 -58 V
-13 -161 V
-13 -109 V
-13 -67 V
-12 -156 V
-13 -163 V
-13 -297 V
-13 -272 V
-13 -236 V
-13 -229 V
-12 -84 V
-13 -124 V
-13 -215 V
-13 -93 V
-13 -110 V
-13 -109 V
-12 -155 V
-13 -68 V
-13 -89 V
-13 -114 V
-13 -44 V
-13 -76 V
-12 -21 V
-13 -15 V
-13 -55 V
-13 -14 V
-13 -84 V
-12 -25 V
-13 -42 V
-13 -11 V
-13 2 V
-13 -2 V
-13 6 V
-12 -18 V
-13 -27 V
-13 13 V
-13 -44 V
-13 -35 V
-13 -45 V
-12 3 V
-13 30 V
-13 24 V
-13 -78 V
-13 20 V
-13 30 V
-12 -29 V
-13 -1 V
-13 4 V
-13 40 V
-13 -6 V
-13 -22 V
-12 -4 V
-13 34 V
-13 21 V
-13 -7 V
-13 -54 V
-12 11 V
-13 33 V
-13 1 V
-13 -6 V
-13 -11 V
-13 39 V
-12 -19 V
-13 15 V
-13 -13 V
-13 2 V
-13 8 V
-13 -33 V
-12 8 V
-13 29 V
-13 -47 V
-13 20 V
-13 -25 V
-13 -6 V
-12 35 V
-13 -24 V
-13 2 V
-13 -9 V
-13 1 V
-13 9 V
-12 9 V
-13 -36 V
-13 -11 V
-13 10 V
-13 16 V
-12 2 V
-13 11 V
-13 -3 V
-13 -5 V
-13 -6 V
-13 -6 V
-12 -12 V
-13 18 V
-13 -4 V
-13 -6 V
-13 -13 V
-13 -4 V
-12 12 V
-stroke 1854 1307 M
-13 -12 V
-13 24 V
-13 5 V
-13 -25 V
-13 -9 V
-12 20 V
-13 23 V
-13 2 V
-13 4 V
-13 -13 V
-13 0 V
-12 -18 V
-13 15 V
-13 -3 V
-13 -2 V
-13 -2 V
-12 -2 V
-13 -2 V
-13 -9 V
-13 -10 V
-13 19 V
-13 -4 V
-12 -4 V
-13 37 V
-13 -38 V
-13 -9 V
-13 0 V
-13 19 V
-12 -10 V
-13 4 V
-13 3 V
-13 2 V
-13 8 V
-13 -10 V
-12 4 V
-13 -7 V
-13 3 V
-13 -25 V
-13 10 V
-13 -1 V
-12 -4 V
-13 17 V
-13 15 V
-13 -38 V
-13 41 V
-12 8 V
-13 -22 V
-13 5 V
-13 13 V
-13 -2 V
-13 12 V
-12 8 V
-13 -63 V
-13 47 V
-13 0 V
-13 1 V
-13 -24 V
-12 -15 V
-13 7 V
-13 0 V
-13 11 V
-13 -27 V
-13 17 V
-12 9 V
-13 -8 V
-13 11 V
-13 -11 V
-13 -5 V
-13 -9 V
-12 2 V
-13 -5 V
-13 11 V
-13 4 V
-13 11 V
-12 -4 V
-13 19 V
-13 -18 V
-13 0 V
-13 2 V
-13 -16 V
-12 8 V
-13 9 V
-13 -1 V
-13 -9 V
-13 12 V
-13 11 V
-12 -19 V
-13 13 V
-13 -6 V
-13 -8 V
-13 -1 V
-13 8 V
-12 11 V
-13 -16 V
-13 12 V
-13 -2 V
-13 12 V
-13 -19 V
-12 -17 V
-13 9 V
-13 -1 V
-13 -24 V
-13 15 V
-12 -7 V
-stroke 3188 1284 M
-13 8 V
-13 14 V
-13 14 V
-13 -17 V
-13 -38 V
-12 18 V
-13 23 V
-13 6 V
-13 21 V
-13 -23 V
-13 9 V
-12 7 V
-13 -20 V
-13 -5 V
-13 4 V
-13 20 V
-13 -36 V
-12 -2 V
-13 31 V
-13 -29 V
-13 -9 V
-13 18 V
-13 -6 V
-12 25 V
-13 10 V
-13 -5 V
-13 -30 V
-13 5 V
-12 19 V
-13 -2 V
-13 -6 V
-13 10 V
-13 3 V
-13 8 V
-12 7 V
-13 -10 V
-13 20 V
-13 -24 V
-13 16 V
-13 -17 V
-12 -14 V
-13 -5 V
-13 -20 V
-13 22 V
-13 -6 V
-13 12 V
-12 -4 V
-13 3 V
-13 -4 V
-13 40 V
-13 -35 V
-13 -1 V
-12 8 V
-13 -41 V
-13 25 V
-13 2 V
-13 -1 V
-13 13 V
-12 16 V
-13 -1 V
-13 1 V
-13 -5 V
-13 -41 V
-12 23 V
-13 3 V
-13 0 V
-13 35 V
-13 -1 V
-13 12 V
-12 -53 V
-13 -21 V
-13 30 V
-13 6 V
-13 -2 V
-13 -1 V
-12 -3 V
-13 -3 V
-13 -3 V
-13 -14 V
-13 27 V
-13 -34 V
-12 15 V
-13 29 V
-13 -19 V
-13 4 V
-13 -33 V
-13 36 V
-12 -10 V
-13 7 V
-13 18 V
-13 8 V
-13 -23 V
-12 -2 V
-13 17 V
-13 -1 V
-13 -31 V
-13 23 V
-13 -7 V
-12 -17 V
-13 -6 V
-13 20 V
-13 18 V
-13 16 V
-13 -9 V
-stroke 4523 1339 M
-12 -21 V
-13 -2 V
-13 2 V
-13 -34 V
-13 11 V
-13 7 V
-12 23 V
-13 -3 V
-13 -16 V
-13 15 V
-13 -1 V
-13 -3 V
-12 9 V
-13 -27 V
-13 -7 V
-13 11 V
-13 4 V
-12 -12 V
-13 8 V
-13 32 V
-13 -27 V
-13 17 V
-13 -20 V
-12 26 V
-13 8 V
-13 -26 V
-13 21 V
-13 -13 V
-13 3 V
-12 -19 V
-13 -21 V
-13 29 V
-13 -6 V
-13 -14 V
-13 8 V
-12 6 V
-13 -17 V
-13 33 V
-13 -12 V
-13 -7 V
-13 1 V
-12 -2 V
-13 -1 V
-13 5 V
-13 11 V
-13 -2 V
-12 0 V
-13 -5 V
-13 1 V
-13 -23 V
-13 10 V
-13 3 V
-12 5 V
-13 -7 V
-13 17 V
-13 -12 V
-13 -15 V
-13 24 V
-12 7 V
-13 -14 V
-13 11 V
-13 -23 V
-13 -7 V
-13 32 V
-12 6 V
-13 18 V
-13 1 V
-13 -15 V
-13 -14 V
-13 -21 V
-12 14 V
-13 -11 V
-13 17 V
-13 6 V
-13 -20 V
-12 4 V
-13 13 V
-13 -4 V
-13 0 V
-13 -19 V
-13 -9 V
-12 18 V
-13 20 V
-13 6 V
-13 -19 V
-13 -58 V
-13 17 V
-12 7 V
-13 24 V
-13 8 V
-13 12 V
-13 -11 V
-13 -20 V
-12 5 V
-13 13 V
-13 -23 V
-13 33 V
-13 4 V
-13 -4 V
-12 7 V
-13 -36 V
-13 4 V
-13 -10 V
-13 21 V
-stroke 5857 1304 M
-12 -12 V
-13 11 V
-13 -14 V
-13 25 V
-13 5 V
-13 0 V
-12 -11 V
-13 0 V
-13 22 V
-13 -41 V
-13 33 V
-13 -6 V
-12 -11 V
-13 20 V
-13 -7 V
-13 -5 V
-13 -2 V
-13 41 V
-12 -9 V
-13 7 V
-13 -11 V
-13 16 V
-13 -25 V
-13 11 V
-12 -5 V
-13 -12 V
-13 -47 V
-13 19 V
-13 20 V
-12 27 V
-13 -3 V
-13 -3 V
-13 6 V
-13 -26 V
-13 27 V
-12 -35 V
-13 0 V
-13 -5 V
-13 -5 V
-13 18 V
-13 -3 V
-12 12 V
-13 -18 V
-13 1 V
-13 -12 V
-13 -14 V
-13 30 V
-12 -2 V
-13 8 V
-13 8 V
-13 -31 V
-13 0 V
-13 14 V
-12 -2 V
-13 21 V
-13 -22 V
-13 0 V
-13 -8 V
-12 -11 V
-13 15 V
-13 2 V
-13 -8 V
-13 10 V
-13 6 V
-12 0 V
-13 14 V
-13 -12 V
-13 -3 V
-13 4 V
-13 0 V
-12 -12 V
-13 -3 V
-13 -9 V
-13 24 V
-13 12 V
-13 -7 V
-12 -24 V
-13 22 V
-13 -6 V
-13 -8 V
-13 -13 V
-13 0 V
-12 -12 V
-13 -4 V
-13 5 V
+(141th generation) Rshow
+/Helvetica findfont 140 scalefont setfont
+/vshift -46 def
+LT3
+0.00 0.00 0.00 C 546 4687 Box
+6818 303 Box
+5499 792 Box
+955 3586 Box
+1389 3104 Box
+5333 866 Box
+2954 2030 Box
+737 3946 Box
+1226 3275 Box
+4118 1384 Box
+3887 1537 Box
+4242 1331 Box
+4398 1265 Box
+894 3682 Box
+6054 582 Box
+1027 3502 Box
+6591 384 Box
+1296 3189 Box
+5929 630 Box
+1140 3361 Box
+6517 428 Box
+4827 1106 Box
+1497 2998 Box
+3112 1935 Box
+2522 2225 Box
+550 4597 Box
+2689 2129 Box
+2618 2183 Box
+4304 1305 Box
+797 3823 Box
+5626 757 Box
+3376 1744 Box
+5144 948 Box
+570 4463 Box
+5789 678 Box
+4997 1002 Box
+2275 2400 Box
+3428 1717 Box
+4577 1170 Box
+5069 988 Box
+2805 2068 Box
+3753 1560 Box
+3320 1806 Box
+6123 563 Box
+4691 1154 Box
+3644 1613 Box
+1054 3442 Box
+1706 2810 Box
+3639 1634 Box
+1331 3148 Box
+560 4514 Box
+5207 921 Box
+2222 2442 Box
+6697 354 Box
+1188 3340 Box
+5871 653 Box
+6203 531 Box
+5261 882 Box
+4726 1120 Box
+2817 2061 Box
+1779 2758 Box
+1829 2717 Box
+1539 2943 Box
+1626 2868 Box
+3183 1879 Box
+2197 2492 Box
+4058 1419 Box
+614 4252 Box
+3516 1674 Box
+1610 2883 Box
+6733 338 Box
+588 4337 Box
+3252 1814 Box
+5725 711 Box
+2051 2555 Box
+714 3997 Box
+4472 1217 Box
+6402 447 Box
+3011 1956 Box
+4894 1043 Box
+2456 2296 Box
+1908 2658 Box
+2382 2328 Box
+2475 2266 Box
+649 4177 Box
+3774 1547 Box
+853 3718 Box
+4006 1443 Box
+1874 2683 Box
+691 4045 Box
+3195 1854 Box
+4909 1036 Box
+652 4127 Box
+674 4084 Box
+3956 1464 Box
+1960 2618 Box
+580 4368 Box
+2325 2356 Box
+3506 1678 Box
+2676 2155 Box
+6579 4598 Box
 % End plot #2
-stroke
+1.000 UL
 LTb
 546 4871 N
-546 448 L
+546 280 L
 6401 0 V
-0 4423 V
+0 4591 V
 -6401 0 V
 Z stroke
 1.000 UP

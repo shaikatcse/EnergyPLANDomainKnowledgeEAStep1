@@ -1,8 +1,11 @@
-set terminal postscript eps #size 3.5,2.62 enhanced color font 'Helvetica,20' 
-set output 'AhdAndDiv.eps'
+#This is a gnuplot file that generates a plot normalized AHD and Diversity (Div) values  from "AHD_ZDT1_run0_NSGAII" and "Div_ZDT1_run0_NSGAII". 
+#The plot also presents three vertical lines to indicates termination point for three different criteria (only AHD, only Div and both) 
 
-#set terminal pdf  
-#set output 'AHDAndDiv.pdf'
+#set terminal postscript eps #size 3.5,2.62 enhanced color font 'Helvetica,20' 
+#set output 'AhdAndDiv.eps'
+
+set terminal pdf  
+set output 'AHDAndDiv.pdf'
 
 #set terminal epslatex size 3.5,2.62 color colortext
 #set output 'AHDAndDiv.tex'
@@ -32,6 +35,7 @@ xValueR=170
 
 #set ylabel "Average Haussdorff Distance"
 set xlabel "Generations"
+set ylabel "Normalized AHD and Diversity"
 
 plot 'AHD_ZDT1_run0_NSGAII' using 1:3 w l lc rgb 'black' lt 1 lw 1 title "Average Haussdorff Distance",'Div_ZDT1_run0_NSGAII' using 1:3 w l lc rgb 'blue' lt 1 lw 1 title "Diversity" 
 set arrow from xValueHD,0 to xValueHD, yMax nohead lt 1 lw 2 lc rgb 'black' 
@@ -44,6 +48,6 @@ unset xrange
 unset yrange
 unset xlabel
 unset ylabel
-set output
+#set output
 
 #unset output
