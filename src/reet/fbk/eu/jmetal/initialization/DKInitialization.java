@@ -25,102 +25,129 @@ public class DKInitialization {
 	Random rm;
 	MatlabProxy proxy;
 
-	int populationSize;
-	
+	int populationSize, numberOfIndevPerCombination;
+	double theta;
+	int maxDistributionIndex;
+
 	public DKInitialization(Problem problem_, Boolean REFavorGenes[],
-			Boolean ConFavorGene[], Boolean LFCFavorGenes[], int populationSize, MatlabProxy proxy) throws MatlabInvocationException {
+			Boolean ConFavorGene[], Boolean LFCFavorGenes[],
+			int populationSize, double theta, int maxDistributionIndex,
+			int numberOfIndevPerCombination, MatlabProxy proxy)
+			throws MatlabInvocationException {
 		this.REFavorGenes = REFavorGenes;
 		this.ConFavorGene = ConFavorGene;
 		this.LFCFavorGenes = LFCFavorGenes;
 		this.populationSize = populationSize;
+		this.theta = theta;
+		this.maxDistributionIndex = maxDistributionIndex;
+		this.numberOfIndevPerCombination = numberOfIndevPerCombination;
 
 		this.problem_ = problem_;
 		rm = new Random();
 		initialSolutions = new SolutionSet(10000);
-		
-		this.proxy=proxy;
-		
-		proxy.eval("addpath('C:/Users/mahbub/Documents/MATLAB')");
+
+		this.proxy = proxy;
+
+		proxy.eval("addpath('C:/Users/mahbub/Documents/GitHub/EnergyPLANDomainKnowledgeEAStep1/src/reet/fbk/eu/jmetal/initialization')");
 	}
 
 	public DKInitialization(Problem problem_, Boolean REFavorGenes[],
-			Boolean ConFavorGene[], int populationSize, MatlabProxy proxy) throws MatlabInvocationException {
+			Boolean ConFavorGene[], int populationSize, double theta,
+			int maxDistributionIndex, int numberOfIndevPerCombination,
+			MatlabProxy proxy) throws MatlabInvocationException {
 		this.REFavorGenes = REFavorGenes;
 		this.ConFavorGene = ConFavorGene;
 		this.populationSize = populationSize;
+		this.theta = theta;
+		this.maxDistributionIndex = maxDistributionIndex;
+		this.numberOfIndevPerCombination = numberOfIndevPerCombination;
 
 		this.problem_ = problem_;
 		rm = new Random();
 		initialSolutions = new SolutionSet(10000);
-		this.proxy=proxy;
-		proxy.eval("addpath('C:/Users/mahbub/Documents/MATLAB')");
+		this.proxy = proxy;
+		proxy.eval("addpath('C:/Users/mahbub/Documents/GitHub/EnergyPLANDomainKnowledgeEAStep1/src/reet/fbk/eu/jmetal/initialization')");
 	}
 
 	public void generateInitialSolutions() {
 
 	}
 
-	public void generateInitialSolutionFavorRE() throws ClassNotFoundException, JMException {
+	public void generateInitialSolutionFavorRE() throws ClassNotFoundException,
+			JMException {
 
 		for (int no = 0; no < combinationsArray.size(); no++) {
-			Solution sol=new Solution(problem_);
+			Solution sol = new Solution(problem_);
 			Integer[] aCombination = combinationsArray.get(no);
 			aCombination = TransformArray(aCombination);
-			for (int i = 0; i < problem_.getNumberOfVariables(); i++) {
-				try {
-					if (REFavorGenes[i] == true) {
-						sol.getDecisionVariables()[i].setValue(
-						createGeneWithIncreasedCapacity(aCombination[i],
-								problem_.getLowerLimit(i),
-								problem_.getUpperLimit(i)));
-					} else if (REFavorGenes[i] == false) {
-						sol.getDecisionVariables()[i].setValue(createGeneWithDecreasedCapacity(aCombination[i],
-								problem_.getLowerLimit(i),
-								problem_.getUpperLimit(i)));
-					}
-				} catch (NullPointerException e) {
+			for (int z = 0; z < numberOfIndevPerCombination; z++) {
+				for (int i = 0; i < problem_.getNumberOfVariables(); i++) {
+					try {
+						if (REFavorGenes[i] == true) {
+							sol.getDecisionVariables()[i]
+									.setValue(createGeneWithIncreasedCapacity(
+											aCombination[i],
+											problem_.getLowerLimit(i),
+											problem_.getUpperLimit(i)));
+						} else if (REFavorGenes[i] == false) {
+							sol.getDecisionVariables()[i]
+									.setValue(createGeneWithDecreasedCapacity(
+											aCombination[i],
+											problem_.getLowerLimit(i),
+											problem_.getUpperLimit(i)));
+						}
+					} catch (NullPointerException e) {
 
-					sol.getDecisionVariables()[i].setValue(createGeneWithoutAnything(problem_.getLowerLimit(i),
-							problem_.getUpperLimit(i)));
+						sol.getDecisionVariables()[i]
+								.setValue(createGeneWithoutAnything(
+										problem_.getLowerLimit(i),
+										problem_.getUpperLimit(i)));
+					}
 				}
+				initialSolutions.add(sol);
 			}
-			initialSolutions.add(sol);
+
 		}
 	}
-	
-	
-	public void generateInitialSolutionFavorCon() throws ClassNotFoundException, JMException {
+
+	public void generateInitialSolutionFavorCon()
+			throws ClassNotFoundException, JMException {
 
 		for (int no = 0; no < combinationsArray.size(); no++) {
-			Solution sol=new Solution(problem_);
+			Solution sol = new Solution(problem_);
 			Integer[] aCombination = combinationsArray.get(no);
 			aCombination = TransformArray(aCombination);
-			for (int i = 0; i < problem_.getNumberOfVariables(); i++) {
-				try {
-					if (REFavorGenes[i] == true) {
-						sol.getDecisionVariables()[i].setValue(
-						 createGeneWithIncreasedCapacity(aCombination[i],
-								problem_.getLowerLimit(i),
-								problem_.getUpperLimit(i)));
-					} else if (REFavorGenes[i] == false) {
-						sol.getDecisionVariables()[i].setValue(
-						createGeneWithDecreasedCapacity(aCombination[i],
-								problem_.getLowerLimit(i),
-								problem_.getUpperLimit(i)));
+			for (int z = 0; z < numberOfIndevPerCombination; z++) {
+				for (int i = 0; i < problem_.getNumberOfVariables(); i++) {
+					try {
+						if (REFavorGenes[i] == true) {
+							sol.getDecisionVariables()[i]
+									.setValue(createGeneWithIncreasedCapacity(
+											aCombination[i],
+											problem_.getLowerLimit(i),
+											problem_.getUpperLimit(i)));
+						} else if (REFavorGenes[i] == false) {
+							sol.getDecisionVariables()[i]
+									.setValue(createGeneWithDecreasedCapacity(
+											aCombination[i],
+											problem_.getLowerLimit(i),
+											problem_.getUpperLimit(i)));
+						}
+					} catch (NullPointerException e) {
+						sol.getDecisionVariables()[i]
+								.setValue(createGeneWithoutAnything(
+										problem_.getLowerLimit(i),
+										problem_.getUpperLimit(i)));
 					}
-				} catch (NullPointerException e) {
-					sol.getDecisionVariables()[i].setValue(
-					createGeneWithoutAnything(problem_.getLowerLimit(i),
-							problem_.getUpperLimit(i)));
 				}
+				initialSolutions.add(sol);
 			}
-			initialSolutions.add(sol);
 		}
 	}
 
 	public Integer[] TransformArray(Integer[] aCombination) {
 		Integer[] combination = new Integer[REFavorGenes.length];
-		int j=0;
+		int j = 0;
 		for (int i = 0; i < REFavorGenes.length; i++) {
 			try {
 				if (REFavorGenes[i] == true || REFavorGenes[i] == false) {
@@ -140,7 +167,7 @@ public class DKInitialization {
 	public double createGeneWithIncreasedCapacity(int n, double lowerBound,
 			double upperBound) {
 		double r = rm.nextDouble();
-		double delta = Math.pow(r, (1 / ((double)n + 1)));
+		double delta = Math.pow(r, (1 / ((double) n + 1)));
 		double dcv = lowerBound + (upperBound - lowerBound) * delta;
 		return dcv;
 	}
@@ -151,7 +178,7 @@ public class DKInitialization {
 	public double createGeneWithDecreasedCapacity(int n, double lowerBound,
 			double upperBound) {
 		double r = rm.nextDouble();
-		double delta = 1 - Math.pow((1 - r), (1 / ((double)n + 1)));
+		double delta = 1 - Math.pow((1 - r), (1 / ((double) n + 1)));
 		double dcv = lowerBound + (upperBound - lowerBound) * delta;
 		return dcv;
 	}
@@ -163,80 +190,83 @@ public class DKInitialization {
 		return dcv;
 	}
 
-	public SolutionSet doDKInitialization() throws ClassNotFoundException, JMException, MatlabInvocationException, MatlabConnectionException {
-		
-	
+	public SolutionSet doDKInitialization() throws ClassNotFoundException,
+			JMException, MatlabInvocationException, MatlabConnectionException {
+
 		/*
 		 * generate all combinations
 		 */
-		int n = 3;
-		initializeLengthAndCounter(n, REFavorGenes);
+		// int maxDistributionIndex = 3;
+
+		initializeLengthAndCounter(maxDistributionIndex, REFavorGenes);
 		nestedLoopOperation(counters, length, 0);
-		
+
 		/*
-		 * generate two kinds of individuals by favoring RES and conventional energy 
+		 * generate two kinds of individuals by favoring RES and conventional
+		 * energy
 		 */
 		generateInitialSolutionFavorRE();
 		generateInitialSolutionFavorCon();
-		
-		
+
 		sendPopulationToMatlab();
 		double[][] population = runMatlabCode();
 		/*
-		 * Exit Matlab 
+		 * Exit Matlab
 		 */
 		proxy.exit();
-		
+
 		/*
 		 * convert double into population set
 		 */
-		
+
 		SolutionSet finalPopulation = new SolutionSet(populationSize);
-		for(int j=0;j<populationSize;j++){
+		for (int j = 0; j < populationSize; j++) {
 			Solution s = new Solution(problem_);
 			for (int i = 0; i < problem_.getNumberOfVariables(); i++) {
 				s.getDecisionVariables()[i].setValue(population[j][i]);
 			}
 			finalPopulation.add(s);
 		}
-		
+
 		return finalPopulation;
 	}
-	
-	public void sendPopulationToMatlab() throws MatlabInvocationException, JMException{
+
+	public void sendPopulationToMatlab() throws MatlabInvocationException,
+			JMException {
 		proxy.eval("clear all");
 		String aMatrix;
-		
-		aMatrix="[";
-		for(int i=0;i<initialSolutions.size();i++){
-			
-			for(int j=0;j<problem_.getNumberOfVariables();j++){
-				aMatrix = aMatrix+initialSolutions.get(i).getDecisionVariables()[j].getValue()+" ";
-			}
-			aMatrix=aMatrix+";";
-		
-		}
-		aMatrix=aMatrix+"]";
-		proxy.eval("indvMatrix="+aMatrix+";");
-		
-	}
-	
-	public double[][] runMatlabCode() throws MatlabInvocationException{
-		proxy.eval("numberOfIndv="+initialSolutions.size()+";");
-		proxy.eval("theta=0.00005;");
-		
-		proxy.eval("testFor2DDecisionVariable");
-		double [][] population = new double[100][problem_.getNumberOfVariables()];
-		MatlabTypeConverter processor = new MatlabTypeConverter(proxy);
-		population = processor.getNumericArray("indMatrixTemp").getRealArray2D();
-		return population;
-		
-	}
-	
-	
 
-	/*486
-	 * code for generate all combinations
+		aMatrix = "[";
+		for (int i = 0; i < initialSolutions.size(); i++) {
+
+			for (int j = 0; j < problem_.getNumberOfVariables(); j++) {
+				aMatrix = aMatrix
+						+ initialSolutions.get(i).getDecisionVariables()[j]
+								.getValue() + " ";
+			}
+			aMatrix = aMatrix + ";";
+
+		}
+		aMatrix = aMatrix + "]";
+		proxy.eval("indvMatrix=" + aMatrix + ";");
+
+	}
+
+	public double[][] runMatlabCode() throws MatlabInvocationException {
+		proxy.eval("numberOfFinalIndv=" + populationSize + ";");
+		proxy.eval("theta=" + theta + ";");
+
+		proxy.eval("findIndvMaxDiversity");
+		double[][] population = new double[100][problem_.getNumberOfVariables()];
+		MatlabTypeConverter processor = new MatlabTypeConverter(proxy);
+		population = processor.getNumericArray("indMatrixTemp")
+				.getRealArray2D();
+		return population;
+
+	}
+
+	/*
+	 * 486 code for generate all combinations
 	 */
 
 	int[] length;
@@ -298,22 +328,23 @@ public class DKInitialization {
 	 * test purpose
 	 */
 
-	public static void main(String args[]) throws ClassNotFoundException, JMException, MatlabConnectionException, MatlabInvocationException {
+	public static void main(String args[]) throws ClassNotFoundException,
+			JMException, MatlabConnectionException, MatlabInvocationException {
 		Problem problem = new EnergyPLANProblemWithStep("Real");
 		Boolean REFavorGenes[] = new Boolean[] { true, true, true, null, false,
 				null, true };
 		Boolean ConFavorGenes[] = new Boolean[] { false, false, false, null,
 				true, null, false };
-		
+
 		MatlabProxyFactory factory;
 		MatlabProxy proxy;
-		
+
 		factory = new MatlabProxyFactory();
 		proxy = factory.getProxy();
 
 		DKInitialization dkini = new DKInitialization(problem, REFavorGenes,
-				ConFavorGenes, 100, proxy);
-		
+				ConFavorGenes, 100, 0.00005, 4, 3, proxy);
+
 		@SuppressWarnings("unused")
 		SolutionSet p = dkini.doDKInitialization();
 	}
