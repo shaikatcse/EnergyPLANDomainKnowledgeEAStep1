@@ -255,8 +255,18 @@ public class NSGAIIWithArc extends Algorithm {
 			}
 			double arrayMean=mean.evaluate(array);
 			double arraySD=sd.evaluate(array);
-			
+			if(arraySD==0){
+				for(int j=0;j<ss.size();j++){
+					ss.get(j).setObjective(i, 0);
+				}
+			}else{
+				for(int j=0;j<ss.size();j++){
+					double normaliedvalue = (array[j]- arrayMean)/arraySD;
+					ss.get(j).setObjective(i, normaliedvalue);
+				}
+			}
 		}
+		return ss;
 	}
 
 	public double distance(Solution a, Solution b) {
