@@ -240,7 +240,9 @@ public class NSGAIIWithArc extends Algorithm {
 			SolutionSet temporaryArchive) {
 		for(int i=0;i<currentParetoFront.size();i++){
 			SolutionSet ss = findNClosetSolutionInObjectiveSpace(currentParetoFront.get(i), temporaryArchive, 5);
-			
+			ss.add(currentParetoFront.get(i));
+			SolutionSet normalizedSS = new SolutionSet(ss.size());
+			normalizedSS=normalizedDecisionVariables(ss);
 		}
 
 	}
