@@ -23,6 +23,7 @@ import jmetal.util.RandomGenerator;
 import reet.fbk.eu.jmetal.operators.mutation.MutationFactory;
 import reet.fbk.eu.OptimizeEnergyPLANAalborg.problem.EnergyPLANProblemAalborg;
 import reet.fbk.eu.OptimizeEnergyPLANAalborg.problem.EnergyPLANProblemAalborg2Objectives;
+import reet.fbk.eu.OptimizeEnergyPLANCIVIS.CEIS.Problem.EnergyPLANProblemCivisCeisWithDH;
 import reet.fbk.eu.OptimizeEnergyPLANCIVIS.CEdiS.Problem.EnergyPLANProblemCivisCEdiS;
 import reet.fbk.eu.OptimizeEnergyPLANCIVIS.metaheuristics.NSGAIIForDK;
 //import reet.fbk.eu.jmetal.operators.mutation.MutationFactory;
@@ -62,7 +63,7 @@ public class OPtimizeEnergyPLANCivisCEdiSMain {
 		// long seed[]={102354,986587,456987,159753,
 		// 216557,589632,471259,523486,4158963,745896};
 
-		int numberOfRun = 2;
+		int numberOfRun = 3;
 		for (int i = 0; i < numberOfRun; i++) {
 
 			// PseudoRandom.setRandomGenerator(new RandomGenerator(seed[i]));
@@ -84,8 +85,8 @@ public class OPtimizeEnergyPLANCivisCEdiSMain {
 			// ;
 
 			// Algorithm parameters
-			algorithm.setInputParameter("populationSize", 100);
-			algorithm.setInputParameter("maxEvaluations", 7000);
+			algorithm.setInputParameter("populationSize", 10);
+			algorithm.setInputParameter("maxEvaluations", 100);
 			// for spea2
 			// algorithm.setInputParameter("archiveSize",100);
 
@@ -101,13 +102,23 @@ public class OPtimizeEnergyPLANCivisCEdiSMain {
 			parameters.put("distributionIndex", 10.0);
 			parameters.put("maximum generation", (int) algorithm.getInputParameter("maxEvaluations")/(int) algorithm.getInputParameter("populationSize")-1);
 			
-			Boolean favorGenesforRE[] ={true, true};
-			Boolean favorGenesforConventionalPP[] ={false, false};
+			// decision variables
+			// index - 0 -> PV Capacity
+			// index - 1 -> oil boiler heat percentage
+			// index - 2 -> Ngas boiler heat percentage
+			// index - 3 -> Biomass boiler heat percentage
+			// index - 4 -> Ngas micro chp heat percentage
+			
+			Boolean favorGenesforRE[] ={true, false, null, true, true };
+			Boolean favorGenesforConventionalPP[] ={false, null, true, null, false };
+			Boolean favorGenesforLFC[]={false, null, null, null, true};
+			
 			parameters.put("favorGenesforRE", favorGenesforRE);
 			parameters.put("favorGenesForConventioanlPP", favorGenesforConventionalPP);
-			
+			parameters.put("favorGenesForLFC",favorGenesforLFC );
+							
 			mutation = MutationFactory.getMutationOperator(
-					"GeneralModifiedPolynomialMutationForRes", parameters);
+					"GeneralModifiedPolynomialMutationForEnergySystems", parameters);
 			
 			
 			// parameters.put("maximum generation", (int)
@@ -134,55 +145,17 @@ public class OPtimizeEnergyPLANCivisCEdiSMain {
 			// Execute the Algorithm
 			long initTime = System.currentTimeMillis();
 			 SolutionSet population = algorithm.execute();
-			/*SolutionSet population = new SolutionSet() {
-				@Override
-				public void printVariablesToFile(String path) {
-					try {
-						FileOutputStream fos = new FileOutputStream(path);
-						OutputStreamWriter osw = new OutputStreamWriter(fos);
-						BufferedWriter bw = new BufferedWriter(osw);
 
-						if (size() > 0) {
-							int numberOfVariables = solutionsList_.get(0)
-									.getDecisionVariables().length;
-							for (Solution aSolutionsList_ : solutionsList_) {
-								for (int j = 0; j < numberOfVariables; j++) {
-									if (j == 6) {
-										//decision variable is heat storage for group 3
-										//round to two decimal place
-										double a = (double) Math.round((aSolutionsList_
-												.getDecisionVariables()[j]
-												.getValue()*100)/100);
-										bw.write(a + " ");
-									} else {
-										double a = Math.round(aSolutionsList_
-												.getDecisionVariables()[j]
-												.getValue());
-										bw.write(a + " ");
-									}
-								}
-								bw.newLine();
-							}
-						}
-						bw.close();
-					} catch (IOException | JMException e) {
-						Configuration.logger_
-								.severe("Error acceding to the file");
-						e.printStackTrace();
-					}
-				} // printVariablesToFile
-			};
-			population =  algorithm.execute();*/
 			long estimatedTime = System.currentTimeMillis() - initTime;
 
 			// Result messages
 			logger_.info("Total execution time: " + estimatedTime + "ms");
 			logger_.info("Variables values have been writen to file VAR");
-			//population.printVariablesToFile("AalborgNewResults\\VAR" + i);
-			population.printFeasibleVAR("CivisResults\\CEDIS\\VAR" + i);
+			population.printFeasibleVAR("CivisResults\\CEDIS\\3Objectives\\VAR" + i);
+			//population.printFeasibleVAR("VAR");
 			logger_.info("Objectives values have been writen to file FUN");
-			//population.printObjectivesToFile("AalborgNewResults\\FUN" + i);
-			population.printFeasibleFUN("CivisResults\\CEDIS\\FUN" + i);
+			population.printFeasibleFUN("CivisResults\\CEDIS\\3Objectives\\FUN" + i);
+			//population.printFeasibleFUN("FUN");
 		}
 	}
 }
