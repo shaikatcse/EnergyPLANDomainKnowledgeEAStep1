@@ -2,28 +2,19 @@ package reet.fbk.eu.OptimizeEnergyPLANCIVIS.CEdiS.Problem;
 
 import jmetal.core.Problem;
 import jmetal.core.Solution;
-import jmetal.encodings.variable.ArrayReal;
-import jmetal.encodings.solutionType.ArrayRealSolutionType;
-import jmetal.encodings.solutionType.BinaryRealSolutionType;
+
 import jmetal.encodings.solutionType.RealSolutionType;
 import jmetal.util.JMException;
-import jmetal.util.wrapper.XReal;
 
-import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.text.DecimalFormat;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Iterator;
-import java.util.StringTokenizer;
 
 import org.apache.commons.collections.MultiMap;
-import org.apache.commons.collections.map.MultiValueMap;
 
 import reet.fbk.eu.OptimizeEnergyPLANCIVIS.ParseFile.*;
 
@@ -32,23 +23,34 @@ public class EnergyPLANProblemCivisCEdiS extends Problem {
 	MultiMap energyplanmMap;
 
 	public static final double indvBoilerCostInKEuro = 0.625;
+	public static final double PVInvestmentCostInKEuro = 2.6;
+	public static final double hydroInvestmentCostInKEuro = 1.9;
+	public static final double interest = 0.04;
+	
 	public static final double currentPVCapacity = 5566;
 	public static final double currentHydroCapacity = 4592;
-	public static final double currentCapacityOfIndvBoiler = 24768;
+	//public static final double currentCapacityOfIndvBoiler = 24768;
 	public static final double totalHeatDemand = 51.30;
 
-	public static final double boilerLifeTime = 20;
-	public static final double PVLifeTime = 25;
-	public static final double HydroLifeTime = 20;
-	public static final double interest = 0.04;
-
+	public static final double boilerLifeTime = 15;
+	public static final double PVLifeTime = 30;
+	public static final double HydroLifeTime = 50;
+	public static final double geoBoreHoleLifeTime=100;
+	
 	public static final double COP = 3.2;
 
 	public static final double maxHeatDemandInDistribution = 1.0;
 	public static final double sumOfAllHeatDistributions = 3106.96;
 
-	public static final double PVInvestmentCost = 3.987;
-	public static final double hydroInvestmentCost = 3.51;
+	
+	
+	public static final double geoBoreholeCostInKWe = 3.2;
+	
+	public static final double oilBoilerEfficiency = 0.80;
+	public static final double ngasBoilerEfficiency = 0.90;
+	public static final double biomassBoilerEfficiency = 0.75;
+
+	public static final double addtionalCostPerGWhinKEuro = 106.27;
 
 	/**
 	 * Creates a new instance of problem ZDT1.
@@ -61,7 +63,7 @@ public class EnergyPLANProblemCivisCEdiS extends Problem {
 	public EnergyPLANProblemCivisCEdiS(String solutionType) {
 		numberOfVariables_ = 5;
 		numberOfObjectives_ = 3;
-		numberOfConstraints_ =1;
+		numberOfConstraints_ = 1;
 		/*
 		 * at this moment, there are two objectives, 0 -> PV 1 -> Heat pump
 		 */
@@ -130,6 +132,10 @@ public class EnergyPLANProblemCivisCEdiS extends Problem {
 		
 		Arrays.sort(percentages);
 		
+		for(int i=1;i<numberOfVariables_;i++){
+			solution.getDecisionVariables()[i].setValue(percentages[i-1]);
+		}
+		//oil-boiler percentage
 		double oilBoilerHeatPercentage = percentages[0];
 		// Ngas-boiler heat percentage
 		double ngasBoilerHeatPercentage = percentages[1] - percentages [0];
@@ -139,7 +145,7 @@ public class EnergyPLANProblemCivisCEdiS extends Problem {
 		double ngasCHPHeatPercentage = percentages[3] - percentages [2];
 
 		// heta pump  heat percentage
-		double hpHeatPercentage = 1 - percentages[3];
+		double hpHeatPercentage = 1.0 - percentages[3];
 
 		writeModificationFile(pv, oilBoilerHeatPercentage,ngasBoilerHeatPercentage, biomassBoilerHeatPercentage , ngasCHPHeatPercentage, hpHeatPercentage);
 		String energyPLANrunCommand = ".\\EnergyPLAN_SEP_2013\\EnergyPLAN.exe -i "
@@ -203,8 +209,8 @@ public class EnergyPLANProblemCivisCEdiS extends Problem {
 			// calculate additional cost
 			// (hydroProduction+PVproduction+Import-Export)*average additional
 			// cost (85.74)
-			double additionalCost = Math.round((hydroPowerProduction
-					+ PVproduction + Import - Export + chpElecProduction ) * 85.74);
+			double totalAdditionalCost = Math.round((hydroPowerProduction
+					+ PVproduction + Import - Export + chpElecProduction ) * addtionalCostPerGWhinKEuro);
 			
 			/*
 			 * now, calculate how many boiler need to diassamble 
@@ -215,14 +221,14 @@ public class EnergyPLANProblemCivisCEdiS extends Problem {
 		/*	double newHeatdemandForBoilers = (totalHeatDemand * oilBoilerHeatPercentage + totalHeatDemand * ngasBoilerHeatPercentage + totalHeatDemand * biomassBoilerHeatPercentage);
 			double capacityOfBoilerforNewHeatDemand = Math.round(maxHeatDemandInDistribution * newHeatdemandForBoilers*Math.pow(10, 6)*1.5/sumOfAllHeatDistributions);*/
 			
-			int geoBoreHoleLifeTime=100;
+			
 			double capacityOfHeatPump =  Math.round( (maxHeatDemandInDistribution * hpHeatPercentage * totalHeatDemand *Math.pow(10, 6)) / (COP*sumOfAllHeatDistributions) );
-			double geoBoreHoleInvestmentCost = (capacityOfHeatPump * 3.2 * interest)/(1-Math.pow((1+interest),-geoBoreHoleLifeTime));
+			double geoBoreHoleInvestmentCost = (capacityOfHeatPump * geoBoreholeCostInKWe * interest)/(1-Math.pow((1+interest),-geoBoreHoleLifeTime));
 			
 			//see anual investment cost formual in EnergyPLAN manual 
 			
-			double reductionInvestmentCost = (currentPVCapacity * PVInvestmentCost * interest)/(1-Math.pow((1+interest),-PVLifeTime)) +
-					(currentHydroCapacity*hydroInvestmentCost*interest)/(1-Math.pow((1+interest), -HydroLifeTime)) ;
+			double reductionInvestmentCost = (currentPVCapacity * PVInvestmentCostInKEuro * interest)/(1-Math.pow((1+interest),-PVLifeTime)) +
+					(currentHydroCapacity*hydroInvestmentCostInKEuro*interest)/(1-Math.pow((1+interest), -HydroLifeTime)) ;
 			
 			
 			
@@ -235,7 +241,7 @@ public class EnergyPLANProblemCivisCEdiS extends Problem {
 			double investmentCost = Double.parseDouble(investmentCostStr);
 			double realInvestmentCost = investmentCost-reductionInvestmentCost +geoBoreHoleInvestmentCost;
 			
-			double actualAnnualCost = totalVariableCost + fixedOperationalCost + realInvestmentCost + additionalCost;
+			double actualAnnualCost = totalVariableCost + fixedOperationalCost + realInvestmentCost + totalAdditionalCost;
 			
 			solution.setObjective(1, actualAnnualCost);
 			
@@ -304,7 +310,7 @@ public class EnergyPLANProblemCivisCEdiS extends Problem {
 			double ngasCHPHeatPercentage,double hpHeatPercentage) throws JMException {
 
 
-
+		
 		try {
 
 			File file = new File("modification.txt");
@@ -336,7 +342,7 @@ public class EnergyPLANProblemCivisCEdiS extends Problem {
 			bw.write(str);
 			bw.newLine();
 			double oilBoilerFuelDemand = oilBoilerHeatPercentage
-					* totalHeatDemand /0.8;
+					* totalHeatDemand / oilBoilerEfficiency;
 			str = "" + oilBoilerFuelDemand;
 			bw.write(str);
 			bw.newLine();
@@ -346,7 +352,7 @@ public class EnergyPLANProblemCivisCEdiS extends Problem {
 			bw.write(str);
 			bw.newLine();
 			double ngasBoilerFuelDemand = ngasBoilerHeatPercentage
-					* totalHeatDemand /0.9;
+					* totalHeatDemand /ngasBoilerEfficiency;
 			str = "" + ngasBoilerFuelDemand;
 			bw.write(str);
 			bw.newLine();
@@ -356,7 +362,7 @@ public class EnergyPLANProblemCivisCEdiS extends Problem {
 			bw.write(str);
 			bw.newLine();
 			double biomassBoilerFuelDemand = biomassBoilerHeatPercentage
-					* totalHeatDemand /0.7;
+					* totalHeatDemand /biomassBoilerEfficiency;
 			str = "" + biomassBoilerFuelDemand;
 			bw.write(str);
 			bw.newLine();
