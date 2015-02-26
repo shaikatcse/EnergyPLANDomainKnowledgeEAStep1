@@ -25,27 +25,29 @@ public class EnergyPLANProblemCivisCEdiS extends Problem {
 	public static final double indvBoilerCostInKEuro = 0.625;
 	public static final double PVInvestmentCostInKEuro = 2.6;
 	public static final double hydroInvestmentCostInKEuro = 1.9;
+	public static final double individualBoilerInvestmentCostInKEuro = 0.588;
 	public static final double interest = 0.04;
-	
+
 	public static final double currentPVCapacity = 5566;
 	public static final double currentHydroCapacity = 4592;
-	//public static final double currentCapacityOfIndvBoiler = 24768;
+	public static final double currentIndvBiomassBoilerCapacity = 7903;
+	public static final double currentIndvOilBoilerCapacity = 3688;
+	public static final double currentIndvNgasBoilerCapacity = 13175;
+
 	public static final double totalHeatDemand = 51.30;
 
 	public static final double boilerLifeTime = 15;
 	public static final double PVLifeTime = 30;
 	public static final double HydroLifeTime = 50;
-	public static final double geoBoreHoleLifeTime=100;
-	
+	public static final double geoBoreHoleLifeTime = 100;
+
 	public static final double COP = 3.2;
 
 	public static final double maxHeatDemandInDistribution = 1.0;
 	public static final double sumOfAllHeatDistributions = 3106.96;
 
-	
-	
 	public static final double geoBoreholeCostInKWe = 3.2;
-	
+
 	public static final double oilBoilerEfficiency = 0.80;
 	public static final double ngasBoilerEfficiency = 0.90;
 	public static final double biomassBoilerEfficiency = 0.75;
@@ -114,42 +116,44 @@ public class EnergyPLANProblemCivisCEdiS extends Problem {
 	 */
 	@SuppressWarnings("unchecked")
 	public void evaluate(Solution solution) throws JMException {
-		
+
 		// PV
 		double pv = solution.getDecisionVariables()[0].getValue();
-		
+
 		// index - 1 -> oil boiler heat percentage
-				// index - 2 -> Ngas boiler heat percentage
-				// index - 3 -> Biomass boiler heat percentage
-				// index - 4 -> Ngas micro chp heat percentage
-				// last percentage will go to individual HP percentage 
+		// index - 2 -> Ngas boiler heat percentage
+		// index - 3 -> Biomass boiler heat percentage
+		// index - 4 -> Ngas micro chp heat percentage
+		// last percentage will go to individual HP percentage
 		// Oil-boiler heat percentage
-		
+
 		double percentages[] = new double[4];
-		for(int i=0;i<4;i++){
-			percentages[i] = solution.getDecisionVariables()[i+1].getValue();
+		for (int i = 0; i < 4; i++) {
+			percentages[i] = solution.getDecisionVariables()[i + 1].getValue();
 		}
-		
+
 		Arrays.sort(percentages);
-		
-		for(int i=1;i<numberOfVariables_;i++){
-			solution.getDecisionVariables()[i].setValue(percentages[i-1]);
+
+		for (int i = 1; i < numberOfVariables_; i++) {
+			solution.getDecisionVariables()[i].setValue(percentages[i - 1]);
 		}
-		//oil-boiler percentage
+		// oil-boiler percentage
 		double oilBoilerHeatPercentage = percentages[0];
 		// Ngas-boiler heat percentage
-		double ngasBoilerHeatPercentage = percentages[1] - percentages [0];
+		double ngasBoilerHeatPercentage = percentages[1] - percentages[0];
 		// biomass-boiler heat percentage
-		double biomassBoilerHeatPercentage = percentages[2] - percentages [1];
+		double biomassBoilerHeatPercentage = percentages[2] - percentages[1];
 		// ngas chp heat percentage
-		double ngasCHPHeatPercentage = percentages[3] - percentages [2];
+		double ngasCHPHeatPercentage = percentages[3] - percentages[2];
 
-		// heta pump  heat percentage
+		// heta pump heat percentage
 		double hpHeatPercentage = 1.0 - percentages[3];
 
-		writeModificationFile(pv, oilBoilerHeatPercentage,ngasBoilerHeatPercentage, biomassBoilerHeatPercentage , ngasCHPHeatPercentage, hpHeatPercentage);
+		writeModificationFile(pv, oilBoilerHeatPercentage,
+				ngasBoilerHeatPercentage, biomassBoilerHeatPercentage,
+				ngasCHPHeatPercentage, hpHeatPercentage);
 		String energyPLANrunCommand = ".\\EnergyPLAN_SEP_2013\\EnergyPLAN.exe -i "
-				+ "\".\\src\\reet\\fbk\\eu\\OptimizeEnergyPLANCIVIS\\CEdiS\\data\\CEdiS_current.txt\" " 
+				+ "\".\\src\\reet\\fbk\\eu\\OptimizeEnergyPLANCIVIS\\CEdiS\\data\\CEdiS_current.txt\" "
 				+ "-m \"modification.txt\" -ascii \"result.txt\" ";
 		try {
 			// Process process = new
@@ -157,32 +161,36 @@ public class EnergyPLANProblemCivisCEdiS extends Problem {
 			Process process = Runtime.getRuntime().exec(energyPLANrunCommand);
 			process.waitFor();
 			process.destroy();
-			EnergyPLANFileParseForCivis epfp = new EnergyPLANFileParseForCivis(".\\result.txt");
+			EnergyPLANFileParseForCivis epfp = new EnergyPLANFileParseForCivis(
+					".\\result.txt");
 			energyplanmMap = epfp.parseFile();
 
 			Iterator it;
 			Collection<String> col;
 
-						
 			// objective # 1
 			col = (Collection<String>) energyplanmMap
 					.get("CO2-emission (corrected)");
 			it = col.iterator();
 			solution.setObjective(0, Double.parseDouble(it.next().toString()));
 			// objective # 2
-			col = (Collection<String>) energyplanmMap.get("Total variable costs");
+			col = (Collection<String>) energyplanmMap
+					.get("Total variable costs");
 			it = col.iterator();
 			String totalVariableCostStr = it.next().toString();
-			totalVariableCostStr = totalVariableCostStr.substring(0, totalVariableCostStr.lastIndexOf("1000") );
+			totalVariableCostStr = totalVariableCostStr.substring(0,
+					totalVariableCostStr.lastIndexOf("1000"));
 			double totalVariableCost = Double.parseDouble(totalVariableCostStr);
-			
-			col = (Collection<String>) energyplanmMap.get("Fixed operation costs");
+
+			col = (Collection<String>) energyplanmMap
+					.get("Fixed operation costs");
 			it = col.iterator();
 			String fixedOperationalCostStr = it.next().toString();
-			fixedOperationalCostStr = fixedOperationalCostStr.substring(0, fixedOperationalCostStr.lastIndexOf("1000") );
-			double fixedOperationalCost = Double.parseDouble(fixedOperationalCostStr);
-			
-						
+			fixedOperationalCostStr = fixedOperationalCostStr.substring(0,
+					fixedOperationalCostStr.lastIndexOf("1000"));
+			double fixedOperationalCost = Double
+					.parseDouble(fixedOperationalCostStr);
+
 			col = (Collection<String>) energyplanmMap.get("AnnualHydropower");
 			it = col.iterator();
 			double hydroPowerProduction = Double.parseDouble(it.next()
@@ -201,50 +209,106 @@ public class EnergyPLANProblemCivisCEdiS extends Problem {
 			col = (Collection<String>) energyplanmMap.get("Annualexport");
 			it = col.iterator();
 			double Export = Double.parseDouble(it.next().toString());
-			
+
 			col = (Collection<String>) energyplanmMap.get("AnnualHH-elec.CHP");
 			it = col.iterator();
 			double chpElecProduction = Double.parseDouble(it.next().toString());
-			
+
 			// calculate additional cost
 			// (hydroProduction+PVproduction+Import-Export)*average additional
 			// cost (85.74)
 			double totalAdditionalCost = Math.round((hydroPowerProduction
-					+ PVproduction + Import - Export + chpElecProduction ) * addtionalCostPerGWhinKEuro);
-			
-			/*
-			 * now, calculate how many boiler need to diassamble 
-			 */
-			
-					
+					+ PVproduction + Import - Export + chpElecProduction)
+					* addtionalCostPerGWhinKEuro);
+
 			// new capacity of individual boilers
-		/*	double newHeatdemandForBoilers = (totalHeatDemand * oilBoilerHeatPercentage + totalHeatDemand * ngasBoilerHeatPercentage + totalHeatDemand * biomassBoilerHeatPercentage);
-			double capacityOfBoilerforNewHeatDemand = Math.round(maxHeatDemandInDistribution * newHeatdemandForBoilers*Math.pow(10, 6)*1.5/sumOfAllHeatDistributions);*/
-			
-			
-			double capacityOfHeatPump =  Math.round( (maxHeatDemandInDistribution * hpHeatPercentage * totalHeatDemand *Math.pow(10, 6)) / (COP*sumOfAllHeatDistributions) );
-			double geoBoreHoleInvestmentCost = (capacityOfHeatPump * geoBoreholeCostInKWe * interest)/(1-Math.pow((1+interest),-geoBoreHoleLifeTime));
-			
-			//see anual investment cost formual in EnergyPLAN manual 
-			
-			double reductionInvestmentCost = (currentPVCapacity * PVInvestmentCostInKEuro * interest)/(1-Math.pow((1+interest),-PVLifeTime)) +
-					(currentHydroCapacity*hydroInvestmentCostInKEuro*interest)/(1-Math.pow((1+interest), -HydroLifeTime)) ;
-			
-			
-			
-			//extract 
+			/*
+			 * double newHeatdemandForBoilers = (totalHeatDemand *
+			 * oilBoilerHeatPercentage + totalHeatDemand *
+			 * ngasBoilerHeatPercentage + totalHeatDemand *
+			 * biomassBoilerHeatPercentage); double
+			 * capacityOfBoilerforNewHeatDemand =
+			 * Math.round(maxHeatDemandInDistribution *
+			 * newHeatdemandForBoilers*Math.pow(10,
+			 * 6)*1.5/sumOfAllHeatDistributions);
+			 */
+
+			double capacityOfHeatPump = Math.round((maxHeatDemandInDistribution
+					* hpHeatPercentage * totalHeatDemand * Math.pow(10, 6))
+					/ (COP * sumOfAllHeatDistributions));
+			double geoBoreHoleInvestmentCost = (capacityOfHeatPump
+					* geoBoreholeCostInKWe * interest)
+					/ (1 - Math.pow((1 + interest), -geoBoreHoleLifeTime));
+
+			// see annual investment cost formula in EnergyPLAN manual
+
+			double newCapacityBiomassBoiler = Math
+					.round((totalHeatDemand * biomassBoilerHeatPercentage)
+							* Math.pow(10, 6) * 1.5 / sumOfAllHeatDistributions);
+			double investmentCostReductionBiomassBoiler = 0.0;
+			if (newCapacityBiomassBoiler > currentIndvBiomassBoilerCapacity) {
+				investmentCostReductionBiomassBoiler = (currentIndvBiomassBoilerCapacity
+						* individualBoilerInvestmentCostInKEuro * interest)
+						/ (1 - Math.pow((1 + interest), -boilerLifeTime));
+			} else {
+				investmentCostReductionBiomassBoiler = (newCapacityBiomassBoiler
+						* individualBoilerInvestmentCostInKEuro * interest)
+						/ (1 - Math.pow((1 + interest), -boilerLifeTime));
+			}
+
+			double newCapacityOilBoiler = Math
+					.round((totalHeatDemand * oilBoilerHeatPercentage)
+							* Math.pow(10, 6) * 1.5 / sumOfAllHeatDistributions);
+			double investmentCostReductionOilBoiler = 0.0;
+			if (newCapacityOilBoiler > currentIndvOilBoilerCapacity) {
+				investmentCostReductionOilBoiler = (currentIndvOilBoilerCapacity
+						* individualBoilerInvestmentCostInKEuro * interest)
+						/ (1 - Math.pow((1 + interest), -boilerLifeTime));
+			} else {
+				investmentCostReductionOilBoiler = (newCapacityOilBoiler 
+						* individualBoilerInvestmentCostInKEuro * interest)
+						/ (1 - Math.pow((1 + interest), -boilerLifeTime));
+			}
+
+			double newCapacityNgasBoiler = Math
+					.round((totalHeatDemand * ngasBoilerHeatPercentage)
+							* Math.pow(10, 6) * 1.5 / sumOfAllHeatDistributions);
+			double investmentCostReductionNgasBoiler = 0.0;
+			if (newCapacityNgasBoiler > currentIndvNgasBoilerCapacity) {
+				investmentCostReductionNgasBoiler = (currentIndvNgasBoilerCapacity
+						* individualBoilerInvestmentCostInKEuro * interest)
+						/ (1 - Math.pow((1 + interest), -boilerLifeTime));
+			} else {
+				investmentCostReductionNgasBoiler = (newCapacityNgasBoiler
+						* individualBoilerInvestmentCostInKEuro * interest)
+						/ (1 - Math.pow((1 + interest), -boilerLifeTime));
+			}
+
+			double reductionInvestmentCost = (currentPVCapacity
+					* PVInvestmentCostInKEuro * interest)
+					/ (1 - Math.pow((1 + interest), -PVLifeTime))
+					+ (currentHydroCapacity * hydroInvestmentCostInKEuro * interest)
+					/ (1 - Math.pow((1 + interest), -HydroLifeTime))
+					+ investmentCostReductionBiomassBoiler
+					+ investmentCostReductionOilBoiler
+					+ investmentCostReductionNgasBoiler;
+
+			// extract
 			col = (Collection<String>) energyplanmMap
 					.get("Annual Investment costs");
 			it = col.iterator();
-			String invest= it.next().toString();
-			String investmentCostStr = invest.substring(0, invest.lastIndexOf("1000") );
+			String invest = it.next().toString();
+			String investmentCostStr = invest.substring(0,
+					invest.lastIndexOf("1000"));
 			double investmentCost = Double.parseDouble(investmentCostStr);
-			double realInvestmentCost = investmentCost-reductionInvestmentCost +geoBoreHoleInvestmentCost;
-			
-			double actualAnnualCost = totalVariableCost + fixedOperationalCost + realInvestmentCost + totalAdditionalCost;
-			
+			double realInvestmentCost = investmentCost
+					- reductionInvestmentCost + geoBoreHoleInvestmentCost;
+
+			double actualAnnualCost = totalVariableCost + fixedOperationalCost
+					+ realInvestmentCost + totalAdditionalCost;
+
 			solution.setObjective(1, actualAnnualCost);
-			
+
 			// 3rd objective
 			col = (Collection<String>) energyplanmMap.get("Annualelec.demand");
 			it = col.iterator();
@@ -263,8 +327,9 @@ public class EnergyPLANProblemCivisCEdiS extends Problem {
 				String warning = it3.next().toString();
 				if (!warning.equals("PP too small. Critical import is needed")
 						&& !warning
-								.equals("Grid Stabilisation requierments are NOT fullfilled") 
-								&& !warning.equals("Critical Excess Electricity Production"))
+								.equals("Grid Stabilisation requierments are NOT fullfilled")
+						&& !warning
+								.equals("Critical Excess Electricity Production"))
 					throw new IOException("warning!!" + warning);
 				// System.out.println("Warning " + it3.next().toString());
 
@@ -306,11 +371,10 @@ public class EnergyPLANProblemCivisCEdiS extends Problem {
 	}
 
 	void writeModificationFile(double pv, double oilBoilerHeatPercentage,
-			double ngasBoilerHeatPercentage, double biomassBoilerHeatPercentage, 
-			double ngasCHPHeatPercentage,double hpHeatPercentage) throws JMException {
+			double ngasBoilerHeatPercentage,
+			double biomassBoilerHeatPercentage, double ngasCHPHeatPercentage,
+			double hpHeatPercentage) throws JMException {
 
-
-		
 		try {
 
 			File file = new File("modification.txt");
@@ -352,7 +416,7 @@ public class EnergyPLANProblemCivisCEdiS extends Problem {
 			bw.write(str);
 			bw.newLine();
 			double ngasBoilerFuelDemand = ngasBoilerHeatPercentage
-					* totalHeatDemand /ngasBoilerEfficiency;
+					* totalHeatDemand / ngasBoilerEfficiency;
 			str = "" + ngasBoilerFuelDemand;
 			bw.write(str);
 			bw.newLine();
@@ -362,7 +426,7 @@ public class EnergyPLANProblemCivisCEdiS extends Problem {
 			bw.write(str);
 			bw.newLine();
 			double biomassBoilerFuelDemand = biomassBoilerHeatPercentage
-					* totalHeatDemand /biomassBoilerEfficiency;
+					* totalHeatDemand / biomassBoilerEfficiency;
 			str = "" + biomassBoilerFuelDemand;
 			bw.write(str);
 			bw.newLine();
