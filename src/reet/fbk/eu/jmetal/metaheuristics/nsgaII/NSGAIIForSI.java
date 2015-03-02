@@ -218,7 +218,7 @@ public class NSGAIIForSI extends NSGAII {
 			proxy = factory.getProxy();
 
 			DKInitialization dkini = new DKInitialization(problem_,
-					favorGenesForRE, favorGenesForCon, populationSize, 6.0, 3, 1,  proxy);
+					favorGenesForRE, favorGenesForCon, populationSize, 6.0, 4, 3,  proxy);
 			
 			population = dkini.doDKInitialization();
 		} catch (MatlabConnectionException e) {
