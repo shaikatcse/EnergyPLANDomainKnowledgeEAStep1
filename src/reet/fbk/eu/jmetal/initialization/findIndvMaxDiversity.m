@@ -17,8 +17,11 @@
 %indvMatrix = rand(numberOfIndv, numberOfDV);
 %indvMatrix = 10000 * indvMatrix;
 
+
 numberOfIndv = size(indvMatrix,1);
 indMatrixTemp = indvMatrix;
+
+ 
 
 %define elements of Solow and Polasy Matrix
 M=zeros(numberOfIndv,numberOfIndv);
