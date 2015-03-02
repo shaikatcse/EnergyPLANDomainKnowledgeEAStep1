@@ -5,7 +5,7 @@ Population: 100
 Evolution: 7000
 crossover Probabilty: 0.9
 Mutation probability: 0.2
-Distribution index: 4
+Distribution index: 10
 Algorithm: NSGA-II
 selection: Binary Tournament 2.
 
