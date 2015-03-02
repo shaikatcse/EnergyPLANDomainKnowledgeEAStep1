@@ -77,10 +77,10 @@ public class DKInitialization {
 			JMException {
 
 		for (int no = 0; no < combinationsArray.size(); no++) {
-			Solution sol = new Solution(problem_);
 			Integer[] aCombination = combinationsArray.get(no);
 			aCombination = TransformArray(aCombination);
 			for (int z = 0; z < numberOfIndevPerCombination; z++) {
+				Solution sol = new Solution(problem_);
 				for (int i = 0; i < problem_.getNumberOfVariables(); i++) {
 					try {
 						if (REFavorGenes[i] == true) {
@@ -114,10 +114,10 @@ public class DKInitialization {
 			throws ClassNotFoundException, JMException {
 
 		for (int no = 0; no < combinationsArray.size(); no++) {
-			Solution sol = new Solution(problem_);
 			Integer[] aCombination = combinationsArray.get(no);
 			aCombination = TransformArray(aCombination);
 			for (int z = 0; z < numberOfIndevPerCombination; z++) {
+				Solution sol = new Solution(problem_);
 				for (int i = 0; i < problem_.getNumberOfVariables(); i++) {
 					try {
 						if (REFavorGenes[i] == true) {
@@ -223,7 +223,7 @@ public class DKInitialization {
 		for (int j = 0; j < populationSize; j++) {
 			Solution s = new Solution(problem_);
 			for (int i = 0; i < problem_.getNumberOfVariables(); i++) {
-				s.getDecisionVariables()[i].setValue(population[j][i]);
+				s.getDecisionVariables()[i].setValue(population[j][i]*1500.0);
 			}
 			finalPopulation.add(s);
 		}
@@ -240,9 +240,10 @@ public class DKInitialization {
 		for (int i = 0; i < initialSolutions.size(); i++) {
 
 			for (int j = 0; j < problem_.getNumberOfVariables(); j++) {
+				// diveded by 1500, maximum upper limit of all the decision variables
 				aMatrix = aMatrix
 						+ initialSolutions.get(i).getDecisionVariables()[j]
-								.getValue() + " ";
+								.getValue()/1500.0 + " ";
 			}
 			aMatrix = aMatrix + ";";
 
