@@ -8,9 +8,9 @@ import jmetal.core.Algorithm;
 import jmetal.core.Operator;
 import jmetal.core.Problem;
 import jmetal.core.SolutionSet;
-import reet.fbk.eu.OptimizeEnergyPLANAalborg.problem.EnergyPLANProblemAalborg;
-import reet.fbk.eu.OptimizeEnergyPLANAalborg.problem.EnergyPLANProblemAalborg2ObjectivesWith1EnergyPLANEvolution;
+
 import reet.fbk.eu.jmetal.metaheuristics.nsgaII.NSGAIIForDK;
+import reet.fbk.eu.jmetal.metaheuristics.nsgaII.NSGAIIForSI;
 import reet.fbk.eu.jmetal.metaheuristics.nsgaII.NSGAIITrackIndicators;
 import jmetal.metaheuristics.nsgaII.NSGAII;
 import jmetal.operators.crossover.CrossoverFactory;
@@ -22,6 +22,8 @@ import jmetal.util.PseudoRandom;
 import jmetal.util.RandomGenerator;
 //import reet.fbk.eu.jmetal.operators.mutation.MutationFactory;
 import jmetal.operators.mutation.MutationFactory;
+
+
 
 
 
@@ -53,7 +55,7 @@ public class AalborgProblemWithNormalInitilizationMain {
 
 		QualityIndicator indicators; // Object to get quality indicators
 		
-		long seed [] = {458625, 412568, 125445, 144412, 255112, 144554, 455112, 645524, 885545, 584125 };
+		long seed [] = {545782, 455875, 547945, 458478, 981354, 652262, 562366, 365652, 456545, 549235 };
 		
 		int numberOfRun=10;
 		for (int i = 0; i < numberOfRun; i++) {
@@ -65,7 +67,14 @@ public class AalborgProblemWithNormalInitilizationMain {
 
 			problem = new EnergyPLANProblemAalborg2ObjectivesWith1EnergyPLANEvolution("Real");
 			//algorithm = new NSGAIITrackIndicators(problem, seed[i], "SBX_DKMutation");
-			algorithm = new NSGAIITrackIndicators(problem);
+			
+			Boolean favorGenesforRE[] ={true, true, null, true, true, true, null};
+			Boolean favorGenesforConventionalPP[] ={false, false, null, false, false, false, null};
+			parameters = new HashMap();
+			parameters.put("favorGenesforRE", favorGenesforRE);
+			parameters.put("favorGenesForCon", favorGenesforConventionalPP);
+			
+			algorithm = new NSGAIIForSI(problem, parameters);
 			// algorithm = new ssNSGAII(problem);
 
 			//indicators = new QualityIndicator(problem, "C:\\Users\\Nusrat\\Documents\\GitHub\\EnergyPLANDomainKnowledgeEAStep1\\Results\\truePf\\mergefun.pf") ;
@@ -96,13 +105,16 @@ public class AalborgProblemWithNormalInitilizationMain {
 			selection = SelectionFactory.getSelectionOperator("BinaryTournament2",
 					parameters);
 
+			
 			// Add the operators to the algorithm
 			algorithm.addOperator("crossover", crossover);
 			algorithm.addOperator("mutation", mutation);
 			algorithm.addOperator("selection", selection);
+			
 
 			// Add the indicator object to the algorithm
 			algorithm.setInputParameter("indicators", indicators);
+			
 			
 			
 			// Execute the Algorithm
