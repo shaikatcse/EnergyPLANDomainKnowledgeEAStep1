@@ -209,6 +209,13 @@ public class NSGAIIWithArc extends Algorithm {
 
 		} // while
 
+		//added by shahriar
+		//Ranking ranking = new Ranking(population);
+		//ranking.getSubfront(0).printFeasibleFUN("FUN_NSGAII");
+		archive.printObjectivesToFile("archive");
+		
+		//end added
+		
 		// Return as output parameter the required evaluations
 		setOutputParameter("evaluations", requiredEvaluations);
 
@@ -220,15 +227,22 @@ public class NSGAIIWithArc extends Algorithm {
 	} // execute
 
 	SolutionSet buildTemporaryArchive(SolutionSet previousPopulation,
-			SolutionSet oldArchive, SolutionSet newPopulation) {
+			SolutionSet oldArchive, SolutionSet newPopulation) throws JMException {
 		// previousPopulation = population union offspring
 		// newPopulation = population after elimination
 		SolutionSet union;
 		union = previousPopulation.union(oldArchive);
 		for (int i = 0; i < newPopulation.size(); i++) {
-			Solution a = newPopulation.get(i);
+			Solution a = new Solution(newPopulation.get(i));
+			  
 			for (int j = 0; j < union.size(); j++) {
-				if (a.equals(union.get(i))) {
+				Solution b = new Solution(union.get(j));
+				boolean track = true;	
+				for(int z=0;z<problem_.getNumberOfVariables();z++){
+					if(a.getDecisionVariables()[z].getValue() != b.getDecisionVariables()[z].getValue())
+						track = false;
+				}
+				if (track) {
 					union.remove(j);
 				}
 			}
@@ -237,34 +251,74 @@ public class NSGAIIWithArc extends Algorithm {
 	}
 
 	SolutionSet buildArchive(SolutionSet currentParetoFront,
-			SolutionSet temporaryArchive) {
+			SolutionSet temporaryArchive) throws JMException {
+		
+		SolutionSet archive = new SolutionSet(currentParetoFront.size());
 		for(int i=0;i<currentParetoFront.size();i++){
-			SolutionSet ss = findNClosetSolutionInObjectiveSpace(currentParetoFront.get(i), temporaryArchive, 5);
-			ss.add(currentParetoFront.get(i));
-			SolutionSet normalizedSS = new SolutionSet(ss.size());
-			normalizedSS=normalizedDecisionVariables(ss);
+			SolutionSet ss = findNClosetSolutionInObjectiveSpace(currentParetoFront.get(i), temporaryArchive, 10);
+			if(ss.size()>0){
+				SolutionSet curr = new SolutionSet(1);
+				curr.add(currentParetoFront.get(i));
+				SolutionSet ssUnion=ss.union(curr);
+				SolutionSet normalizedSS = new SolutionSet(ssUnion.size());
+				normalizedSS=normalizedDecisionVariables(ssUnion);
+				int position = findMaxdistanceDecisionSpace(normalizedSS);
+				archive.add(ss.get(position));
+			}
 		}
-
+		return archive;
 	}
 	
-	SolutionSet normalizedDecisionVariables(SolutionSet ss){
+	
+	public int findMaxdistanceDecisionSpace(SolutionSet ss) throws JMException{
+			Solution sol = ss.get(ss.size()-1);
+			  int returnPosition=-1;
+			  double max = Double.MIN_VALUE;
+			  for(int i=0;i<ss.size()-1;i++){
+				  double dis = distanceDecisionSpace(sol, ss.get(i));
+				  if(dis>=max){
+					  max=dis;
+					  returnPosition = i;
+				  }
+			  }
+			  return returnPosition;
+	}
+	
+	public double distanceDecisionSpace(Solution a, Solution b) throws JMException {
+
+		double distance = 0.0;
+
+		for (int i = 0; i < problem_.getNumberOfVariables(); i++) {
+			distance += Math.pow(a.getDecisionVariables()[i].getValue() - b.getDecisionVariables()[i].getValue(), 2.0);
+		}
+		return Math.sqrt(distance);
+	}
+	
+	
+	public SolutionSet normalizedDecisionVariables(SolutionSet solutionSet) throws JMException{
+		
+		SolutionSet ss = new SolutionSet(solutionSet.size());
+		for(int i=0;i<solutionSet.size();i++)
+			ss.add(new Solution(solutionSet.get(i)));
+		
 		Mean mean = new Mean();
 		StandardDeviation sd = new StandardDeviation(true/*means sample standardDeviation*/);
-		for(int i=0;i<problem_.getNumberOfObjectives();i++){
+		
+		for(int i=0;i<problem_.getNumberOfVariables();i++){
 			double array[]=new double[ss.size()];		
 			for(int j=0;j<ss.size();j++){
-				array[j]=ss.get(j).getObjective(i);
+				array[j]=ss.get(j).getDecisionVariables()[i].getValue();
 			}
 			double arrayMean=mean.evaluate(array);
 			double arraySD=sd.evaluate(array);
 			if(arraySD==0){
 				for(int j=0;j<ss.size();j++){
-					ss.get(j).setObjective(i, 0);
+					ss.get(j).getDecisionVariables()[i].setValue(0.0);
 				}
 			}else{
 				for(int j=0;j<ss.size();j++){
 					double normaliedvalue = (array[j]- arrayMean)/arraySD;
-					ss.get(j).setObjective(i, normaliedvalue);
+					ss.get(j).getDecisionVariables()[i].setValue(normaliedvalue);
 				}
 			}
 		}
@@ -327,6 +381,17 @@ public class NSGAIIWithArc extends Algorithm {
 		  }
 	  }
 	  
+	  if (DSArray.size()< n){
+		  SolutionSet ss = new SolutionSet(DSArray.size()); 
+		  
+		  for(int i=0;i<DSArray.size();i++){
+			  ss.add(DSArray.get(i).getSolution());
+		  }
+		  return ss;
+		  
+	  }
+		  
+	  
 	  Collections.sort(DSArray, new Comparator<DistanceSolution>() {
 	        @Override
 	        public int compare(DistanceSolution  ds1, DistanceSolution  ds2)
@@ -337,9 +402,9 @@ public class NSGAIIWithArc extends Algorithm {
 	    		if (dis1 == dis2)
 	    			return 0;
 	    		else if (dis1 > dis2)
-	    			return -1;
-	    		else
 	    			return 1;
+	    		else
+	    			return -1;
 	    	
 	            //return  fruite1.fruitName.compareTo(fruite2.fruitName);
 	        }
@@ -348,6 +413,7 @@ public class NSGAIIWithArc extends Algorithm {
 	    });
 	  
 	  SolutionSet ss = new SolutionSet(n); 
+	  
 	  for(int i=0;i<n;i++){
 		  ss.add(DSArray.get(i).getSolution());
 	  }
@@ -360,7 +426,7 @@ public class NSGAIIWithArc extends Algorithm {
 	 */
 	boolean epsilonDominance(Solution paretoForntSolution, Solution solution,
 			double epsilon) {
-		boolean track = false;
+		boolean track = true;
 		for (int i = 0; i < problem_.getNumberOfObjectives(); i++) {
 			if ((paretoForntSolution.getObjective(i) - solution.getObjective(i)) > paretoForntSolution
 					.getObjective(i) * (1 - epsilon)) {
