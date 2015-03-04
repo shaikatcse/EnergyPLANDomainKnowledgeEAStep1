@@ -68,11 +68,13 @@ public class GeneralModifiedPolynomialMutationForEnergySystems extends Mutation 
 	private ModifiedPolynomialMutationFavorRE modifiedPolynomialMutationFavorRE;
 	private ModifiedPolynomialMutationFavorConventionalPP modifiedPolynomialMutationFavorConventionalPP;
 	private ModifiedPolynomialMutationFavorLoaDFollowingCapacity modifiedPolynomialMutationFavorLFC;
+	private ModifiedPolynomialMutationFavorESD modifiedPolynomialMutationFavorESD;
+	
 
 	private int maxGeneration;
 	Random rm;
 
-	private Boolean favorGenesForRE[], favorGenesForConventioanlPP[],favorGenesForLFC[] ;
+	private Boolean favorGenesForRE[], favorGenesForConventioanlPP[],favorGenesForLFC[], favorGenesForESD[] ;
 
 	/*
 	 * 
@@ -100,7 +102,10 @@ public class GeneralModifiedPolynomialMutationForEnergySystems extends Mutation 
 			if (parameters.get("favorGenesForLFC") != null)
 				favorGenesForLFC = (Boolean[]) parameters
 						.get("favorGenesForLFC");
-					
+			
+			if (parameters.get("favorGenesForESD") != null)
+				favorGenesForESD = (Boolean[]) parameters
+						.get("favorGenesForESD");
 			
 			polynomialMutation = new PolynomialMutation(parameters);
 			modifiedPolynomialMutationFavorRE = new ModifiedPolynomialMutationFavorRE(
@@ -109,6 +114,8 @@ public class GeneralModifiedPolynomialMutationForEnergySystems extends Mutation 
 					parameters, favorGenesForConventioanlPP);
 			modifiedPolynomialMutationFavorLFC = new ModifiedPolynomialMutationFavorLoaDFollowingCapacity(
 					parameters, favorGenesForLFC);
+			modifiedPolynomialMutationFavorESD = new ModifiedPolynomialMutationFavorESD(
+					parameters, favorGenesForESD);
 			
 		} catch (JMException e) {
 			System.out.println("parameter missing");
@@ -163,6 +170,21 @@ public class GeneralModifiedPolynomialMutationForEnergySystems extends Mutation 
 							probability, solution);
 				}else if(random >= ModifiedMutationprobability *2 / 3 && random < ModifiedMutationprobability){
 					modifiedPolynomialMutationFavorLFC.doMutation(probability, solution);
+				}else{
+					polynomialMutation.doMutation(probability, solution);
+				}
+					
+			}else if(solution.numberOfObjectives()==4){
+				if (random < ModifiedMutationprobability / 4) {
+					modifiedPolynomialMutationFavorRE.doMutation(probability,
+							solution);
+				}else if(random >= ModifiedMutationprobability / 4 && random < ModifiedMutationprobability *2 / 4){
+					modifiedPolynomialMutationFavorConventionalPP.doMutation(
+							probability, solution);
+				}else if(random >= ModifiedMutationprobability *2 / 4 && random < ModifiedMutationprobability * 3 /4){
+					modifiedPolynomialMutationFavorLFC.doMutation(probability, solution);
+				}else if(random >= ModifiedMutationprobability *3 / 4 && random < ModifiedMutationprobability ){
+					modifiedPolynomialMutationFavorESD.doMutation(probability, solution);
 				}else{
 					polynomialMutation.doMutation(probability, solution);
 				}
