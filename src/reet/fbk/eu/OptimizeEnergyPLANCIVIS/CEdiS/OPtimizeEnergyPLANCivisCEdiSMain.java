@@ -25,6 +25,7 @@ import reet.fbk.eu.OptimizeEnergyPLANAalborg.problem.EnergyPLANProblemAalborg;
 import reet.fbk.eu.OptimizeEnergyPLANAalborg.problem.EnergyPLANProblemAalborg2Objectives;
 import reet.fbk.eu.OptimizeEnergyPLANCIVIS.CEIS.Problem.EnergyPLANProblemCivisCeisWithDH;
 import reet.fbk.eu.OptimizeEnergyPLANCIVIS.CEdiS.Problem.EnergyPLANProblemCivisCEdiS;
+import reet.fbk.eu.OptimizeEnergyPLANCIVIS.CEdiS.Problem.EnergyPLANProblemCivisCEdiS4D;
 import reet.fbk.eu.OptimizeEnergyPLANCIVIS.metaheuristics.NSGAIIForDK;
 //import reet.fbk.eu.jmetal.operators.mutation.MutationFactory;
 
@@ -71,12 +72,12 @@ public class OPtimizeEnergyPLANCivisCEdiSMain {
 			indicators = null;
 
 			//problems for 2 objectives
-			problem=new EnergyPLANProblemCivisCEdiS("Real");
+			problem=new EnergyPLANProblemCivisCEdiS4D("Real");
 			
 			//problem for 3 objectives
 			//problem = new EnergyPLANProblemAalborg("Real");
 
-			algorithm = new NSGAIIForDK(problem);
+			algorithm = new SPEA2ForDK(problem);
 			// algorithm = new SPEA2ForDK(problem, seed[i],
 			// "SPEA2_SBX_PolynomialMutation");
 
@@ -85,10 +86,11 @@ public class OPtimizeEnergyPLANCivisCEdiSMain {
 			// ;
 
 			// Algorithm parameters
-			algorithm.setInputParameter("populationSize", 100);
-			algorithm.setInputParameter("maxEvaluations", 10000);
+			
+			algorithm.setInputParameter("populationSize", 10);
+			algorithm.setInputParameter("maxEvaluations", 50);
 			// for spea2
-			// algorithm.setInputParameter("archiveSize",100);
+			 algorithm.setInputParameter("archiveSize",160);
 
 			// Mutation and Crossover for Real codification
 			parameters = new HashMap();
@@ -112,10 +114,12 @@ public class OPtimizeEnergyPLANCivisCEdiSMain {
 			Boolean favorGenesforRE[] ={true, false, null, true, true };
 			Boolean favorGenesforConventionalPP[] ={false, null, true, null, false };
 			Boolean favorGenesforLFC[]={false, null, null, null, true};
+			Boolean favorGenesforESD[] ={true, false, false, true, null};
 			
 			parameters.put("favorGenesforRE", favorGenesforRE);
 			parameters.put("favorGenesForConventioanlPP", favorGenesforConventionalPP);
 			parameters.put("favorGenesForLFC",favorGenesforLFC );
+			parameters.put("favorGenesForESD",favorGenesforESD );
 							
 			mutation = MutationFactory.getMutationOperator(
 					"GeneralModifiedPolynomialMutationForEnergySystems", parameters);
@@ -151,10 +155,10 @@ public class OPtimizeEnergyPLANCivisCEdiSMain {
 			// Result messages
 			logger_.info("Total execution time: " + estimatedTime + "ms");
 			logger_.info("Variables values have been writen to file VAR");
-			population.printFeasibleVAR("CivisResults\\CEDIS\\3Objectives\\VAR" + i);
+			population.printFeasibleVAR("CivisResults\\CEDIS\\4Objectives\\VAR" + i);
 			//population.printFeasibleVAR("VAR");
 			logger_.info("Objectives values have been writen to file FUN");
-			population.printFeasibleFUN("CivisResults\\CEDIS\\3Objectives\\FUN" + i);
+			population.printFeasibleFUN("CivisResults\\CEDIS\\4Objectives\\FUN" + i);
 			//population.printFeasibleFUN("FUN");
 		}
 	}
