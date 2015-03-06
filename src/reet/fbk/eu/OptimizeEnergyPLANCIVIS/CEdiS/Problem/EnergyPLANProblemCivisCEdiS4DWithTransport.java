@@ -2,7 +2,6 @@ package reet.fbk.eu.OptimizeEnergyPLANCIVIS.CEdiS.Problem;
 
 import jmetal.core.Problem;
 import jmetal.core.Solution;
-
 import jmetal.encodings.solutionType.RealSolutionType;
 import jmetal.util.JMException;
 
@@ -10,6 +9,7 @@ import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.text.DecimalFormat;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Iterator;
@@ -169,17 +169,17 @@ public class EnergyPLANProblemCivisCEdiS4DWithTransport extends Problem {
 		double electricCarPercentage = solution.getDecisionVariables()[5].getValue();
 		int reducedNumberOfPetrolCars = (int) Math.round(currentNumberOfPertrolCars - currentNumberOfPertrolCars * electricCarPercentage);
 		int reducedNumberOfDieselCars = (int) Math.round(currentNumberOfDieselCars - currentNumberOfDieselCars * electricCarPercentage);
-		double reducedPetrolDemand = reducedNumberOfPetrolCars * averageKMPerYearForPetrolCar * LCVPetrol / petrolCarRunsKMperL;
-		double reducedDieselDemand = reducedNumberOfDieselCars * averageKMPerYearForDieselCar * LCVDiesel / DieselCarRunsKMperL;
+		double reducedPetrolDemandInGWh = reducedNumberOfPetrolCars * averageKMPerYearForPetrolCar * LCVPetrol / (petrolCarRunsKMperL*1000000);
+		double reducedDieselDemandInGWh = reducedNumberOfDieselCars * averageKMPerYearForDieselCar * LCVDiesel / (DieselCarRunsKMperL*1000000);
 		
 		int elecCarRunKM = totalKMRunByCars - (reducedNumberOfPetrolCars * averageKMPerYearForPetrolCar) - (reducedNumberOfDieselCars * averageKMPerYearForDieselCar);
-		double elecCarElectricityDemandInGWh =  elecCarRunKM/ (KWhPerKMElecCar * 1000000);
+		double elecCarElectricityDemandInGWh =  elecCarRunKM * KWhPerKMElecCar / 1000000;
 		
 		
 		
 		writeModificationFile(pv, oilBoilerHeatPercentage,
 				ngasBoilerHeatPercentage, biomassBoilerHeatPercentage,
-				ngasCHPHeatPercentage, hpHeatPercentage, reducedPetrolDemand, reducedDieselDemand, elecCarElectricityDemandInGWh, "DC");
+				ngasCHPHeatPercentage, hpHeatPercentage, reducedPetrolDemandInGWh, reducedDieselDemandInGWh, elecCarElectricityDemandInGWh, "DC");
 		String energyPLANrunCommand = ".\\EnergyPLAN_SEP_2013\\EnergyPLAN.exe -i "
 				+ "\".\\src\\reet\\fbk\\eu\\OptimizeEnergyPLANCIVIS\\CEdiS\\data\\CEdiS_current.txt\" "
 				+ "-m \"modification.txt\" -ascii \"result.txt\" ";
@@ -508,11 +508,14 @@ public class EnergyPLANProblemCivisCEdiS4DWithTransport extends Problem {
 			bw.write(str);
 			bw.newLine();
 			
+			//to handle scintific number
+			DecimalFormat df = new DecimalFormat("#");
+	        df.setMaximumFractionDigits(2);
 			//Reduced Diesel demand 
 			str = "input_fuel_Transport[2]=";
 			bw.write(str);
 			bw.newLine();
-			str = "" + reducedDieselDemand;
+			str = "" + df.format(reducedDieselDemand);
 			bw.write(str);
 			bw.newLine();
 			
@@ -520,7 +523,7 @@ public class EnergyPLANProblemCivisCEdiS4DWithTransport extends Problem {
 			str = "input_fuel_Transport[5]=";
 			bw.write(str);
 			bw.newLine();
-			str = "" + reducedPetrolDemand;
+			str = "" + df.format(reducedPetrolDemand);
 			bw.write(str);
 			bw.newLine();
 			
@@ -529,7 +532,7 @@ public class EnergyPLANProblemCivisCEdiS4DWithTransport extends Problem {
 				str = "Filnavn_transport=";
 				bw.write(str);
 				bw.newLine();
-				str = "CIVIS_Trasport_NC.txt";
+				str = "CIVIS_Transport_DC.txt";
 				bw.write(str);
 				bw.newLine();
 			}
@@ -538,7 +541,7 @@ public class EnergyPLANProblemCivisCEdiS4DWithTransport extends Problem {
 				str = "Filnavn_transport=";
 				bw.write(str);
 				bw.newLine();
-				str = "CIVIS_Trasport_NC.txt";
+				str = "CIVIS_Transport_NC.txt";
 				bw.write(str);
 				bw.newLine();
 			}else{
