@@ -71,7 +71,7 @@ public class EnergyPLANProblemCivisCEdiS4DWithTransport extends Problem {
 	public static final int totalKMRunByCars = 44161450;
 	public static final double costOfElectricCarInKeuro = 18.690;
 	public static final int electricCarLifeTime = 15;
-	public static final double electricCarOperationalAndMaintanenceCost = 0.05; //5 percent of Investment cost (costOfElectricCarInKeuro)
+	public static final double electricCarOperationalAndMaintanenceCost = 0.055; //5.5 percent of Investment cost (costOfElectricCarInKeuro)
 	
 	/**
 	 * Creates a new instance of problem ZDT1.
