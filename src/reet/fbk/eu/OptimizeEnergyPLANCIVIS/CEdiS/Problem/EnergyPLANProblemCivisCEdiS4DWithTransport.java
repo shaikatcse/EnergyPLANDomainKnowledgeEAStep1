@@ -58,8 +58,8 @@ public class EnergyPLANProblemCivisCEdiS4DWithTransport extends Problem {
 	public static final double addtionalCostPerGWhinKEuro = 106.27;
 	
 	//Transport related data
-	public static final int currentNumberOfPertrolCars  = 2762; //!!CEIS
-	public static final int currentNumberOfDieselCars  = 2094; //!!CEIS
+	public static final int currentNumberOfPertrolCars  = 2537; 
+	public static final int currentNumberOfDieselCars  = 1923;
 	public static final int averageKMPerYearForPetrolCar = 7250;
 	public static final int averageKMPerYearForDieselCar = 13400;
 	// lower calorific value (LCV): KWh/l (ref: http://www.withouthotair.com/c3/page_31.shtml) check with Diego
@@ -68,7 +68,10 @@ public class EnergyPLANProblemCivisCEdiS4DWithTransport extends Problem {
 	public static final double KWhPerKMElecCar = 0.168;
 	public static final double petrolCarRunsKMperL = 15.5;
 	public static final double DieselCarRunsKMperL = 18.2;
-	public static final int totalKMRunByCars = 48084100;
+	public static final int totalKMRunByCars = 44161450;
+	public static final double costOfElectricCarInKeuro = 18.690;
+	public static final int electricCarLifeTime = 15;
+	public static final double electricCarOperationalAndMaintanenceCost = 0.05; //5 percent of Investment cost (costOfElectricCarInKeuro)
 	
 	/**
 	 * Creates a new instance of problem ZDT1.
@@ -102,7 +105,7 @@ public class EnergyPLANProblemCivisCEdiS4DWithTransport extends Problem {
 		// index - 3 -> Biomass boiler heat percentage
 		// index - 4 -> Ngas micro chp heat percentage
 		// last percentage will go to individual HP percentage
-		// index - 5 -> electrc car percentage  
+		// index - 5 -> electric car percentage  
 
 		// PV upper and lower limit
 		lowerLimit_[0] = 5565.0;
@@ -142,7 +145,8 @@ public class EnergyPLANProblemCivisCEdiS4DWithTransport extends Problem {
 		// index - 4 -> Ngas micro chp heat percentage
 		// last percentage will go to individual HP percentage
 		// Oil-boiler heat percentage
-
+		// index - 5 -> electric car percentage  
+		
 		double percentages[] = new double[4];
 		for (int i = 0; i < 4; i++) {
 			percentages[i] = solution.getDecisionVariables()[i + 1].getValue();
@@ -174,7 +178,7 @@ public class EnergyPLANProblemCivisCEdiS4DWithTransport extends Problem {
 		
 		int elecCarRunKM = totalKMRunByCars - (reducedNumberOfPetrolCars * averageKMPerYearForPetrolCar) - (reducedNumberOfDieselCars * averageKMPerYearForDieselCar);
 		double elecCarElectricityDemandInGWh =  elecCarRunKM * KWhPerKMElecCar / 1000000;
-		
+		double totalNumberOfElectricCars =  (int) Math.round(currentNumberOfPertrolCars + currentNumberOfDieselCars - reducedNumberOfPetrolCars - reducedNumberOfDieselCars); 
 		
 		
 		writeModificationFile(pv, oilBoilerHeatPercentage,
@@ -332,8 +336,12 @@ public class EnergyPLANProblemCivisCEdiS4DWithTransport extends Problem {
 			double realInvestmentCost = investmentCost
 					- reductionInvestmentCost + geoBoreHoleInvestmentCost;
 
+			//Electric car related cost
+			double totalInvestmentCostOfElectricCars = (totalNumberOfElectricCars * costOfElectricCarInKeuro * interest)/ (1 - Math.pow((1 + interest), -electricCarLifeTime));
+			double totalFixOperationalAndInvestmentCostOfElectricCars = totalNumberOfElectricCars * costOfElectricCarInKeuro * electricCarOperationalAndMaintanenceCost ;
+			
 			double actualAnnualCost = totalVariableCost + fixedOperationalCost
-					+ realInvestmentCost + totalAdditionalCost;
+					+ realInvestmentCost + totalAdditionalCost + totalInvestmentCostOfElectricCars + totalFixOperationalAndInvestmentCostOfElectricCars;
 
 			solution.setObjective(1, actualAnnualCost);
 
