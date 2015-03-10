@@ -36,35 +36,39 @@ public class ExtractEnergyPLANParametersCEDIS {
 			"AnnualHH-elec.HP", "AnnualOilBoilerheat", "AnnualNGasBoilerheat",
 			"AnnualBiomassBoilerheat", "AnnualmCHPheat", "AnnualHPheat",
 			"Annualimport", "Annualexport",
-			"Oil Consumption", "Biomass Consumption", "Gasoil/Diesel",
+			"Oil Consumption", "Biomass Consumption", "Ngas Consumption","Gasoil/Diesel",
 			"Petrol/JP", "Biomass", "Total Electricity exchange",
 			"Total variable costs", "Fixed operation costs", "AdditionalCost",
 			"InvestmentCost", "CO2-emission (corrected)", "AnnualCost",
-			"LoadFollowingCapacity" };
+			"LoadFollowingCapacity", "ESD" };
 
 	static String outputsinFile[] = { "AnnualPV", "AnnualCHPelec",
 			"AnnualHPelec", "AnnualOilBoilerheat", "AnnualNGasBoilerheat",
 			"AnnualBiomassBoilerheat", "AnnualmCHPheat", "AnnualHPheat",
 			"AnnualImport", "AnnualExport", "OilConsumption",
-			"BiomassConsumption", "DieselCost", "PetrolCost", "BiomassCost",
+			"BiomassConsumption", "NgasConsuption", "DieselCost", "PetrolCost", "BiomassCost",
 			"TotalElectricityExchangeCost", "TotalVariableCost",
 			"FixedOperationCosts", "AdditionalCost", "InvestmentCost",
-			"CO2-Emission", "AnnualCost", "LoadFollowingCapacity" };
+			"CO2-Emission", "AnnualCost", "LoadFollowingCapacity", "ESD" };
 
 	static String inputUnits[] = { "KWe", "KWe", "KWe", "KWth", "KWth", "KWth" };
 	static String outputUnits[] = { "GWh", "GWh", "GWh", "GWh", "GWh", "GWh",
-			"GWh", "GWh", "GWh", "GWh", "GWh", "GWh", "KEuro", "KEuro",
+			"GWh", "GWh", "GWh", "GWh", "GWh", "GWh", "GWh", "KEuro", "KEuro",
 			"KEuro", "KEuro", "KEuro", "KEuro", "KEuro", "KEuro", "Mt",
-			"KEuro", "" };
+			"KEuro", "", "" };
 
 	public static final double indvBoilerCostInKEuro = 0.625;
 	public static final double PVInvestmentCostInKEuro = 2.6;
 	public static final double hydroInvestmentCostInKEuro = 1.9;
+	public static final double individualBoilerInvestmentCostInKEuro = 0.588;
 	public static final double interest = 0.04;
 
 	public static final double currentPVCapacity = 5566;
 	public static final double currentHydroCapacity = 4592;
-	// public static final double currentCapacityOfIndvBoiler = 24768;
+	public static final double currentIndvBiomassBoilerCapacity = 7903;
+	public static final double currentIndvOilBoilerCapacity = 3688;
+	public static final double currentIndvNgasBoilerCapacity = 13175;
+	
 	public static final double totalHeatDemand = 51.30;
 
 	public static final double boilerLifeTime = 15;
@@ -292,20 +296,66 @@ public class ExtractEnergyPLANParametersCEDIS {
 			 */
 			
 					
-			// new capacity of individual boilers
-		/*	double newHeatdemandForBoilers = (totalHeatDemand * oilBoilerHeatPercentage + totalHeatDemand * ngasBoilerHeatPercentage + totalHeatDemand * biomassBoilerHeatPercentage);
-			double capacityOfBoilerforNewHeatDemand = Math.round(maxHeatDemandInDistribution * newHeatdemandForBoilers*Math.pow(10, 6)*1.5/sumOfAllHeatDistributions);*/
-			
-			
-			double capacityOfHeatPump =  Math.round( (maxHeatDemandInDistribution * hpHeatPercentage * totalHeatDemand *Math.pow(10, 6)) / (COP*sumOfAllHeatDistributions) );
-			double geoBoreHoleInvestmentCost = (capacityOfHeatPump * geoBoreholeCostInKWe * interest)/(1-Math.pow((1+interest),-geoBoreHoleLifeTime));
-			
-			//see anual investment cost formual in EnergyPLAN manual 
-			
-			double reductionInvestmentCost = (currentPVCapacity * PVInvestmentCostInKEuro * interest)/(1-Math.pow((1+interest),-PVLifeTime)) +
-					(currentHydroCapacity*hydroInvestmentCostInKEuro*interest)/(1-Math.pow((1+interest), -HydroLifeTime)) ;
-			
-			
+			double capacityOfHeatPump = Math.round((maxHeatDemandInDistribution
+					* hpHeatPercentage * totalHeatDemand * Math.pow(10, 6))
+					/ (COP * sumOfAllHeatDistributions));
+			double geoBoreHoleInvestmentCost = (capacityOfHeatPump
+					* geoBoreholeCostInKWe * interest)
+					/ (1 - Math.pow((1 + interest), -geoBoreHoleLifeTime));
+
+			// see annual investment cost formula in EnergyPLAN manual
+
+			double newCapacityBiomassBoiler = Math
+					.round((totalHeatDemand * biomassBoilerHeatPercentage)
+							* Math.pow(10, 6) * 1.5 / sumOfAllHeatDistributions);
+			double investmentCostReductionBiomassBoiler = 0.0;
+			if (newCapacityBiomassBoiler > currentIndvBiomassBoilerCapacity) {
+				investmentCostReductionBiomassBoiler = (currentIndvBiomassBoilerCapacity
+						* individualBoilerInvestmentCostInKEuro * interest)
+						/ (1 - Math.pow((1 + interest), -boilerLifeTime));
+			} else {
+				investmentCostReductionBiomassBoiler = (newCapacityBiomassBoiler
+						* individualBoilerInvestmentCostInKEuro * interest)
+						/ (1 - Math.pow((1 + interest), -boilerLifeTime));
+			}
+
+			double newCapacityOilBoiler = Math
+					.round((totalHeatDemand * oilBoilerHeatPercentage)
+							* Math.pow(10, 6) * 1.5 / sumOfAllHeatDistributions);
+			double investmentCostReductionOilBoiler = 0.0;
+			if (newCapacityOilBoiler > currentIndvOilBoilerCapacity) {
+				investmentCostReductionOilBoiler = (currentIndvOilBoilerCapacity
+						* individualBoilerInvestmentCostInKEuro * interest)
+						/ (1 - Math.pow((1 + interest), -boilerLifeTime));
+			} else {
+				investmentCostReductionOilBoiler = (newCapacityOilBoiler 
+						* individualBoilerInvestmentCostInKEuro * interest)
+						/ (1 - Math.pow((1 + interest), -boilerLifeTime));
+			}
+
+			double newCapacityNgasBoiler = Math
+					.round((totalHeatDemand * ngasBoilerHeatPercentage)
+							* Math.pow(10, 6) * 1.5 / sumOfAllHeatDistributions);
+			double investmentCostReductionNgasBoiler = 0.0;
+			if (newCapacityNgasBoiler > currentIndvNgasBoilerCapacity) {
+				investmentCostReductionNgasBoiler = (currentIndvNgasBoilerCapacity
+						* individualBoilerInvestmentCostInKEuro * interest)
+						/ (1 - Math.pow((1 + interest), -boilerLifeTime));
+			} else {
+				investmentCostReductionNgasBoiler = (newCapacityNgasBoiler
+						* individualBoilerInvestmentCostInKEuro * interest)
+						/ (1 - Math.pow((1 + interest), -boilerLifeTime));
+			}
+
+			double reductionInvestmentCost = (currentPVCapacity
+					* PVInvestmentCostInKEuro * interest)
+					/ (1 - Math.pow((1 + interest), -PVLifeTime))
+					+ (currentHydroCapacity * hydroInvestmentCostInKEuro * interest)
+					/ (1 - Math.pow((1 + interest), -HydroLifeTime))
+					+ investmentCostReductionBiomassBoiler
+					+ investmentCostReductionOilBoiler
+					+ investmentCostReductionNgasBoiler;
+
 			
 			//extract 
 			col = (Collection<String>) energyplanMap
@@ -329,6 +379,24 @@ public class ExtractEnergyPLANParametersCEDIS {
 			energyplanMap.put("AnnualCost", actualAnnualCost);
 			energyplanMap.put("LoadFollowingCapacity",  Math.round( ((Import + Export)/ annualElecDemand * 100.0)) / 100.0);
 
+			//ESD
+			//extract ngas consuption
+			col = (Collection<String>) energyplanMap
+					.get("Ngas Consumption");
+			it = col.iterator();
+			double nGasConsumption = Double.parseDouble(it.next().toString());
+			
+			//extract oil consumption
+			col = (Collection<String>) energyplanMap
+					.get("Oil Consumption");
+			it = col.iterator();
+			double oilConsumption = Double.parseDouble(it.next().toString());
+			
+			//ESD = all import/all demand (elec. demand + thermal demand + transport demand)
+			double ESD = (Import + nGasConsumption+ oilConsumption)/(44.17+9.55+30.32+21.83+24.82);
+			energyplanMap.put("ESD", ESD);
+			
+			
 		} catch (IOException e) {
 			System.out.println("Energyplan.exe has some problem");
 			e.printStackTrace();
