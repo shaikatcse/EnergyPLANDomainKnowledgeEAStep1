@@ -68,13 +68,10 @@ public class AalborgProblemWithNormalInitilizationMain {
 			problem = new EnergyPLANProblemAalborg2ObjectivesWith1EnergyPLANEvolution("Real");
 			//algorithm = new NSGAIITrackIndicators(problem, seed[i], "SBX_DKMutation");
 			
-			Boolean favorGenesforRE[] ={true, true, null, true, true, true, null};
-			Boolean favorGenesforConventionalPP[] ={false, false, null, false, false, false, null};
-			parameters = new HashMap();
-			parameters.put("favorGenesforRE", favorGenesforRE);
-			parameters.put("favorGenesForCon", favorGenesforConventionalPP);
 			
-			algorithm = new NSGAIIForSI(problem, parameters);
+			parameters = new HashMap();
+						
+			algorithm = new NSGAII(problem);
 			// algorithm = new ssNSGAII(problem);
 
 			//indicators = new QualityIndicator(problem, "C:\\Users\\Nusrat\\Documents\\GitHub\\EnergyPLANDomainKnowledgeEAStep1\\Results\\truePf\\mergefun.pf") ;
@@ -82,7 +79,7 @@ public class AalborgProblemWithNormalInitilizationMain {
 			
 			// Algorithm parameters
 			algorithm.setInputParameter("populationSize", 10);
-			algorithm.setInputParameter("maxEvaluations", 50);
+			algorithm.setInputParameter("maxEvaluations", 20);
 
 			// Mutation and Crossover for Real codification
 			parameters = new HashMap();
