@@ -372,12 +372,17 @@ public class ExtractEnergyPLANParametersCEDIS {
 			col = (Collection<String>) energyplanMap.get("Annualelec.demand");
 			it = col.iterator();
 			double annualElecDemand = Double.parseDouble(it.next().toString());
+			
+			//Individual house HP electric demand
+			col = (Collection<String>) energyplanMap.get("AnnualHH-elec.HP");
+			it = col.iterator();
+			double annualHPdemand = Double.parseDouble(it.next().toString());
 			// solution.setObjective(2, (Import + Export) / annualElecDemand);
 
 			energyplanMap.put("AdditionalCost", totalAdditionalCost);
 			energyplanMap.put("InvestmentCost", realInvestmentCost);
 			energyplanMap.put("AnnualCost", actualAnnualCost);
-			energyplanMap.put("LoadFollowingCapacity",  Math.round( ((Import + Export)/ annualElecDemand * 100.0)) / 100.0);
+			energyplanMap.put("LoadFollowingCapacity",  Math.round( ((Import + Export)/ (annualElecDemand+annualHPdemand) * 100.0)) / 100.0);
 
 			//ESD
 			//extract ngas consuption
