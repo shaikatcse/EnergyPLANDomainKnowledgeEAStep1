@@ -313,8 +313,13 @@ public class EnergyPLANProblemCivisCEdiS4D extends Problem {
 			col = (Collection<String>) energyplanmMap.get("Annualelec.demand");
 			it = col.iterator();
 			double annualElecDemand = Double.parseDouble(it.next().toString());
-
-			solution.setObjective(2, (Import + Export) / annualElecDemand);
+			
+			//Individual house HP electric demand
+			col = (Collection<String>) energyplanmMap.get("AnnualHH-elec.HP");
+			it = col.iterator();
+			double annualHPdemand = Double.parseDouble(it.next().toString());
+			
+			solution.setObjective(2, (Import + Export) / (annualElecDemand + annualHPdemand));
 			
 			//extract ngas consuption
 			col = (Collection<String>) energyplanmMap
