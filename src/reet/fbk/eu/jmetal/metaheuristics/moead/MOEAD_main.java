@@ -101,7 +101,7 @@ public class MOEAD_main {
       //problem = new ConstrEx("Real");
       //problem = new DTLZ1("Real");
       //problem = new OKA2("Real") ;
-    	problem=new EnergyPLANProblemCivisCEdiS4D("Real");
+    	problem=new EnergyPLANProblemCivisCEdiS4DWithTransport("Real");
     } // else
 
     algorithm = new cMOEAD(problem);
@@ -109,7 +109,7 @@ public class MOEAD_main {
     
     // Algorithm parameters
     algorithm.setInputParameter("populationSize",200);
-    algorithm.setInputParameter("maxEvaluations",1000);
+    algorithm.setInputParameter("maxEvaluations",22000);
     
     // Directory with the files containing the weight vectors used in 
     // Q. Zhang,  W. Liu,  and H Li, The Performance of a New Version of MOEA/D 
@@ -144,10 +144,10 @@ public class MOEAD_main {
 	// index - 4 -> Ngas micro chp heat percentage
 	// index - 5 -> electrc car percentage  
 	
-	Boolean favorGenesforRE[] ={true, false, null, true, true };
-	Boolean favorGenesforConventionalPP[] ={false, null, true, null, false};
-	Boolean favorGenesforLFC[]={false, null, null, null, true};
-	Boolean favorGenesforESD[] ={true, false, false, true, null};
+	Boolean favorGenesforRE[] ={true, false, null, true, true, true };
+	Boolean favorGenesforConventionalPP[] ={false, null, true, null, false, false};
+	Boolean favorGenesforLFC[]={false, null, null, null, true, true};
+	Boolean favorGenesforESD[] ={true, false, false, true, null, true};
 	
 	parameters.put("favorGenesforRE", favorGenesforRE);
 	parameters.put("favorGenesForConventioanlPP", favorGenesforConventionalPP);
@@ -168,9 +168,9 @@ public class MOEAD_main {
     // Result messages 
     logger_.info("Total execution time: "+estimatedTime + "ms");
     logger_.info("Objectives values have been writen to file FUN");
-    population.printObjectivesToFile("FUN");
+    population.printObjectivesToFile("CivisResults\\CEDIS\\4Objectives\\With Elec Car Day Charging\\FUN_cmoead");
     logger_.info("Variables values have been writen to file VAR");
-    population.printVariablesToFile("VAR");      
+    population.printVariablesToFile("CivisResults\\CEDIS\\4Objectives\\With Elec Car Day Charging\\VAR_cmoead");      
     
     if (indicators != null) {
       logger_.info("Quality indicators") ;
