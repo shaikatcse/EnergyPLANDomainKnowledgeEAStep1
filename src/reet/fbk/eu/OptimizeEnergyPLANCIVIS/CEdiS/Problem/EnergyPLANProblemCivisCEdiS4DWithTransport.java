@@ -345,18 +345,25 @@ public class EnergyPLANProblemCivisCEdiS4DWithTransport extends Problem {
 
 			solution.setObjective(1, actualAnnualCost);
 
+			
+			//3rd objective
 			//Trasportation
 			col = (Collection<String>) energyplanmMap
 					.get("Annualflexibleeldemand");
 			it = col.iterator();
 			double transportElecDemand = Double.parseDouble(it.next().toString());
 			
-			// 3rd objective
+			
 			col = (Collection<String>) energyplanmMap.get("Annualelec.demand");
 			it = col.iterator();
 			double annualElecDemand = Double.parseDouble(it.next().toString());
 
-			solution.setObjective(2, (Import + Export) / (annualElecDemand+transportElecDemand) );
+			//Individual house HP electric demand
+			col = (Collection<String>) energyplanmMap.get("AnnualHH-elec.HP");
+			it = col.iterator();
+			double annualHPdemand = Double.parseDouble(it.next().toString());
+			
+			solution.setObjective(2, (Import + Export) / (annualElecDemand+transportElecDemand +annualHPdemand) );
 			
 			//extract ngas consuption
 			col = (Collection<String>) energyplanmMap
