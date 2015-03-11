@@ -269,7 +269,7 @@ public class ExtractEnergyPLANParametersCEDISWithTransport {
 		MultiMap energyplanMap = null;
 		MultiMap modifyMap = new MultiValueMap();
 		modifyMap = writeModificationFile(pv, oilBoilerHeatPercentage,ngasBoilerHeatPercentage, biomassBoilerHeatPercentage,ngasCHPHeatPercentage,
-				 hpHeatPercentage,  reducedPetrolDemandInGWh,  reducedDieselDemandInGWh, elecCarElectricityDemandInGWh, "DC");
+				 hpHeatPercentage,  reducedPetrolDemandInGWh,  reducedDieselDemandInGWh, elecCarElectricityDemandInGWh, "NC");
 
 		String energyPLANrunCommand = ".\\EnergyPLAN_SEP_2013\\EnergyPLAN.exe -i "
 				+ "\".\\src\\reet\\fbk\\eu\\OptimizeEnergyPLANCIVIS\\CEdiS\\data\\CEdiS_current.txt\" "
@@ -435,12 +435,17 @@ public class ExtractEnergyPLANParametersCEDISWithTransport {
 			it = col.iterator();
 			double transportElecDemand = Double.parseDouble(it.next().toString());
 
+			//Individual house HP electric demand
+			col = (Collection<String>) energyplanMap.get("AnnualHH-elec.HP");
+			it = col.iterator();
+			double annualHPdemand = Double.parseDouble(it.next().toString());
+			
 			energyplanMap.put("AdditionalCost", totalAdditionalCost);
 			energyplanMap.put("InvestmentCost", realInvestmentCost);
 			energyplanMap.put("AnnualCost", actualAnnualCost);
 			energyplanMap
 					.put("LoadFollowingCapacity", Math.round(((Import + Export)
-							/ (annualElecDemand+transportElecDemand) * 100.0)) / 100.0);
+							/ (annualElecDemand+transportElecDemand+annualHPdemand) * 100.0)) / 100.0);
 
 			// ESD
 			// extract ngas consuption
@@ -620,7 +625,7 @@ public class ExtractEnergyPLANParametersCEDISWithTransport {
 				bw.write(str);
 				bw.newLine();
 			}
-			else if(elecChangeProfile.equals("DC")){
+			else if(elecChangeProfile.equals("NC")){
 				// day charge profile
 				str = "Filnavn_transport=";
 				bw.write(str);
@@ -629,7 +634,7 @@ public class ExtractEnergyPLANParametersCEDISWithTransport {
 				bw.write(str);
 				bw.newLine();
 			}else{
-				throw new JMException("chrging profile not gien");
+				throw new JMException("chrging profile not given");
 			}
 
 			bw.close();
