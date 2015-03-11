@@ -198,6 +198,11 @@ public class cMOEAD extends Algorithm {
         updateProblem(child, n, type);
       } // for 
       ((ViolationThresholdComparator)this.comparator).updateThreshold(this.population_);
+      
+  	// added by shaikat to track the run
+		if ( evaluations_ % populationSize_ == 4) {
+			System.out.println(evaluations_);
+			}
     } while (evaluations_ < maxEvaluations);
 
     population_.printFeasibleFUN("FUN_cMOEAD") ;
