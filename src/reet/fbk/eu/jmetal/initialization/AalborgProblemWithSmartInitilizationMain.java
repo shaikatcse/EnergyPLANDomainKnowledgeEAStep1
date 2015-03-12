@@ -1,5 +1,7 @@
 package reet.fbk.eu.jmetal.initialization;
 
+import java.io.File;
+import java.io.FilenameFilter;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.logging.FileHandler;
@@ -8,7 +10,6 @@ import jmetal.core.Algorithm;
 import jmetal.core.Operator;
 import jmetal.core.Problem;
 import jmetal.core.SolutionSet;
-
 import reet.fbk.eu.jmetal.metaheuristics.nsgaII.NSGAIIForDK;
 import reet.fbk.eu.jmetal.metaheuristics.nsgaII.NSGAIIForSI;
 import reet.fbk.eu.jmetal.metaheuristics.nsgaII.NSGAIITrackIndicators;
@@ -22,6 +23,8 @@ import jmetal.util.PseudoRandom;
 import jmetal.util.RandomGenerator;
 //import reet.fbk.eu.jmetal.operators.mutation.MutationFactory;
 import jmetal.operators.mutation.MutationFactory;
+
+
 
 
 
@@ -55,9 +58,19 @@ public class AalborgProblemWithSmartInitilizationMain {
 
 		QualityIndicator indicators; // Object to get quality indicators
 		
-		long seed [] = {545454, 565656, 455885, 245454, 714451,752453,125742,455411, 447551, 844545 };
+		//seed for NSGAII
+		long seed [] = {343434, 551254, 145845, 555541, 551641,625882,985312,458745, 228424, 7811554 };
 		
 		int numberOfRun=10;
+		
+		File folder = new File("InitializationResults/InitIndividualWithSI");
+		File[] listOfFiles = folder.listFiles(new FilenameFilter() {
+		    @Override
+		    public boolean accept(File dir, String name) {
+		        return name.startsWith("Init");
+		    }
+		});
+		
 		for (int i = 0; i < numberOfRun; i++) {
 			
 			
@@ -73,8 +86,10 @@ public class AalborgProblemWithSmartInitilizationMain {
 			parameters = new HashMap();
 			parameters.put("favorGenesforRE", favorGenesforRE);
 			parameters.put("favorGenesForCon", favorGenesforConventionalPP);
+			parameters.put("InitialPopulationFile", listOfFiles[i].getAbsolutePath());
 			
 			algorithm = new NSGAIIForSI(problem, parameters);
+			
 			// algorithm = new ssNSGAII(problem);
 
 			//indicators = new QualityIndicator(problem, "C:\\Users\\Nusrat\\Documents\\GitHub\\EnergyPLANDomainKnowledgeEAStep1\\Results\\truePf\\mergefun.pf") ;
@@ -125,9 +140,9 @@ public class AalborgProblemWithSmartInitilizationMain {
 			// Result messages
 			logger_.info("Total execution time: " + estimatedTime + "ms");
 			logger_.info("Variables values have been writen to file VAR");
-			population.printVariablesToFile("InitializationResults\\NSGAIIWithoutTrackWithSI\\VAR_SBX_DKMutation_seed_"+seed[i]);
+			population.printVariablesToFile("InitializationResults\\NSGAIIWithoutTrackWithSI\\VAR_seed_"+seed[i]);
 			logger_.info("Objectives values have been writen to file FUN");
-			population.printObjectivesToFile("InitializationResults\\NSGAIIWithoutTrackWithSI\\FUN_SBX_DKMutation_seed_"+seed[i]);
+			population.printObjectivesToFile("InitializationResults\\NSGAIIWithoutTrackWithSI\\FUN_seed_"+seed[i]);
 		}
 	}
 }

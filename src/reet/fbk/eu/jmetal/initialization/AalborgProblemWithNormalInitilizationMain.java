@@ -8,11 +8,11 @@ import jmetal.core.Algorithm;
 import jmetal.core.Operator;
 import jmetal.core.Problem;
 import jmetal.core.SolutionSet;
-
 import reet.fbk.eu.jmetal.metaheuristics.nsgaII.NSGAIIForDK;
 import reet.fbk.eu.jmetal.metaheuristics.nsgaII.NSGAIIForSI;
 import reet.fbk.eu.jmetal.metaheuristics.nsgaII.NSGAIITrackIndicators;
 import jmetal.metaheuristics.nsgaII.NSGAII;
+import jmetal.metaheuristics.spea2.SPEA2;
 import jmetal.operators.crossover.CrossoverFactory;
 import jmetal.operators.selection.SelectionFactory;
 import jmetal.qualityIndicator.QualityIndicator;
@@ -22,6 +22,7 @@ import jmetal.util.PseudoRandom;
 import jmetal.util.RandomGenerator;
 //import reet.fbk.eu.jmetal.operators.mutation.MutationFactory;
 import jmetal.operators.mutation.MutationFactory;
+
 
 
 
@@ -55,7 +56,7 @@ public class AalborgProblemWithNormalInitilizationMain {
 
 		QualityIndicator indicators; // Object to get quality indicators
 		
-		long seed [] = {545782, 455875, 547945, 458478, 981354, 652262, 562366, 365652, 456545, 549235 };
+		long seed [] = {154568, 148456, 447514, 458475, 274587, 712584, 975572, 585464, 467542, 686544 };
 		
 		int numberOfRun=10;
 		for (int i = 0; i < numberOfRun; i++) {
@@ -71,16 +72,17 @@ public class AalborgProblemWithNormalInitilizationMain {
 			
 			parameters = new HashMap();
 						
-			algorithm = new NSGAII(problem);
+			algorithm = new SPEA2(problem);
 			// algorithm = new ssNSGAII(problem);
 
 			//indicators = new QualityIndicator(problem, "C:\\Users\\Nusrat\\Documents\\GitHub\\EnergyPLANDomainKnowledgeEAStep1\\Results\\truePf\\mergefun.pf") ;
 			
 			
 			// Algorithm parameters
-			algorithm.setInputParameter("populationSize", 10);
-			algorithm.setInputParameter("maxEvaluations", 20);
-
+			algorithm.setInputParameter("populationSize", 100);
+			algorithm.setInputParameter("maxEvaluations", 7000);
+			 algorithm.setInputParameter("archiveSize",100);
+			
 			// Mutation and Crossover for Real codification
 			parameters = new HashMap();
 			parameters.put("probability", 0.9);
@@ -122,9 +124,9 @@ public class AalborgProblemWithNormalInitilizationMain {
 			// Result messages
 			logger_.info("Total execution time: " + estimatedTime + "ms");
 			logger_.info("Variables values have been writen to file VAR");
-			population.printVariablesToFile("InitializationResults\\NSGAIIWithoutTrack\\VAR_SBX_DKMutation_seed_"+seed[i]);
+			population.printVariablesToFile("InitializationResults\\SPEA2WithoutTrack\\VAR_seed_"+seed[i]);
 			logger_.info("Objectives values have been writen to file FUN");
-			population.printObjectivesToFile("InitializationResults\\NSGAIIWithoutTrack\\FUN_SBX_DKMutation_seed_"+seed[i]);
+			population.printObjectivesToFile("InitializationResults\\SPEA2WithoutTrack\\FUN_seed_"+seed[i]);
 		}
 	}
 }
