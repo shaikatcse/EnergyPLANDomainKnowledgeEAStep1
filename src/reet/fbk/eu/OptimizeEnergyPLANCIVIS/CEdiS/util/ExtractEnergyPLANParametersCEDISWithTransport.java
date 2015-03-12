@@ -39,7 +39,8 @@ public class ExtractEnergyPLANParametersCEDISWithTransport {
 			"Petrol/JP", "Biomass", "Total Electricity exchange",
 			"Total variable costs", "Fixed operation costs", "AdditionalCost","ElecCarInvestmentCost",
 			"InvestmentCost", "CO2-emission (corrected)", "AnnualCost",
-			"LoadFollowingCapacity", "ESD" };
+			"LoadFollowingCapacity", "ESD", 
+			"oilBoilerFuelDemand", "ngasBoilerFuelDemand", "biomassBoilerFuelDemand", "reducedPetrolDemand", "reducedDieselDemand" };
 
 	static String outputsinFile[] = { "AnnualPV", "AnnualCHPelec",
 			"AnnualHPelec", "AnnualElecCar", "AnnualOilBoilerheat", "AnnualNGasBoilerheat",
@@ -48,13 +49,14 @@ public class ExtractEnergyPLANParametersCEDISWithTransport {
 			"BiomassConsumption", "NgasConsuption", "DieselCost", "PetrolCost",
 			"BiomassCost", "TotalElectricityExchangeCost", "TotalVariableCost",
 			"FixedOperationCosts", "AdditionalCost", "ElecCarInvestmentCost", "InvestmentCost",
-			"CO2-Emission", "AnnualCost", "LoadFollowingCapacity", "ESD" };
+			"CO2-Emission", "AnnualCost", "LoadFollowingCapacity", "ESD",
+			"oilBoilerFuelDemand", "ngasBoilerFuelDemand", "biomassBoilerFuelDemand", "reducedPetrolDemand", "reducedDieselDemand"};
 
 	static String inputUnits[] = { "KWe", "KWe", "KWe", "KWth", "KWth", "KWth", " ", " ", " " };
 	static String outputUnits[] = { "GWh", "GWh", "GWh", "GWh", "GWh", "GWh", "GWh",
 			"GWh", "GWh", "GWh", "GWh", "GWh", "GWh", "GWh", "KEuro", "KEuro",
 			"KEuro", "KEuro", "KEuro", "KEuro", "KEuro", "KEuro","KEuro", "Mt",
-			"KEuro", "", "" };
+			"KEuro", "", "", "GWh","GWh","GWh","GWh","GWh"  };
 
 	public static final double indvBoilerCostInKEuro = 0.625;
 	public static final double PVInvestmentCostInKEuro = 2.6;
@@ -269,7 +271,7 @@ public class ExtractEnergyPLANParametersCEDISWithTransport {
 		MultiMap energyplanMap = null;
 		MultiMap modifyMap = new MultiValueMap();
 		modifyMap = writeModificationFile(pv, oilBoilerHeatPercentage,ngasBoilerHeatPercentage, biomassBoilerHeatPercentage,ngasCHPHeatPercentage,
-				 hpHeatPercentage,  reducedPetrolDemandInGWh,  reducedDieselDemandInGWh, elecCarElectricityDemandInGWh, "NC");
+				 hpHeatPercentage,  reducedPetrolDemandInGWh,  reducedDieselDemandInGWh, elecCarElectricityDemandInGWh, "DC");
 
 		String energyPLANrunCommand = ".\\EnergyPLAN_SEP_2013\\EnergyPLAN.exe -i "
 				+ "\".\\src\\reet\\fbk\\eu\\OptimizeEnergyPLANCIVIS\\CEdiS\\data\\CEdiS_current.txt\" "
@@ -290,6 +292,8 @@ public class ExtractEnergyPLANParametersCEDISWithTransport {
 			energyplanMap.put("NumberOfPetrolCars", reducedNumberOfPetrolCars);
 			energyplanMap.put("NumberOfDieselCars", reducedNumberOfDieselCars);
 			energyplanMap.put("NumberOfElectricCars", totalNumberOfElectricCars);
+			energyplanMap.put("reducedPetrolDemand", reducedPetrolDemandInGWh);
+			energyplanMap.put("reducedDieselDemand", reducedDieselDemandInGWh);
 			
 			Iterator it;
 			Collection<String> col;
@@ -552,6 +556,7 @@ public class ExtractEnergyPLANParametersCEDISWithTransport {
 			str = "" + oilBoilerFuelDemand;
 			bw.write(str);
 			bw.newLine();
+			modifyMap.put("oilBoilerFuelDemand", oilBoilerFuelDemand);
 
 			// Ngas boiler fuel demand
 			str = "input_fuel_Households[3]=";
@@ -562,6 +567,7 @@ public class ExtractEnergyPLANParametersCEDISWithTransport {
 			str = "" + ngasBoilerFuelDemand;
 			bw.write(str);
 			bw.newLine();
+			modifyMap.put("ngasBoilerFuelDemand", ngasBoilerFuelDemand);
 
 			// biomass boiler fuel demand
 			str = "input_fuel_Households[4]=";
@@ -572,6 +578,7 @@ public class ExtractEnergyPLANParametersCEDISWithTransport {
 			str = "" + biomassBoilerFuelDemand;
 			bw.write(str);
 			bw.newLine();
+			modifyMap.put("biomassBoilerFuelDemand", biomassBoilerFuelDemand);
 
 			// ngas micro chp heat demand
 			str = "input_HH_NgasCHP_heat=";
