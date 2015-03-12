@@ -21,12 +21,14 @@
 
 package reet.fbk.eu.jmetal.metaheuristics.nsgaII;
 
+import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
+import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
-
 import java.util.HashMap;
+import java.util.StringTokenizer;
 
 import matlabcontrol.MatlabConnectionException;
 import matlabcontrol.MatlabInvocationException;
@@ -36,6 +38,7 @@ import reet.fbk.eu.OptimizeEnergyPLANWithAccuracy.util.RepairDVGene;
 import reet.fbk.eu.OptimizeEnergyPLANWithAccuracy.util.RepairFuelGene;
 import reet.fbk.eu.OptimizeEnergyPLANWithAccuracy.util.RepairSolution;
 import reet.fbk.eu.jmetal.initialization.DKInitialization;
+import sun.util.locale.StringTokenIterator;
 import jmetal.core.*;
 import jmetal.metaheuristics.nsgaII.NSGAII;
 import jmetal.qualityIndicator.QualityIndicator;
@@ -43,6 +46,7 @@ import jmetal.util.Distance;
 import jmetal.util.JMException;
 import jmetal.util.Ranking;
 import jmetal.util.comparators.CrowdingComparator;
+import jmetal.util.wrapper.XReal;
 
 /**
  * Implementation of NSGA-II. This implementation of NSGA-II makes use of a
@@ -61,11 +65,11 @@ import jmetal.util.comparators.CrowdingComparator;
  */
 public class NSGAIIForSI extends NSGAII {
 
-	// RepairSolution repairSolution;
-
 	File fileHV, fileGD, fileIGD, fileSpread, fileEpsilon, fileGenSpread;
 	FileWriter fwHV, fwGD, fwIGD, fwSpread, fwEpsilon, fwGenSpread;
 	BufferedWriter bwHV, bwGD, bwIGD, bwSpread, bwEpsilon, bwGenSpread;
+
+	String initialPopulationFile;
 
 	/* Genes information */
 	private Boolean favorGenesForRE[], favorGenesForCon[], favorGenesForLFC[];
@@ -93,6 +97,10 @@ public class NSGAIIForSI extends NSGAII {
 		if (parameters.get("favorGenesForLFC") != null)
 			favorGenesForLFC = (Boolean[]) parameters.get("favorGenesForLFC");
 		// repairSolution = new RepairSolution();
+
+		if (parameters.get("InitialPopulationFile") != null)
+			initialPopulationFile = (String) parameters
+					.get("InitialPopulationFile");
 
 	} // NSGAII
 
@@ -196,44 +204,85 @@ public class NSGAIIForSI extends NSGAII {
 		selectionOperator = operators_.get("selection");
 
 		// Create the initial solutionSet
-		/*Solution newSolution;
-		for (int i = 0; i < populationSize; i++) {
-			newSolution = new Solution(problem_);
-
-			// repairSolution.doRepair(newSolution);
-
-			problem_.evaluate(newSolution);
-			problem_.evaluateConstraints(newSolution);
-			evaluations++;
-			population.add(newSolution);
-		} // for*/
+		/*
+		 * Solution newSolution; for (int i = 0; i < populationSize; i++) {
+		 * newSolution = new Solution(problem_);
+		 * 
+		 * // repairSolution.doRepair(newSolution);
+		 * 
+		 * problem_.evaluate(newSolution);
+		 * problem_.evaluateConstraints(newSolution); evaluations++;
+		 * population.add(newSolution); } // for
+		 */
 
 		// New Initialization (Author: shaikat)
 
-		MatlabProxyFactory factory;
-		MatlabProxy proxy;
+		if (initialPopulationFile != null) {
+			BufferedReader br = null;
 
-		factory = new MatlabProxyFactory();
-		try {
-			proxy = factory.getProxy();
+			try {
 
-			DKInitialization dkini = new DKInitialization(problem_,
-					favorGenesForRE, favorGenesForCon, populationSize, 6.0, 4, 3,  proxy);
-			
-			population = dkini.doDKInitialization();
-		} catch (MatlabConnectionException e) {
-			throw new JMException("Matlab connection problem");
-		} catch (MatlabInvocationException e) {
-			throw new JMException("Matlab function invocation problem");
+				String sCurrentLine;
+
+				br = new BufferedReader(new FileReader(initialPopulationFile));
+
+				while ((sCurrentLine = br.readLine()) != null) {
+					StringTokenizer st = new StringTokenizer(sCurrentLine);
+					int j = 0;
+					Solution solution = new Solution(problem_);
+					XReal xreal = new XReal(solution);
+					while (st.hasMoreElements()) {
+						xreal.setValue(j, Double.parseDouble(st.nextToken()));
+						j++;
+					}
+					population.add(solution);
+
+				}
+
+			} catch (IOException e) {
+				e.printStackTrace();
+			} finally {
+				try {
+					if (br != null)
+						br.close();
+				} catch (IOException ex) {
+					ex.printStackTrace();
+				}
+			}
+
+			for (int i = 0; i < populationSize; i++) {
+				problem_.evaluate(population.get(i));
+				problem_.evaluateConstraints(population.get(i));
+				evaluations++;
+			}
+
+		} else {
+
+			MatlabProxyFactory factory;
+			MatlabProxy proxy;
+
+			factory = new MatlabProxyFactory();
+			try {
+				proxy = factory.getProxy();
+
+				DKInitialization dkini = new DKInitialization(problem_,
+						favorGenesForRE, favorGenesForCon, populationSize, 6.0,
+						4, 3, proxy);
+
+				population = dkini.doDKInitialization();
+			} catch (MatlabConnectionException e) {
+				throw new JMException("Matlab connection problem");
+			} catch (MatlabInvocationException e) {
+				throw new JMException("Matlab function invocation problem");
+			}
+
+			// evaluate each of the individuals
+			for (int i = 0; i < populationSize; i++) {
+				problem_.evaluate(population.get(i));
+				problem_.evaluateConstraints(population.get(i));
+				evaluations++;
+			}
 		}
-
-		//evaluate each of the individuals
-		for (int i = 0; i < populationSize; i++) {
-			problem_.evaluate(population.get(i));
-			problem_.evaluateConstraints(population.get(i));
-			evaluations++;
-		}
-		
 		/*
 		 * if (indicators != null) { int genNo = (int) evaluations /
 		 * populationSize; double hyperVolume =
