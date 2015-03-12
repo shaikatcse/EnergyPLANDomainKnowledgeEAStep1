@@ -136,8 +136,12 @@ public class EnergyPLANProblemAalborg2ObjectivesWith1EnergyPLANEvolution extends
 	public void evaluate(Solution solution) throws JMException {
 
 		writeModificationFile(solution);
+		//String energyPLANrunCommand = ".\\EnergyPLAN_SEP_2013\\EnergyPLAN.exe -i "
+				//+ "\".\\src\\reet\\fbk\\eu\\OptimizeEnergyPLANAalborg\\Aalborg_2050_Plan_A_44%ForOptimization_2objctives.txt\" "
+				//+ "-m \"modification.txt\" -ascii \"result.txt\" ";
+		
 		String energyPLANrunCommand = ".\\EnergyPLAN_SEP_2013\\EnergyPLAN.exe -i "
-				+ "\".\\src\\reet\\fbk\\eu\\OptimizeEnergyPLANAalborg\\Aalborg_2050_Plan_A_44%ForOptimization_2objctives.txt\" "
+				+ "\".\\Aalborg_2050_Plan_A_44%ForOptimization_2objctives.txt\" "
 				+ "-m \"modification.txt\" -ascii \"result.txt\" ";
 		try {
 			// Process process = new
