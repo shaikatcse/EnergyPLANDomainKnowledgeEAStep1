@@ -13,6 +13,7 @@ import jmetal.core.SolutionSet;
 import reet.fbk.eu.jmetal.metaheuristics.nsgaII.NSGAIIForDK;
 import reet.fbk.eu.jmetal.metaheuristics.nsgaII.NSGAIIForSI;
 import reet.fbk.eu.jmetal.metaheuristics.nsgaII.NSGAIITrackIndicators;
+import reet.fbk.eu.jmetal.metaheuristics.spea2.SPEA2ForSI;
 import jmetal.metaheuristics.nsgaII.NSGAII;
 import jmetal.operators.crossover.CrossoverFactory;
 import jmetal.operators.selection.SelectionFactory;
@@ -23,6 +24,7 @@ import jmetal.util.PseudoRandom;
 import jmetal.util.RandomGenerator;
 //import reet.fbk.eu.jmetal.operators.mutation.MutationFactory;
 import jmetal.operators.mutation.MutationFactory;
+
 
 
 
@@ -59,7 +61,10 @@ public class AalborgProblemWithSmartInitilizationMain {
 		QualityIndicator indicators; // Object to get quality indicators
 		
 		//seed for NSGAII
-		long seed [] = {343434, 551254, 145845, 555541, 551641,625882,985312,458745, 228424, 7811554 };
+		//long seed [] = {343434, 551254, 145845, 555541, 551641,625882,985312,458745, 228424, 7811554 };
+		
+		//seed for spea2
+		long seed [] = {857578, 647647, 647848, 891747, 957363, 538947, 425374, 637384, 125386, 243858 };
 		
 		int numberOfRun=10;
 		
@@ -88,7 +93,7 @@ public class AalborgProblemWithSmartInitilizationMain {
 			parameters.put("favorGenesForCon", favorGenesforConventionalPP);
 			parameters.put("InitialPopulationFile", listOfFiles[i].getAbsolutePath());
 			
-						algorithm = new NSGAIIForSI(problem, parameters);
+			algorithm = new SPEA2ForSI(problem, parameters);
 			
 			// algorithm = new ssNSGAII(problem);
 
@@ -98,7 +103,9 @@ public class AalborgProblemWithSmartInitilizationMain {
 			// Algorithm parameters
 			algorithm.setInputParameter("populationSize", 100);
 			algorithm.setInputParameter("maxEvaluations", 7000);
-
+			//for spea2
+			algorithm.setInputParameter("archiveSize", 100);
+			
 			// Mutation and Crossover for Real codification
 			parameters = new HashMap();
 			parameters.put("probability", 0.9);
@@ -140,9 +147,9 @@ public class AalborgProblemWithSmartInitilizationMain {
 			// Result messages
 			logger_.info("Total execution time: " + estimatedTime + "ms");
 			logger_.info("Variables values have been writen to file VAR");
-			population.printVariablesToFile("InitializationResults\\NSGAIIWithoutTrackWithSI\\VAR_Init_"+listOfFiles[i].getName().substring(14)+"_seed_"+seed[i]);
+			population.printVariablesToFile("InitializationResults\\SPEA2WithoutTrackWithSI\\VAR_Init_"+listOfFiles[i].getName().substring(14)+"_seed_"+seed[i]);
 			logger_.info("Objectives values have been writen to file FUN");
-			population.printObjectivesToFile("InitializationResults\\NSGAIIWithoutTrackWithSI\\FUN_Init_"+listOfFiles[i].getName().substring(14)+"_seed_"+seed[i]);
+			population.printObjectivesToFile("InitializationResults\\SPEA2WithoutTrackWithSI\\FUN_Init_"+listOfFiles[i].getName().substring(14)+"_seed_"+seed[i]);
 		}
 	}
 }
