@@ -88,7 +88,7 @@ public class AalborgProblemWithSmartInitilizationMain {
 			parameters.put("favorGenesForCon", favorGenesforConventionalPP);
 			parameters.put("InitialPopulationFile", listOfFiles[i].getAbsolutePath());
 			
-			algorithm = new NSGAIIForSI(problem, parameters);
+						algorithm = new NSGAIIForSI(problem, parameters);
 			
 			// algorithm = new ssNSGAII(problem);
 
@@ -140,9 +140,9 @@ public class AalborgProblemWithSmartInitilizationMain {
 			// Result messages
 			logger_.info("Total execution time: " + estimatedTime + "ms");
 			logger_.info("Variables values have been writen to file VAR");
-			population.printVariablesToFile("InitializationResults\\NSGAIIWithoutTrackWithSI\\VAR_seed_"+seed[i]);
+			population.printVariablesToFile("InitializationResults\\NSGAIIWithoutTrackWithSI\\VAR_Init_"+listOfFiles[i].getName().substring(14)+"_seed_"+seed[i]);
 			logger_.info("Objectives values have been writen to file FUN");
-			population.printObjectivesToFile("InitializationResults\\NSGAIIWithoutTrackWithSI\\FUN_seed_"+seed[i]);
+			population.printObjectivesToFile("InitializationResults\\NSGAIIWithoutTrackWithSI\\FUN_Init_"+listOfFiles[i].getName().substring(14)+"_seed_"+seed[i]);
 		}
 	}
 }
