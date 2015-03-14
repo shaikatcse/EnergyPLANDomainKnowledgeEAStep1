@@ -2,7 +2,6 @@ package reet.fbk.eu.OptimizeEnergyPLANCIVIS.CEdiS.Problem;
 
 import jmetal.core.Problem;
 import jmetal.core.Solution;
-
 import jmetal.encodings.solutionType.RealSolutionType;
 import jmetal.util.JMException;
 
@@ -313,8 +312,15 @@ public class EnergyPLANProblemCivisCEdiS extends Problem {
 			col = (Collection<String>) energyplanmMap.get("Annualelec.demand");
 			it = col.iterator();
 			double annualElecDemand = Double.parseDouble(it.next().toString());
+			
 
-			solution.setObjective(2, (Import + Export) / annualElecDemand);
+			//Individual house HP electric demand
+			col = (Collection<String>) energyplanmMap.get("AnnualHH-elec.HP");
+			it = col.iterator();
+			double annualHPdemand = Double.parseDouble(it.next().toString());
+
+
+			solution.setObjective(2, (Import + Export) / (annualElecDemand+annualHPdemand));
 
 			// check warning
 			col = (Collection<String>) energyplanmMap.get("WARNING");
