@@ -10,7 +10,12 @@ Distribution index: 10
 Algorithm: NSGA-IIForSI
 selection: Binary Tournament 2.
 
-seed [] = {545454, 565656, 455885, 245454, 714451,752453,125742,455411, 447551, 844545 };
+long seed [] = {343434, 551254, 145845, 555541, 551641,625882,985312,458745, 228424, 7811554 };
 
 Boolean favorGenesforRE[] ={true, true, true, true, true};
 Boolean favorGenesforConventionalPP[] ={false, false, false, false, false};
+
+Parameters regarding smart initialization:
+theta = 6.0
+MaxDistributionIndex = 4
+numberOfIndevPerCombination = 3
