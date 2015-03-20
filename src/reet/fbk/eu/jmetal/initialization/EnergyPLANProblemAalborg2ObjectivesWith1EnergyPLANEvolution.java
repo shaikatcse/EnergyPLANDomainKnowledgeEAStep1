@@ -136,13 +136,13 @@ public class EnergyPLANProblemAalborg2ObjectivesWith1EnergyPLANEvolution extends
 	public void evaluate(Solution solution) throws JMException {
 
 		writeModificationFile(solution);
-		//String energyPLANrunCommand = ".\\EnergyPLAN_SEP_2013\\EnergyPLAN.exe -i "
-				//+ "\".\\src\\reet\\fbk\\eu\\OptimizeEnergyPLANAalborg\\Aalborg_2050_Plan_A_44%ForOptimization_2objctives.txt\" "
-				//+ "-m \"modification.txt\" -ascii \"result.txt\" ";
-		
 		String energyPLANrunCommand = ".\\EnergyPLAN_SEP_2013\\EnergyPLAN.exe -i "
-				+ "\".\\Aalborg_2050_Plan_A_44%ForOptimization_2objctives.txt\" "
+				+ "\".\\src\\reet\\fbk\\eu\\OptimizeEnergyPLANAalborg\\Aalborg_2050_Plan_A_44%ForOptimization_2objctives.txt\" "
 				+ "-m \"modification.txt\" -ascii \"result.txt\" ";
+		
+		/*String energyPLANrunCommand = ".\\EnergyPLAN_SEP_2013\\EnergyPLAN.exe -i "
+				+ "\".\\Aalborg_2050_Plan_A_44%ForOptimization_2objctives.txt\" "
+				+ "-m \"modification.txt\" -ascii \"result.txt\" ";*/
 		try {
 			// Process process = new
 			// ProcessBuilder(energyPLANrunCommand).start();
@@ -151,7 +151,9 @@ public class EnergyPLANProblemAalborg2ObjectivesWith1EnergyPLANEvolution extends
 			process.destroy();
 			EnergyPLANFileParse epfp = new EnergyPLANFileParse(".\\result.txt");
 			energyplanmMap = epfp.parseFile();
-
+			new File(".\\result.txt").delete();
+			new File(".\\modification.txt").delete();
+			
 			Iterator it;
 			Collection<String> col;
 
@@ -167,9 +169,9 @@ public class EnergyPLANProblemAalborg2ObjectivesWith1EnergyPLANEvolution extends
 			double maximumPP = Double.parseDouble(it.next().toString());
 			// if chp>PP, do a 2nd evolution with energyplan where chp=pp
 			if (solution.getDecisionVariables()[0].getValue() > maximumPP) {
-				/*
-				 * 1. make chp = pp 2. evaluate with energyPLAN
-				 */
+				
+				 /* 1. make chp = pp 2. evaluate with energyPLAN*/
+				 
 
 				// chp=pp
 				solution.getDecisionVariables()[0].setValue(maximumPP);
@@ -191,7 +193,9 @@ public class EnergyPLANProblemAalborg2ObjectivesWith1EnergyPLANEvolution extends
 					process.destroy();
 					epfp = new EnergyPLANFileParse(".\\result.txt");
 					energyplanmMap = epfp.parseFile();
-
+					new File(".\\result.txt").delete();
+					new File(".\\modification.txt").delete();
+					
 					// objective # 1
 					col = (Collection<String>) energyplanmMap
 							.get("CO2-emission (corrected)");
@@ -208,9 +212,9 @@ public class EnergyPLANProblemAalborg2ObjectivesWith1EnergyPLANEvolution extends
 					// check warning
 					col = (Collection<String>) energyplanmMap.get("WARNING");
 					if (col != null) {
-						/*
-						 * System.out.println("No warning"); } else {
-						 */
+						
+						 /* System.out.println("No warning"); } else {*/
+						 
 						@SuppressWarnings("rawtypes")
 						Iterator it3 = col.iterator();
 						String warning = it3.next().toString();
@@ -259,9 +263,9 @@ public class EnergyPLANProblemAalborg2ObjectivesWith1EnergyPLANEvolution extends
 
 			col = (Collection<String>) energyplanmMap.get("WARNING");
 			if (col != null) {
-				/*
-				 * System.out.println("No warning"); } else {
-				 */
+				
+				 /* System.out.println("No warning"); } else {*/
+				 
 				@SuppressWarnings("rawtypes")
 				Iterator it3 = col.iterator();
 				String warning = it3.next().toString();
@@ -279,11 +283,13 @@ public class EnergyPLANProblemAalborg2ObjectivesWith1EnergyPLANEvolution extends
 			System.out.println("Energyplan interrupted");
 		}
 
+/*		solution.setObjective(0, 1);
+		solution.setObjective(1, 0);*/
 	}
 
 	@SuppressWarnings("unchecked")
 	public void evaluateConstraints(Solution solution) throws JMException {
-		Iterator it;
+		/*Iterator it;
 		Collection<String> col;
 
 		col = (Collection<String>) energyplanmMap.get("Maximumimport");
@@ -311,15 +317,18 @@ public class EnergyPLANProblemAalborg2ObjectivesWith1EnergyPLANEvolution extends
 				numberOfViolation++;
 			}
 		}
-		/*
+		
 		 * if (constraints[0] < 0.0) {
 		 * solution.setOverallConstraintViolation(constrints);
 		 * solution.setNumberOfViolatedConstraint(1);
-		 */
+		 
 
 		solution.setOverallConstraintViolation(totalViolation);
 		solution.setNumberOfViolatedConstraint(numberOfViolation);
 
+		*/
+		solution.setOverallConstraintViolation(0);
+		solution.setNumberOfViolatedConstraint(0);
 	}
 
 	void writeModificationFile(Solution solution) throws JMException {
