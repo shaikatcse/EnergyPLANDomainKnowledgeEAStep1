@@ -180,14 +180,15 @@ public class NSGAIITrackIndicators extends NSGAII {
 			population.add(newSolution);
 		} // for
 
-		/*if (indicators != null) {
+		Ranking generationRanking = new Ranking(population);
+		if (indicators != null) {
 			int genNo = (int) evaluations / populationSize;
-			double hyperVolume = indicators.getHypervolume(population);
-			double gd = indicators.getGD(population);
-			double igd = indicators.getIGD(population);
-			double spread = indicators.getSpread(population);
-			double epsilon = indicators.getEpsilon(population);
-			double genSpread = indicators.getGeneralizedSpread(population);
+			double hyperVolume = indicators.getHypervolume(generationRanking.getSubfront(0));
+			double gd = indicators.getGD(generationRanking.getSubfront(0));
+			double igd = indicators.getIGD(generationRanking.getSubfront(0));
+			double spread = indicators.getSpread(generationRanking.getSubfront(0));
+			double epsilon = indicators.getEpsilon(generationRanking.getSubfront(0));
+			double genSpread = indicators.getGeneralizedSpread(generationRanking.getSubfront(0));
 
 			try {
 				bwHV.write(genNo + " " + hyperVolume + "\n");
@@ -201,7 +202,7 @@ public class NSGAIITrackIndicators extends NSGAII {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
-		}*/
+		}
 		// Generations
 		while (evaluations < maxEvaluations) {
 
@@ -293,14 +294,17 @@ public class NSGAIITrackIndicators extends NSGAII {
 					requiredEvaluations = evaluations;
 				} // if
 			} // if
+			
+			Ranking generateRanking = new Ranking(population);
+			
 			if (indicators != null) {
 				int genNo = (int) evaluations / populationSize;
-				double hyperVolume = indicators.getHypervolume(population);
-				double gd = indicators.getGD(population);
-				double igd = indicators.getIGD(population);
-				double spread = indicators.getSpread(population);
-				double epsilon = indicators.getEpsilon(population);
-				double genSpread = indicators.getGeneralizedSpread(population);
+				double hyperVolume = indicators.getHypervolume(generateRanking.getSubfront(0));
+				double gd = indicators.getGD(generateRanking.getSubfront(0));
+				double igd = indicators.getIGD(generateRanking.getSubfront(0));
+				double spread = indicators.getSpread(generateRanking.getSubfront(0));
+				double epsilon = indicators.getEpsilon(generateRanking.getSubfront(0));
+				double genSpread = indicators.getGeneralizedSpread(generateRanking.getSubfront(0));
 
 				try {
 					bwHV.write(genNo + " " + hyperVolume + "\n");
@@ -331,8 +335,7 @@ public class NSGAIITrackIndicators extends NSGAII {
 		ranking.getSubfront(0).printFeasibleFUN("FUN_NSGAII");
 		if (indicators != null) {
 			try {
-				bwHV.write("Required evolution to reach 90% Hypervolume: "
-						+ requiredEvaluations);
+				
 				bwHV.close();
 				bwGD.close();
 				bwIGD.close();
