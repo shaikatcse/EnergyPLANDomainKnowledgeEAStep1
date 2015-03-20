@@ -56,8 +56,12 @@ public class AalborgProblemWithNormalInitilizationMain {
 
 		QualityIndicator indicators; // Object to get quality indicators
 		
-		long seed [] = {154568, 148456, 447514, 458475, 274587, 712584, 975572, 585464, 467542, 686544 };
+		//seed for nsgaii
+		//long seed [] = {545782, 455875, 547945, 458478, 981354, 652262, 562366, 365652, 456545, 549235 };
 		
+		//seed for spea2
+
+		long seed [] = {154568, 148456, 447514, 458475, 274587, 712584, 975572, 585464, 467542, 686544 };
 		int numberOfRun=10;
 		for (int i = 0; i < numberOfRun; i++) {
 			

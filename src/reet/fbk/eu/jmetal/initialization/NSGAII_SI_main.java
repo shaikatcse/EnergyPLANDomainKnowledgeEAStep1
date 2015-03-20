@@ -1,4 +1,4 @@
-package reet.fbk.eu.jmetal.metaheuristics.nsgaII;
+package reet.fbk.eu.jmetal.initialization;
 
 import java.io.BufferedWriter;
 import java.io.FileOutputStream;
@@ -28,6 +28,7 @@ import reet.fbk.eu.OptimizeEnergyPLANCIVIS.CEIS.Problem.EnergyPLANProblemCivisCe
 import reet.fbk.eu.OptimizeEnergyPLANCIVIS.metaheuristics.NSGAIIForDK;
 //import reet.fbk.eu.jmetal.operators.mutation.MutationFactory;
 
+import reet.fbk.eu.jmetal.metaheuristics.nsgaII.NSGAIIForSI;
 import reet.fbk.eu.jmetal.metaheuristics.spea2.SPEA2ForDK;
 
 import java.util.logging.FileHandler;
