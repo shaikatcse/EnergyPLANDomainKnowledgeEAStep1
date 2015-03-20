@@ -183,7 +183,7 @@ public class EnergyPLANProblemCivisCEdiS4DWithTransport extends Problem {
 		
 		writeModificationFile(pv, oilBoilerHeatPercentage,
 				ngasBoilerHeatPercentage, biomassBoilerHeatPercentage,
-				ngasCHPHeatPercentage, hpHeatPercentage, reducedPetrolDemandInGWh, reducedDieselDemandInGWh, elecCarElectricityDemandInGWh, "DC");
+				ngasCHPHeatPercentage, hpHeatPercentage, reducedPetrolDemandInGWh, reducedDieselDemandInGWh, elecCarElectricityDemandInGWh, "NC");
 		String energyPLANrunCommand = ".\\EnergyPLAN_SEP_2013\\EnergyPLAN.exe -i "
 				+ "\".\\src\\reet\\fbk\\eu\\OptimizeEnergyPLANCIVIS\\CEdiS\\data\\CEdiS_current.txt\" "
 				+ "-m \"modification.txt\" -ascii \"result.txt\" ";
