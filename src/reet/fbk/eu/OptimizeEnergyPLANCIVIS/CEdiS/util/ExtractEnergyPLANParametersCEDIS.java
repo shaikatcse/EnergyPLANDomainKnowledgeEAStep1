@@ -40,7 +40,8 @@ public class ExtractEnergyPLANParametersCEDIS {
 			"Petrol/JP", "Biomass", "Total Electricity exchange",
 			"Total variable costs", "Fixed operation costs", "AdditionalCost",
 			"InvestmentCost", "CO2-emission (corrected)", "AnnualCost",
-			"LoadFollowingCapacity", "ESD" };
+			"LoadFollowingCapacity", "ESD",
+			"oilBoilerFuelDemand", "ngasBoilerFuelDemand", "biomassBoilerFuelDemand", "AnnualmCHPheat", "AnnualHPheat"};
 
 	static String outputsinFile[] = { "AnnualPV", "AnnualCHPelec",
 			"AnnualHPelec", "AnnualOilBoilerheat", "AnnualNGasBoilerheat",
@@ -49,13 +50,14 @@ public class ExtractEnergyPLANParametersCEDIS {
 			"BiomassConsumption", "NgasConsuption", "DieselCost", "PetrolCost", "BiomassCost",
 			"TotalElectricityExchangeCost", "TotalVariableCost",
 			"FixedOperationCosts", "AdditionalCost", "InvestmentCost",
-			"CO2-Emission", "AnnualCost", "LoadFollowingCapacity", "ESD" };
+			"CO2-Emission", "AnnualCost", "LoadFollowingCapacity", "ESD",
+			"oilBoilerFuelDemand", "ngasBoilerFuelDemand", "biomassBoilerFuelDemand", "AnnualmCHPheat", "AnnualHPheat"};
 
 	static String inputUnits[] = { "KWe", "KWe", "KWe", "KWth", "KWth", "KWth" };
 	static String outputUnits[] = { "GWh", "GWh", "GWh", "GWh", "GWh", "GWh",
 			"GWh", "GWh", "GWh", "GWh", "GWh", "GWh", "GWh", "KEuro", "KEuro",
 			"KEuro", "KEuro", "KEuro", "KEuro", "KEuro", "KEuro", "Mt",
-			"KEuro", "", "" };
+			"KEuro", "", "", "GWh","GWh","GWh","GWh","GWh" };
 
 	public static final double indvBoilerCostInKEuro = 0.625;
 	public static final double PVInvestmentCostInKEuro = 2.6;
@@ -192,7 +194,7 @@ public class ExtractEnergyPLANParametersCEDIS {
 				str = str.substring(0, str.lastIndexOf("1000"));
 				str = Double.parseDouble(str) + "";
 			}
-			output = output + str + " ";
+			output = output + str + ";";
 		}
 
 		bw.write(input + output);
@@ -506,6 +508,7 @@ public class ExtractEnergyPLANParametersCEDIS {
 			str = "" + oilBoilerFuelDemand;
 			bw.write(str);
 			bw.newLine();
+			modifyMap.put("oilBoilerFuelDemand", oilBoilerFuelDemand);
 
 			// Ngas boiler fuel demand
 			str = "input_fuel_Households[3]=";
@@ -516,6 +519,7 @@ public class ExtractEnergyPLANParametersCEDIS {
 			str = "" + ngasBoilerFuelDemand;
 			bw.write(str);
 			bw.newLine();
+			modifyMap.put("ngasBoilerFuelDemand", ngasBoilerFuelDemand);
 
 			// biomass boiler fuel demand
 			str = "input_fuel_Households[4]=";
@@ -526,6 +530,7 @@ public class ExtractEnergyPLANParametersCEDIS {
 			str = "" + biomassBoilerFuelDemand;
 			bw.write(str);
 			bw.newLine();
+			modifyMap.put("biomassBoilerFuelDemand", biomassBoilerFuelDemand);
 
 			// ngas micro chp heat demand
 			str = "input_HH_NgasCHP_heat=";
