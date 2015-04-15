@@ -106,6 +106,19 @@ public class CalculateDiversity {
 		
 	}
 	
+	double calculateDiversityOf_ithGeneration(double [][] solFrontDS,  int numberOfVariables){
+		solutionList.clear();
+		for(int i=0;i<solFrontDS.length;i++){
+			SolutionVariables sv = new SolutionVariables(numberOfVariables) ;
+			for(int j = 0;j<numberOfVariables ; j++){
+				sv.setVariable(solFrontDS[i][j], j);
+			}
+			solutionList.add(sv);
+			
+		}
+		return calculateDiversity(numberOfVariables);
+	}
+	
 	void calculateDiversityOfAllGenerations(String path,int numberOfVariables){
 		
 		for(int i=0;i<array.length;i++){
