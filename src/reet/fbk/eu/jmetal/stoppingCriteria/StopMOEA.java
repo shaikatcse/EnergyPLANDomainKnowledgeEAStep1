@@ -28,7 +28,7 @@ public class StopMOEA {
 
 	double[][] iMinus1SolFrontDouble;
 
-	StopMOEA() {
+	public StopMOEA() {
 		ahd = new AveragedHausdroffDistance();
 		cdv = new CalculateDiversity();
 		ahdList = new ArrayList<Double>();
@@ -41,22 +41,23 @@ public class StopMOEA {
 	/*
 	 * return true -> if it meets the stopping criteria
 	 */
-	boolean isStopMOEA(int genNum, SolutionSet iSolFront,
+	public boolean isStopMOEA(int genNum, SolutionSet iSolFront,
 			int numberOfObjectives, int numberOfVariables) throws JMException {
 		double[][] iSolFrontDouble, iSolFrontDSDouble;
 		iSolFrontDouble = convertSolutionSetToDoubleObjectives(iSolFront,
 				numberOfObjectives);
 		iSolFrontDSDouble = convertSolutionSetToDoubleDecisionVariables(
-				iSolFront, numberOfObjectives);
+				iSolFront, numberOfVariables);
 
 		Double ahdValue = -1.0, dvVAlue = -1.0;
 
 		if (genNum != 1) {
 			ahdValue = ahd.calclulate_ithGenerationAHD(iSolFrontDouble,
 					iMinus1SolFrontDouble, numberOfObjectives);
-			update_iMinus1SolFront(iSolFrontDouble);
 			ahdList.add(ahdValue);
 		}
+		update_iMinus1SolFront(iSolFrontDouble);
+		
 		dvVAlue = cdv.calculateDiversityOf_ithGeneration(iSolFrontDSDouble,
 				numberOfVariables);
 		dvList.add(dvVAlue);
