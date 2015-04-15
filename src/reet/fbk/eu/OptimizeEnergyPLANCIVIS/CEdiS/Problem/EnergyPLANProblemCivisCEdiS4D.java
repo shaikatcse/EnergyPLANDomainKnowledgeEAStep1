@@ -216,7 +216,7 @@ public class EnergyPLANProblemCivisCEdiS4D extends Problem {
 
 			// calculate additional cost
 			// (hydroProduction+PVproduction+Import-Export)*average additional
-			// cost (85.74)
+			// cost (106.27)
 			double totalAdditionalCost = Math.round((hydroPowerProduction
 					+ PVproduction + Import - Export + chpElecProduction)
 					* addtionalCostPerGWhinKEuro);
