@@ -178,6 +178,18 @@ public class AveragedHausdroffDistance {
 		    return Math.max(gdValue,igdValue);
 	}
 	
+	/*
+	 * iSolFront -> ith solution front given in array
+	 * iMinus1SolFront -> (i-1)th solution front given in array
+	 * numberOfObjectives -> number of objectives
+	 */
+	double calclulate_ithGenerationAHD(double [][] iSolFront,double [][] iMinus1SolFront, int numberOfObjectives){
+		
+		double gdValue = gd.generationalDistance( iSolFront, iMinus1SolFront,numberOfObjectives);
+	    double igdValue = igd.invertedGenerationalDistance( iSolFront, iMinus1SolFront,numberOfObjectives);
+	    return Math.max(gdValue,igdValue);
+	}
+	
 	void calculateAllGenerationsHD(String path, int numberOfObjectives){
 		for(int i=1;i<numberOfGenerations;i++){
 			array[i]=calclulate_ithGenerationHD(path, (i+1), numberOfObjectives);
