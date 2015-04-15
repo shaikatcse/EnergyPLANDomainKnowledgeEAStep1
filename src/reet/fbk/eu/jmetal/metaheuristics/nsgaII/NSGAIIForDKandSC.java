@@ -326,7 +326,7 @@ public class NSGAIIForDKandSC extends NSGAII {
 				}
 			}
 			// added by shaikat to track the run
-			if ((evaluations % populationSize) == 0) {
+			if ((evaluations % 1000) == 0) {
 				System.out.println(evaluations + ": "
 						+ population.get(0).getObjective(0));
 			} //
