@@ -271,7 +271,7 @@ public class ExtractEnergyPLANParametersCEDISWithTransport {
 		MultiMap energyplanMap = null;
 		MultiMap modifyMap = new MultiValueMap();
 		modifyMap = writeModificationFile(pv, oilBoilerHeatPercentage,ngasBoilerHeatPercentage, biomassBoilerHeatPercentage,ngasCHPHeatPercentage,
-				 hpHeatPercentage,  reducedPetrolDemandInGWh,  reducedDieselDemandInGWh, elecCarElectricityDemandInGWh, "NC");
+				 hpHeatPercentage,  reducedPetrolDemandInGWh,  reducedDieselDemandInGWh, elecCarElectricityDemandInGWh, "DC");
 
 		String energyPLANrunCommand = ".\\EnergyPLAN_SEP_2013\\EnergyPLAN.exe -i "
 				+ "\".\\src\\reet\\fbk\\eu\\OptimizeEnergyPLANCIVIS\\CEdiS\\data\\CEdiS_current.txt\" "
