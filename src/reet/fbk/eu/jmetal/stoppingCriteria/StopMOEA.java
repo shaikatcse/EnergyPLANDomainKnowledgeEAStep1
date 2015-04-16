@@ -6,13 +6,23 @@ import java.util.List;
 
 import jmetal.core.SolutionSet;
 import jmetal.util.JMException;
+import jmetal.util.wrapper.XReal;
 
 /*
  * This class contains all the ingredients to make decision about stopping a MOEA
  */
 public class StopMOEA {
 
-	static final int nGenLT = 30, noGenUnCh = 10;
+	/*
+	 * The following parameters are set for the GECCO 15 paper
+	 */
+	/*static final int nGenLT = 30, noGenUnCh = 10;
+	static final double significanceValue = 0.05;*/
+	
+	/*
+	 * New parameters for Aalborg Simulaiton
+	 */
+	static final int nGenLT = 20, noGenUnCh = 5;
 	static final double significanceValue = 0.05;
 
 	AveragedHausdroffDistance ahd;
@@ -73,6 +83,9 @@ public class StopMOEA {
 
 			pValueHDList.add(pValueHD);
 			pValueDVList.add(pValueDV);
+			
+			checkNaN(ahdArray);
+			checkNaN(dvArray);
 
 		}
 		if (genNum > nGenLT) {
@@ -93,7 +106,11 @@ public class StopMOEA {
 			if (pValueHDList.size() > noGenUnCh)
 				pValueHDList.remove(0);
 
+			
+			checkNaN(ahdArray);
+			checkNaN(dvArray);
 		}
+		
 		if (pValueDVList.size() >= noGenUnCh) {
 			if (!checkSignificanceTwoList(pValueDVList, pValueHDList)) {
 				return true;
@@ -105,8 +122,20 @@ public class StopMOEA {
 		return false;
 	}
 
+	public void checkNaN(double [] array){
+		for(int i=0;i<array.length;i++){
+			if(Double.isNaN(array[i])){
+				System.out.println("NaN");
+				System.exit(0);
+			}
+				
+		}
+	}
 	public void update_iMinus1SolFront(double[][] sol) {
-		iMinus1SolFrontDouble = sol;
+		iMinus1SolFrontDouble = new double [sol.length][];
+		for(int i =0;i<sol.length;i++){
+			iMinus1SolFrontDouble[i] = sol[i];
+		}
 	}
 
 	public boolean checkSignificanceTwoList(List<Double> pValueDVList,
@@ -144,15 +173,15 @@ public class StopMOEA {
 
 	public double[][] convertSolutionSetToDoubleDecisionVariables(
 			SolutionSet sol, int numberOfVariable) throws JMException {
-		{
+			 
 			double[][] front = new double[sol.size()][numberOfVariable];
 			for (int i = 0; i < sol.size(); i++) {
+				XReal solution = new XReal(sol.get(i));
 				for (int j = 0; j < numberOfVariable; j++) {
-					front[i][j] = sol.get(i).getDecisionVariables()[j]
-							.getValue();
+					front[i][j] = solution.getValue(j);
 				}
 			}
 			return front;
-		}
+		
 	}
 }
