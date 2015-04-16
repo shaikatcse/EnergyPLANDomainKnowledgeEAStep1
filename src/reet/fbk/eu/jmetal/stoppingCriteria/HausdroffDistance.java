@@ -41,7 +41,7 @@ public class HausdroffDistance {
 
 	public static void main(String[] args) {
 		ArrayList<Solution> Sol1, Sol2, Sol3, Sol4;
-		String directoryName="C:/Users/mahbub/Documents/GitHub/EnergyPLANDomainKnowledgeEAStep1/StoppingCriteriaStudies/data/StoppingCriteriaAnalysis/DTLZ2run0";
+		String directoryName="C:/Users/mahbub/Documents/GitHub/EnergyPLANDomainKnowledgeEAStep1/StoppingCriteriaStudies/data/NSGAIISC/ZDT1/run0/";
 		   String fileName = "VAR";
 		 for(int i=2;i<=300;i++){
 			// Sol4 = readFront(directoryName+fileName+(i-3));
@@ -105,6 +105,12 @@ public class HausdroffDistance {
 		
 		//System.out.println(HausdroffDistance.calculateHausdroffDistance(Z, Z));
 
+	System.out.println("HD");
+		for(int i=2;i<=500;i++){
+			 Sol2 = readFront(directoryName+fileName+(i));
+			 Sol1 = readFront(directoryName+fileName+(i-1));
+			 System.out.println(i+ " "+ calculateHausdroffDistance(Sol2, Sol1));
+		}
 	}
 	
 	public static void printFronts(ArrayList<Solution> front, int numberOfObjectives){
