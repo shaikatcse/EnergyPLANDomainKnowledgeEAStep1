@@ -206,6 +206,7 @@ public class OPtimizeEnergyPLANAalborgDKWithSCMain {
 			fw = new FileWriter(file.getAbsoluteFile());
 			bw = new BufferedWriter(fw);
 			bw.write(run+ " "+generation);
+			bw.close();
 		}catch(IOException e){
 			System.out.println("Something wrong StoppingGen file");
 			System.exit(0);
