@@ -185,8 +185,10 @@ public class AveragedHausdroffDistance {
 	 */
 	double calclulate_ithGenerationAHD(double [][] iSolFront,double [][] iMinus1SolFront, int numberOfObjectives){
 		
-		double gdValue = gd.generationalDistance( iSolFront, iMinus1SolFront,numberOfObjectives);
-	    double igdValue = igd.invertedGenerationalDistance( iSolFront, iMinus1SolFront,numberOfObjectives);
+		double gdValue = gd.generationalDistance(iMinus1SolFront, iSolFront, numberOfObjectives);
+	    double igdValue = igd.invertedGenerationalDistance( iMinus1SolFront, iSolFront, numberOfObjectives);
+	   if(Double.isNaN(gdValue) || Double.isNaN(igdValue))
+		   System.out.println("sds");
 	    return Math.max(gdValue,igdValue);
 	}
 	
