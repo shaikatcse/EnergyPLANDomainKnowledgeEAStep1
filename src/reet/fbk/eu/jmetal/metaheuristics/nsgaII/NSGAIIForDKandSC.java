@@ -333,8 +333,8 @@ public class NSGAIIForDKandSC extends NSGAII {
 
 		} // while
 
-		// Return as output parameter the required evaluations
-		setOutputParameter("evaluations", requiredEvaluations);
+		// Return as output parameter the evaluations
+		setOutputParameter("evaluations", evaluations);
 
 		// Return the first non-dominated front
 		Ranking ranking = new Ranking(population);
