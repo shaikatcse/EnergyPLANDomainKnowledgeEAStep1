@@ -1,22 +1,22 @@
 #postscript("indicators_NSGAII_SPEA2.eps", horizontal=FALSE, onefile=FALSE, height=8, width=12, pointsize=10)
 pdf("indicators_SPEA2_SPEA2si.pdf", onefile=FALSE, width=10)
 
-NSGAIIresultDirectory<-"."
+SPEA2resultDirectory<-"."
 
 NSGAIIqIndicator <- function(indicator)
 {
-	fileNSGAII<-paste(NSGAIIresultDirectory, "SPEA2WithoutTrack", sep="/")
+	fileSPEA2<-paste(SPEA2resultDirectory, "SPEA2WithoutTrack", sep="/")
 #filePolynomialMutation<-paste(filePolynomialMutation, problem, sep="/")
-	fileNSGAII<-paste(fileNSGAII, indicator, sep="/")
-	NSGAII_results<-scan(fileNSGAII)
+	fileSPEA2<-paste(fileSPEA2, indicator, sep="/")
+	SPEA2_results<-scan(fileSPEA2)
 
-fileNSGAIIsi<-paste(NSGAIIresultDirectory, "SPEA2WithoutTrackWithSI", sep="/")
+fileSPEA2si<-paste(SPEA2resultDirectory, "SPEA2WithoutTrackWithSI", sep="/")
 #fileDKMutation<-paste(fileDKMutation, problem, sep="/")
-fileNSGAIIsi<-paste(fileNSGAIIsi, indicator, sep="/")
-NSGAIIsi_results<-scan(fileNSGAIIsi)
+fileSPEA2si<-paste(fileSPEA2si, indicator, sep="/")
+SPEA2si_results<-scan(fileSPEA2si)
 
-algs<-c("NSGAII","NSGAIISI")
-boxplot(NSGAII_results,NSGAIIsi_results,names=algs, notch = TRUE)
+algs<-c("SPEA2","SPEA_SI")
+boxplot(SPEA2_results,SPEA2si_results,names=algs, notch = FALSE)
 titulo <-paste(indicator)
 title(main=titulo)
 }

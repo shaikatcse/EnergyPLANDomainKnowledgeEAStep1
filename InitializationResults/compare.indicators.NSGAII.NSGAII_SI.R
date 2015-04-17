@@ -16,7 +16,7 @@ fileNSGAIIsi<-paste(fileNSGAIIsi, indicator, sep="/")
 NSGAIIsi_results<-scan(fileNSGAIIsi)
 
 algs<-c("NSGAII","NSGAIISI")
-boxplot(NSGAII_results,NSGAIIsi_results,names=algs, notch = TRUE)
+boxplot(NSGAII_results,NSGAIIsi_results,names=algs, notch = FALSE)
 titulo <-paste(indicator)
 title(main=titulo)
 }
