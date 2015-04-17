@@ -86,10 +86,10 @@ public class OPtimizeEnergyPLANAalborgDKWithSCMain {
 			// "C:\\Users\\Nusrat\\Documents\\GitHub\\EnergyPLANDomainKnowledgeEAStep1\\Results\\truePf\\mergefun.pf")
 			// ;
 
-			int populationSize = 4;
+			int populationSize = 100;
 			// Algorithm parameters
 			algorithm.setInputParameter("populationSize", populationSize);
-			algorithm.setInputParameter("maxEvaluations", 600);
+			algorithm.setInputParameter("maxEvaluations", 10000);
 			// for spea2
 			// algorithm.setInputParameter("archiveSize",100);
 
