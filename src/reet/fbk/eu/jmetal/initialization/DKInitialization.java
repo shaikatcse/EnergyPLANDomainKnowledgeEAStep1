@@ -151,10 +151,10 @@ public class DKInitialization {
 		for (int no = 0; no < numberOfRandomIndividuals; no++) {
 			Solution sol = new Solution(problem_);
 			for (int i = 0; i < problem_.getNumberOfVariables(); i++) {
-				sol.getDecisionVariables()[i].setValue(PseudoRandom
-						.randDouble()
-						* (problem_.getUpperLimit(i) - problem_
-								.getLowerLimit(i)) + problem_.getLowerLimit(i));
+				sol.getDecisionVariables()[i]
+						.setValue(createGeneWithoutAnything(
+								problem_.getLowerLimit(i),
+								problem_.getUpperLimit(i)));
 			}
 			initialSolutions.add(sol);
 		}
