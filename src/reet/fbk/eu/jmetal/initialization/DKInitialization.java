@@ -10,6 +10,7 @@ import jmetal.core.Solution;
 import jmetal.core.SolutionSet;
 import jmetal.problems.ZDT.ZDT1;
 import jmetal.util.JMException;
+import jmetal.util.PseudoRandom;
 import matlabcontrol.*;
 import matlabcontrol.extensions.MatlabTypeConverter;
 
@@ -120,13 +121,13 @@ public class DKInitialization {
 				Solution sol = new Solution(problem_);
 				for (int i = 0; i < problem_.getNumberOfVariables(); i++) {
 					try {
-						if (REFavorGenes[i] == true) {
+						if (ConFavorGene[i] == true) {
 							sol.getDecisionVariables()[i]
 									.setValue(createGeneWithIncreasedCapacity(
 											aCombination[i],
 											problem_.getLowerLimit(i),
 											problem_.getUpperLimit(i)));
-						} else if (REFavorGenes[i] == false) {
+						} else if (ConFavorGene[i] == false) {
 							sol.getDecisionVariables()[i]
 									.setValue(createGeneWithDecreasedCapacity(
 											aCombination[i],
@@ -142,6 +143,20 @@ public class DKInitialization {
 				}
 				initialSolutions.add(sol);
 			}
+		}
+	}
+
+	public void generateRandomInitialSolutionWithoutFovor(int numberOfRandomIndividuals)
+			throws ClassNotFoundException, JMException {
+		for (int no = 0; no < numberOfRandomIndividuals; no++) {
+			Solution sol = new Solution(problem_);
+			for (int i = 0; i < problem_.getNumberOfVariables(); i++) {
+				sol.getDecisionVariables()[i].setValue(PseudoRandom
+						.randDouble()
+						* (problem_.getUpperLimit(i) - problem_
+								.getLowerLimit(i)) + problem_.getLowerLimit(i));
+			}
+			initialSolutions.add(sol);
 		}
 	}
 
@@ -208,6 +223,9 @@ public class DKInitialization {
 		generateInitialSolutionFavorRE();
 		generateInitialSolutionFavorCon();
 
+		// generate some random solution 
+		generateRandomInitialSolutionWithoutFovor(200);
+		
 		sendPopulationToMatlab();
 		double[][] population = runMatlabCode();
 		/*
@@ -223,7 +241,7 @@ public class DKInitialization {
 		for (int j = 0; j < populationSize; j++) {
 			Solution s = new Solution(problem_);
 			for (int i = 0; i < problem_.getNumberOfVariables(); i++) {
-				s.getDecisionVariables()[i].setValue(population[j][i]*1500.0);
+				s.getDecisionVariables()[i].setValue(population[j][i] * 1500.0);
 			}
 			finalPopulation.add(s);
 		}
@@ -240,10 +258,11 @@ public class DKInitialization {
 		for (int i = 0; i < initialSolutions.size(); i++) {
 
 			for (int j = 0; j < problem_.getNumberOfVariables(); j++) {
-				// diveded by 1500, maximum upper limit of all the decision variables
+				// diveded by 1500, maximum upper limit of all the decision
+				// variables
 				aMatrix = aMatrix
 						+ initialSolutions.get(i).getDecisionVariables()[j]
-								.getValue()/1500.0 + " ";
+								.getValue() / 1500.0 + " ";
 			}
 			aMatrix = aMatrix + ";";
 
