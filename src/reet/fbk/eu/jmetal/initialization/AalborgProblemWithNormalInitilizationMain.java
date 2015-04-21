@@ -23,8 +23,12 @@ import jmetal.operators.mutation.MutationFactory;
 import java.util.logging.FileHandler;
 import java.util.logging.Logger;
 
-
-class NSGAII_Run{
+/**
+ * The class is main class where the class can execute algorithm from the command line
+ * argument. The class only run the algorithm with normal initilization (random) technique. 
+ * 
+ */
+class NSGAII_Nor_Run{
 	public static Logger logger_; // Logger object
 	public static FileHandler fileHandler_; // FileHandler object
 
@@ -120,7 +124,7 @@ class NSGAII_Run{
 	}
 }
 
-class SPEA2_Run{
+class SPEA2_Nor_Run{
 	public static Logger logger_; // Logger object
 	public static FileHandler fileHandler_; // FileHandler object
 
@@ -165,7 +169,7 @@ class SPEA2_Run{
 			// Algorithm parameters
 			algorithm.setInputParameter("populationSize", 100);
 			algorithm.setInputParameter("maxEvaluations", 5000);
-			 algorithm.setInputParameter("archiveSize",100);
+			 algorithm.setInputParameter("archiveSize", 100);
 			
 			// Mutation and Crossover for Real codification
 			parameters = new HashMap();
@@ -221,10 +225,10 @@ public class AalborgProblemWithNormalInitilizationMain {
 
 	public static void main(String args[]) throws SecurityException, ClassNotFoundException, IOException, JMException{
 		if(args[0].equals("NSGAII")){
-			NSGAII_Run nsgaii = new NSGAII_Run();
+			NSGAII_Nor_Run nsgaii = new NSGAII_Nor_Run();
 			nsgaii.run();
 		}else if(args[0].equals("SPEA2")){
-			SPEA2_Run spea2 = new SPEA2_Run();
+			SPEA2_Nor_Run spea2 = new SPEA2_Nor_Run();
 			spea2.run();
 		}
 	}
