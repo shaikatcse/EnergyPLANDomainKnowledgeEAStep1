@@ -26,14 +26,14 @@ public class DKInitialization {
 	Random rm;
 	MatlabProxy proxy;
 
-	int populationSize, numberOfIndevPerCombination;
+	int populationSize, numberOfIndevPerCombination,numberOfRandomSolutions;
 	double theta;
 	int maxDistributionIndex;
 
 	public DKInitialization(Problem problem_, Boolean REFavorGenes[],
 			Boolean ConFavorGene[], Boolean LFCFavorGenes[],
 			int populationSize, double theta, int maxDistributionIndex,
-			int numberOfIndevPerCombination, MatlabProxy proxy)
+			int numberOfIndevPerCombination, int numberOfRandomSolutions, MatlabProxy proxy)
 			throws MatlabInvocationException {
 		this.REFavorGenes = REFavorGenes;
 		this.ConFavorGene = ConFavorGene;
@@ -42,6 +42,7 @@ public class DKInitialization {
 		this.theta = theta;
 		this.maxDistributionIndex = maxDistributionIndex;
 		this.numberOfIndevPerCombination = numberOfIndevPerCombination;
+		this.numberOfRandomSolutions=numberOfRandomSolutions;
 
 		this.problem_ = problem_;
 		rm = new Random();
@@ -54,7 +55,7 @@ public class DKInitialization {
 
 	public DKInitialization(Problem problem_, Boolean REFavorGenes[],
 			Boolean ConFavorGene[], int populationSize, double theta,
-			int maxDistributionIndex, int numberOfIndevPerCombination,
+			int maxDistributionIndex, int numberOfIndevPerCombination, int numberOfRandomSolutions, 
 			MatlabProxy proxy) throws MatlabInvocationException {
 		this.REFavorGenes = REFavorGenes;
 		this.ConFavorGene = ConFavorGene;
@@ -62,7 +63,7 @@ public class DKInitialization {
 		this.theta = theta;
 		this.maxDistributionIndex = maxDistributionIndex;
 		this.numberOfIndevPerCombination = numberOfIndevPerCombination;
-
+		this.numberOfRandomSolutions=numberOfRandomSolutions;
 		this.problem_ = problem_;
 		rm = new Random();
 		initialSolutions = new SolutionSet(10000);
@@ -224,7 +225,7 @@ public class DKInitialization {
 		generateInitialSolutionFavorCon();
 
 		// generate some random solution 
-		generateRandomInitialSolutionWithoutFovor(200);
+		generateRandomInitialSolutionWithoutFovor(numberOfRandomSolutions);
 		
 		sendPopulationToMatlab();
 		double[][] population = runMatlabCode();
