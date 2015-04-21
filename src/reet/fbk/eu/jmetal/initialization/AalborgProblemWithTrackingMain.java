@@ -10,11 +10,10 @@ import jmetal.core.Algorithm;
 import jmetal.core.Operator;
 import jmetal.core.Problem;
 import jmetal.core.SolutionSet;
-import reet.fbk.eu.jmetal.metaheuristics.nsgaII.NSGAIIForDK;
-import reet.fbk.eu.jmetal.metaheuristics.nsgaII.NSGAIIForSI;
-import reet.fbk.eu.jmetal.metaheuristics.nsgaII.NSGAIITrackIndicators;
-import reet.fbk.eu.jmetal.metaheuristics.spea2.SPEA2ForSI;
-import reet.fbk.eu.jmetal.metaheuristics.spea2.SPEA2TrackIndicators;
+import reet.fbk.eu.jmetal.initialization.metaheuristics.nsgaII.NSGAIIForSI;
+import reet.fbk.eu.jmetal.initialization.metaheuristics.nsgaII.NSGAIITrackIndicators;
+import reet.fbk.eu.jmetal.initialization.metaheuristics.spea2.SPEA2ForSI;
+import reet.fbk.eu.jmetal.initialization.metaheuristics.spea2.SPEA2TrackIndicators;
 import jmetal.metaheuristics.nsgaII.NSGAII;
 import jmetal.metaheuristics.spea2.SPEA2;
 import jmetal.operators.crossover.CrossoverFactory;
@@ -30,7 +29,14 @@ import jmetal.operators.mutation.MutationFactory;
 import java.util.logging.FileHandler;
 import java.util.logging.Logger;
 
-class NSGAII_Run {
+/**
+ * The class is main class where the class can execute algorithm from the command line
+ * argument. The class run different algorithm to track different indicators for each
+ * generation/.  
+ * 
+ */
+
+class NSGAII_RunWithTracking {
 
 	public static Logger logger_; // Logger object
 	public static FileHandler fileHandler_; // FileHandler object
@@ -71,8 +77,7 @@ class NSGAII_Run {
 
 			parameters = new HashMap();
 
-			algorithm = new NSGAIITrackIndicators(problem, NSGAII_seeds[i],
-					path);
+			algorithm = new NSGAIITrackIndicators(problem, NSGAII_seeds[i], path);
 			// algorithm = new ssNSGAII(problem);
 
 			// indicators = new QualityIndicator(problem,
@@ -136,7 +141,7 @@ class NSGAII_Run {
 	}
 }
 
-class NSGAII_SI_Run  {
+class NSGAII_SI_RunWithTracking  {
 
 	public static Logger logger_; // Logger object
 	public static FileHandler fileHandler_; // FileHandler object
@@ -163,7 +168,7 @@ class NSGAII_SI_Run  {
 		logger_.addHandler(fileHandler_);
 		
 		
-		File folder = new File("InitializationResults/InitIndividualWithSI");
+		File folder = new File("InitializationResults/InitIndividualWithSI/attempt1");
 		File[] listOfFiles = folder.listFiles(new FilenameFilter() {
 		    @Override
 		    public boolean accept(File dir, String name) {
@@ -190,6 +195,7 @@ class NSGAII_SI_Run  {
 			parameters.put("favorGenesforRE", favorGenesforRE);
 			parameters.put("favorGenesForCon", favorGenesforConventionalPP);
 			parameters.put("InitialPopulationFile", listOfFiles[i].getAbsolutePath());
+			
 	
 			algorithm = new NSGAIIForSI(problem, NSGAII_SI_seeds[i], path, parameters);
 			// algorithm = new ssNSGAII(problem);
@@ -200,7 +206,7 @@ class NSGAII_SI_Run  {
 
 			// Algorithm parameters
 			algorithm.setInputParameter("populationSize", 100);
-			algorithm.setInputParameter("maxEvaluations", 7000);
+			algorithm.setInputParameter("maxEvaluations", 1000);
 			algorithm.setInputParameter("indicators", indicators);
 
 			try {
@@ -255,7 +261,7 @@ class NSGAII_SI_Run  {
 	}
 }
 
-class SPEA2_Run {
+class SPEA2_RunWithTracking {
 	public static Logger logger_; // Logger object
 	public static FileHandler fileHandler_; // FileHandler object
 	
@@ -359,7 +365,7 @@ class SPEA2_Run {
 	}
 }
 
-class SPEA2_SI_Run  {
+class SPEA2_SI_RunWithTracking  {
 	public static Logger logger_; // Logger object
 	public static FileHandler fileHandler_; // FileHandler object
 	
@@ -575,16 +581,16 @@ public class AalborgProblemWithTrackingMain {
 		
 		  
 		if(args[0].equals("NSGAII")){
-			NSGAII_Run nsgaii = new NSGAII_Run();
+			NSGAII_RunWithTracking nsgaii = new NSGAII_RunWithTracking();
 			nsgaii.run();
 		}else if(args[0].equals("NSGAII_SI")){
-			NSGAII_SI_Run nsgaii_si = new NSGAII_SI_Run();
+			NSGAII_SI_RunWithTracking nsgaii_si = new NSGAII_SI_RunWithTracking();
 			nsgaii_si.run();
 		}else if(args[0].equals("SPEA2")){
-			SPEA2_Run spea2 = new SPEA2_Run();
+			SPEA2_RunWithTracking spea2 = new SPEA2_RunWithTracking();
 			spea2.run();
 		}else if(args[0].equals("SPEA2_SI")){
-			SPEA2_SI_Run spea2_si = new SPEA2_SI_Run();
+			SPEA2_SI_RunWithTracking spea2_si = new SPEA2_SI_RunWithTracking();
 			spea2_si.run();
 		}
 			
