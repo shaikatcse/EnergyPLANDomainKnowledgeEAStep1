@@ -21,26 +21,16 @@
 
 package reet.fbk.eu.jmetal.initialization.metaheuristics.nsgaII;
 
-import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
-import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 
 
-import java.util.Comparator;
-import java.util.HashMap;
-import java.util.StringTokenizer;
 
-import matlabcontrol.MatlabConnectionException;
-import matlabcontrol.MatlabInvocationException;
-import matlabcontrol.MatlabProxy;
-import matlabcontrol.MatlabProxyFactory;
 import reet.fbk.eu.OptimizeEnergyPLANWithAccuracy.util.RepairDVGene;
 import reet.fbk.eu.OptimizeEnergyPLANWithAccuracy.util.RepairFuelGene;
 import reet.fbk.eu.OptimizeEnergyPLANWithAccuracy.util.RepairSolution;
-import reet.fbk.eu.jmetal.initialization.DKInitialization;
 import jmetal.core.*;
 import jmetal.metaheuristics.nsgaII.NSGAII;
 import jmetal.qualityIndicator.QualityIndicator;
@@ -48,16 +38,10 @@ import jmetal.util.Distance;
 import jmetal.util.JMException;
 import jmetal.util.Ranking;
 import jmetal.util.comparators.CrowdingComparator;
-import jmetal.util.comparators.DominanceComparator;
-import jmetal.util.wrapper.XReal;
 
 /**
- * Implementation of NSGA-II. This implementation of NSGA-II makes use of a
- * QualityIndicator object to obtained the convergence speed of the algorithm.
- * This version is used in the paper: A.J. Nebro, J.J. Durillo, C.A. Coello
- * Coello, F. Luna, E. Alba
- * "A Study of Convergence Speed in Multi-Objective Metaheuristics." To be
- * presented in: PPSN'08. Dortmund. September 2008.
+ * This modified version is only required to track the different indicators for typical NSGAII.
+ * And this version is used for comparing with smart initilization.
  */
 
 /*
@@ -66,55 +50,27 @@ import jmetal.util.wrapper.XReal;
  */
 public class NSGAIITrackIndicators extends NSGAII {
 
-	String initialPopulationFile;
-
-	/* Genes information */
-	private Boolean favorGenesForRE[], favorGenesForCon[], favorGenesForLFC[];
 	//RepairSolution repairSolution;
 
 	File fileHV, fileGD, fileIGD, fileSpread, fileEpsilon, fileGenSpread;
 	FileWriter fwHV, fwGD, fwIGD, fwSpread, fwEpsilon, fwGenSpread;;
 	BufferedWriter bwHV, bwGD, bwIGD, bwSpread, bwEpsilon, bwGenSpread;;
 
-	
-	SolutionSet trueParetoFront_ ;
-	
 	/**
 	 * Constructor
 	 * 
 	 * @param problem
 	 *            Problem to solve
-	 * @throws JMException 
 	 */
 
-	public NSGAIITrackIndicators(Problem problem, HashMap<String, Object> parameters) throws JMException {
+	public NSGAIITrackIndicators(Problem problem) {
 		super(problem);
-		if (parameters.get("favorGenesforRE") != null
-				&& parameters.get("favorGenesForCon") != null) {
-			favorGenesForRE = (Boolean[]) parameters.get("favorGenesforRE");
-			favorGenesForCon = (Boolean[]) parameters.get("favorGenesForCon");
-		} else
-			throw new JMException(
-					"favorGenesforRE or favorGenesForConventioanlPP parameter missing");
-
-		if (parameters.get("favorGenesForLFC") != null)
-			favorGenesForLFC = (Boolean[]) parameters.get("favorGenesForLFC");
-		// repairSolution = new RepairSolution();
-
-		if (parameters.get("InitialPopulationFile") != null)
-			initialPopulationFile = (String) parameters
-					.get("InitialPopulationFile");
 		//repairSolution = new RepairSolution();
 
 	} // NSGAII
 
-	public NSGAIITrackIndicators(Problem problem, long seed, String folderName,HashMap<String, Object> parameters ) {
+	public NSGAIITrackIndicators(Problem problem, long seed, String folderName) {
 		super(problem);
-		
-		if (parameters.get("InitialPopulationFile") != null)
-			initialPopulationFile = (String) parameters
-					.get("InitialPopulationFile");
-		
 		//repairSolution = new RepairSolution();
 		if(!(new File(folderName+"\\HV").exists()))
 			new File(folderName+"\\HV").mkdirs();
@@ -160,12 +116,6 @@ public class NSGAIITrackIndicators extends NSGAII {
 			bwSpread = new BufferedWriter(fwSpread);
 			bwEpsilon = new BufferedWriter(fwEpsilon);
 			bwGenSpread = new BufferedWriter(fwGenSpread);
-			
-			jmetal.qualityIndicator.util.MetricsUtil utilities_  ;
-			utilities_ = new jmetal.qualityIndicator.util.MetricsUtil() ;
-			String trueParetoForntFilePath = (String) parameters
-						.get("trueParetoForntFilePath");
-			 trueParetoFront_ = utilities_.readNonDominatedSolutionSet(trueParetoForntFilePath);
 
 		} catch (IOException e) {
 			e.printStackTrace();
@@ -216,89 +166,27 @@ public class NSGAIITrackIndicators extends NSGAII {
 		mutationOperator = operators_.get("mutation");
 		crossoverOperator = operators_.get("crossover");
 		selectionOperator = operators_.get("selection");
-		// New Initialization (Author: shaikat)
 
-		if (initialPopulationFile != null) {
-			BufferedReader br = null;
-
-			try {
-
-				String sCurrentLine;
-
-				br = new BufferedReader(new FileReader(initialPopulationFile));
-
-				while ((sCurrentLine = br.readLine()) != null) {
-					StringTokenizer st = new StringTokenizer(sCurrentLine);
-					int j = 0;
-					Solution solution = new Solution(problem_);
-					XReal xreal = new XReal(solution);
-					while (st.hasMoreElements()) {
-						xreal.setValue(j, Double.parseDouble(st.nextToken()));
-						j++;
-					}
-					population.add(solution);
-
-				}
-
-			} catch (IOException e) {
-				e.printStackTrace();
-			} finally {
-				try {
-					if (br != null)
-						br.close();
-				} catch (IOException ex) {
-					ex.printStackTrace();
-				}
-			}
-
-			for (int i = 0; i < populationSize; i++) {
-				problem_.evaluate(population.get(i));
-				problem_.evaluateConstraints(population.get(i));
-				evaluations++;
-			}
-
-		} else {
-
-			MatlabProxyFactory factory;
-			MatlabProxy proxy;
-
-			factory = new MatlabProxyFactory();
-			try {
-				proxy = factory.getProxy();
-
-				DKInitialization dkini = new DKInitialization(problem_,
-						favorGenesForRE, favorGenesForCon, populationSize, 6.0,
-						4, 3, proxy);
-
-				population = dkini.doDKInitialization();
-			} catch (MatlabConnectionException e) {
-				throw new JMException("Matlab connection problem");
-			} catch (MatlabInvocationException e) {
-				throw new JMException("Matlab function invocation problem");
-			}
-
-			// evaluate each of the individuals
-			for (int i = 0; i < populationSize; i++) {
-				problem_.evaluate(population.get(i));
-				problem_.evaluateConstraints(population.get(i));
-				evaluations++;
-			}
-		}
+		// Create the initial solutionSet
+		Solution newSolution;
+		for (int i = 0; i < populationSize; i++) {
+			newSolution = new Solution(problem_);
+			problem_.evaluate(newSolution);
+			problem_.evaluateConstraints(newSolution);
+			evaluations++;
+			population.add(newSolution);
+		} // for
 		
-		for(int zzz=0;zzz<populationSize;zzz++)
-			System.out.println(population.get(zzz).getObjective(0)+" "+population.get(zzz).getObjective(1));
-
-		population = checkAndUpdateDominatedSolution(population);
-		Ranking generateRanking = new Ranking(population);
 		
+		Ranking generationRanking = new Ranking(population);
 		if (indicators != null) {
 			int genNo = (int) evaluations / populationSize;
-			double hyperVolume = indicators.getHypervolume(generateRanking.getSubfront(0));
-			double gd = indicators.getGD(generateRanking.getSubfront(0));
-			double igd = indicators.getIGD(generateRanking.getSubfront(0));
-			double spread = indicators.getSpread(generateRanking.getSubfront(0));
-			double epsilon = indicators.getEpsilon(generateRanking.getSubfront(0));
-			double genSpread = indicators.getGeneralizedSpread(generateRanking.getSubfront(0));
+			double hyperVolume = indicators.getHypervolume(generationRanking.getSubfront(0));
+			double gd = indicators.getGD(generationRanking.getSubfront(0));
+			double igd = indicators.getIGD(generationRanking.getSubfront(0));
+			double spread = indicators.getSpread(generationRanking.getSubfront(0));
+			double epsilon = indicators.getEpsilon(generationRanking.getSubfront(0));
+			double genSpread = indicators.getGeneralizedSpread(generationRanking.getSubfront(0));
 
 			try {
 				bwHV.write(genNo + " " + hyperVolume + "\n");
@@ -405,9 +293,7 @@ public class NSGAIITrackIndicators extends NSGAII {
 				} // if
 			} // if
 			
-		
-			population = checkAndUpdateDominatedSolution(population);
-			generateRanking = new Ranking(population);
+			Ranking generateRanking = new Ranking(population);
 			
 			if (indicators != null) {
 				int genNo = (int) evaluations / populationSize;
@@ -462,20 +348,4 @@ public class NSGAIITrackIndicators extends NSGAII {
 
 		return ranking.getSubfront(0);
 	} // execute
-	
-	SolutionSet checkAndUpdateDominatedSolution(SolutionSet solutionSet){
-		
-		Comparator dominance_ = new DominanceComparator();
-		for(int i=0;i<solutionSet.size();i++){
-			Solution sol = new Solution();
-			sol = solutionSet.get(i);
-			for(int j =0; j<trueParetoFront_.size();j++){
-				if(dominance_.compare(sol, trueParetoFront_.get(j))==-1){
-					solutionSet.replace(i, trueParetoFront_.get(j));
-				}
-			}
-		}
-		
-		return solutionSet;
-	}
 } // NSGA-II
