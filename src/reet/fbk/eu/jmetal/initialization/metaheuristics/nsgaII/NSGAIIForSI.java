@@ -49,13 +49,11 @@ import jmetal.util.comparators.CrowdingComparator;
 import jmetal.util.wrapper.XReal;
 
 /**
- * Implementation of NSGA-II. This implementation of NSGA-II makes use of a
- * QualityIndicator object to obtained the convergence speed of the algorithm.
- * This version is used in the paper: A.J. Nebro, J.J. Durillo, C.A. Coello
- * Coello, F. Luna, E. Alba
- * "A Study of Convergence Speed in Multi-Objective Metaheuristics." To be
- * presented in: PPSN'08. Dortmund. September 2008.
- */
+ * This file specifically for smart initilization. This modified version of NSGA-II can
+ * read for specific folder that contains the initial population. Otherwise, depending on
+ * the folder is not available the algorithm can generate the initial population. 
+ * This version can also track the different indicators for each generation. 
+ * */
 
 /**
  * NSGA-II with smart initialization
@@ -277,7 +275,7 @@ public class NSGAIIForSI extends NSGAII {
 
 				DKInitialization dkini = new DKInitialization(problem_,
 						favorGenesForRE, favorGenesForCon, populationSize, 6.0,
-						4, 3, proxy);
+						4, 3, 200, proxy);
 
 				population = dkini.doDKInitialization();
 			} catch (MatlabConnectionException e) {
