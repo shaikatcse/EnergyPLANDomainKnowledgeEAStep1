@@ -19,7 +19,7 @@
 //  You should have received a copy of the GNU Lesser General Public License
 //  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-package reet.fbk.eu.jmetal.metaheuristics.spea2;
+package reet.fbk.eu.jmetal.initialization.metaheuristics.spea2;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
@@ -44,7 +44,8 @@ import jmetal.util.Spea2Fitness;
 import jmetal.util.wrapper.XReal;
 
 /**
- * This class representing the SPEA2 algorithm
+ * This modified version is only required to track the different indicators for typical SPEA2.
+ * And this version is used for comparing with smart initilization.
  */
 public class SPEA2TrackIndicators extends Algorithm {
 
