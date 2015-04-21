@@ -81,7 +81,7 @@ public class GenerateInitialIndividual {
 
 				DKInitialization dkini = new DKInitialization(problem,
 						favorGenesforRE, favorGenesforConventionalPP,
-						populationSize, 6.0, 3, 4, proxy);
+						populationSize, 6.0, 3, 4, 200, proxy);
 
 				population = dkini.doDKInitialization();
 			} catch (MatlabConnectionException e) {
