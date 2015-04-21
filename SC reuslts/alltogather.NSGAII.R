@@ -3,8 +3,8 @@
 #Someone needs to select appropriate path to work with.
 
 
-#postscript("NSGAII_SC_indicators.eps", horizontal=FALSE, onefile=FALSE, height=8, width=12, pointsize=10)
-pdf("All_NSGAII.pdf", width=7, height=11,pointsize=10) 
+postscript("ALL_NSGAII.eps", horizontal=FALSE, onefile=FALSE, height=11, width=7, pointsize=10)
+#pdf("All_NSGAII.pdf", width=7, height=11,pointsize=10) 
 #resultDirectory<-"C:/Users/mahbub/Documents/GitHub/EnergyPLANDomainKnowledgeEAStep1/StoppingCriteriaStudies/data/NSGAIISC"
 #path to NSGA-II result directory
 resultDirectory<-"C:/Users/mahbub/Documents/GitHub/EnergyPLANDomainKnowledgeEAStep1/StoppingCriteriaStudies/data/NSGAIISC"

@@ -4,8 +4,8 @@
 
 #see "alltogather.NSGAII.R" for other parameters
 
-#postscript("NSGAII_SC_indicators.eps", horizontal=FALSE, onefile=FALSE, height=8, width=12, pointsize=10)
-pdf("All_SPEA2.pdf", width=7, height=11,pointsize=10) 
+postscript("All_SPEA2.eps", horizontal=FALSE, onefile=FALSE, height=11, width=7, pointsize=10)
+#pdf("All_SPEA2.pdf", width=7, height=11,pointsize=10) 
 #resultDirectory<-"C:/Users/mahbub/Documents/GitHub/EnergyPLANDomainKnowledgeEAStep1/StoppingCriteriaStudies/data/NSGAIISC"
 resultDirectory<-"C:/Users/mahbub/Desktop/shahriar/StoppingCriteriaStudies/data/SPEA2SC"
 
