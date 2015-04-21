@@ -6,7 +6,7 @@ Evolution: 7000
 Crossover: SBX
 Mutation: polynomial
 crossover Probabilty: 0.9
-Mutation probability: 0.2
+Mutation probability: 0.1
 Distribution index: 10
 Algorithm: SPEA2
 selection: Binary Tournament 2.
