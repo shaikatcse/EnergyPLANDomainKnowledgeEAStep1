@@ -27,6 +27,11 @@ import jmetal.operators.mutation.MutationFactory;
 import java.util.logging.FileHandler;
 import java.util.logging.Logger;
 
+/**
+ * The class is main class where the class can execute algorithm from the command line
+ * argument. The class only run the algorithm with smart initilization technique. 
+ * 
+ */
 class NSGAII_SI_Run{
 	public static Logger logger_; // Logger object
 	public static FileHandler fileHandler_; // FileHandler object
@@ -81,7 +86,7 @@ class NSGAII_SI_Run{
 						
 			// Algorithm parameters
 			algorithm.setInputParameter("populationSize", 100);
-			algorithm.setInputParameter("maxEvaluations", 5000);
+			algorithm.setInputParameter("maxEvaluations", 7000);
 	
 			
 			// Mutation and Crossover for Real codification
@@ -191,7 +196,7 @@ class SPEA2_SI_Run{
 			
 			// Algorithm parameters
 			algorithm.setInputParameter("populationSize", 100);
-			algorithm.setInputParameter("maxEvaluations", 5000);
+			algorithm.setInputParameter("maxEvaluations", 7000);
 			//for spea2
 			algorithm.setInputParameter("archiveSize", 100);
 			
