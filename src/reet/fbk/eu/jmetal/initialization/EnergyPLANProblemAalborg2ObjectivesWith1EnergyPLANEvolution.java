@@ -26,6 +26,11 @@ import org.apache.commons.collections.map.MultiValueMap;
 
 import reet.fbk.eu.OprimizeEnergyPLAN.file.parse.EnergyPLANFileParse;
 
+/**
+ * This problem class is used here to test smart initilization technique on Aalborg problem.
+ * @author mahbub
+ *
+ */
 /*
  * Two problems are solved in this version
  * 1. Only one evolution of EnergyPLAN
@@ -136,13 +141,13 @@ public class EnergyPLANProblemAalborg2ObjectivesWith1EnergyPLANEvolution extends
 	public void evaluate(Solution solution) throws JMException {
 
 		writeModificationFile(solution);
-		String energyPLANrunCommand = ".\\EnergyPLAN_SEP_2013\\EnergyPLAN.exe -i "
-				+ "\".\\src\\reet\\fbk\\eu\\OptimizeEnergyPLANAalborg\\Aalborg_2050_Plan_A_44%ForOptimization_2objctives.txt\" "
-				+ "-m \"modification.txt\" -ascii \"result.txt\" ";
-		
 		/*String energyPLANrunCommand = ".\\EnergyPLAN_SEP_2013\\EnergyPLAN.exe -i "
-				+ "\".\\Aalborg_2050_Plan_A_44%ForOptimization_2objctives.txt\" "
+				+ "\".\\src\\reet\\fbk\\eu\\OptimizeEnergyPLANAalborg\\Aalborg_2050_Plan_A_44%ForOptimization_2objctives.txt\" "
 				+ "-m \"modification.txt\" -ascii \"result.txt\" ";*/
+		
+		String energyPLANrunCommand = ".\\EnergyPLAN_SEP_2013\\EnergyPLAN.exe -i "
+				+ "\".\\Aalborg_2050_Plan_A_44%ForOptimization_2objctives.txt\" "
+				+ "-m \"modification.txt\" -ascii \"result.txt\" ";
 		try {
 			// Process process = new
 			// ProcessBuilder(energyPLANrunCommand).start();
