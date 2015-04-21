@@ -19,7 +19,7 @@
 //  You should have received a copy of the GNU Lesser General Public License
 //  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-package reet.fbk.eu.jmetal.metaheuristics.spea2;
+package reet.fbk.eu.jmetal.initialization.metaheuristics.spea2;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
@@ -44,7 +44,10 @@ import jmetal.util.Spea2Fitness;
 import jmetal.util.wrapper.XReal;
 
 /**
- * This class representing the SPEA2 algorithm
+ * This file specifically for smart initilization. This modified version of SPEA2 can
+ * read for specific folder that contains the initial population. Otherwise, depending on
+ * the folder is not available the algorithm can generate the initial population. 
+ * This version can also track the different indicators for each generation. 
  */
 public class SPEA2ForSI extends Algorithm {
 
@@ -250,7 +253,7 @@ public class SPEA2ForSI extends Algorithm {
 
 				DKInitialization dkini = new DKInitialization(problem_,
 						favorGenesForRE, favorGenesForCon, populationSize, 6.0,
-						4, 3, proxy);
+						4, 3,200, proxy);
 
 				solutionSet = dkini.doDKInitialization();
 			} catch (MatlabConnectionException e) {
