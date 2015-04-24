@@ -294,7 +294,7 @@ public class EnergyPLANProblemAalborg2ObjectivesWith1EnergyPLANEvolution extends
 
 	@SuppressWarnings("unchecked")
 	public void evaluateConstraints(Solution solution) throws JMException {
-		/*Iterator it;
+		Iterator it;
 		Collection<String> col;
 
 		col = (Collection<String>) energyplanmMap.get("Maximumimport");
@@ -323,17 +323,9 @@ public class EnergyPLANProblemAalborg2ObjectivesWith1EnergyPLANEvolution extends
 			}
 		}
 		
-		 * if (constraints[0] < 0.0) {
-		 * solution.setOverallConstraintViolation(constrints);
-		 * solution.setNumberOfViolatedConstraint(1);
-		 
-
 		solution.setOverallConstraintViolation(totalViolation);
 		solution.setNumberOfViolatedConstraint(numberOfViolation);
-
-		*/
-		solution.setOverallConstraintViolation(0);
-		solution.setNumberOfViolatedConstraint(0);
+		
 	}
 
 	void writeModificationFile(Solution solution) throws JMException {
