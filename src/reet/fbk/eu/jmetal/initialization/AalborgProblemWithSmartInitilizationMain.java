@@ -46,7 +46,7 @@ class NSGAII_SI_Run{
 
 	QualityIndicator indicators; // Object to get quality indicators
 	
-	public void run() throws SecurityException, IOException, JMException, ClassNotFoundException{
+	public void run(int populationSize, int maxEvaluations) throws SecurityException, IOException, JMException, ClassNotFoundException{
 		logger_ = Configuration.logger_;
 		fileHandler_ = new FileHandler("NSGAII_main.log");
 		logger_.addHandler(fileHandler_);
@@ -85,8 +85,8 @@ class NSGAII_SI_Run{
 			
 						
 			// Algorithm parameters
-			algorithm.setInputParameter("populationSize", 100);
-			algorithm.setInputParameter("maxEvaluations", 7000);
+			algorithm.setInputParameter("populationSize", populationSize);
+			algorithm.setInputParameter("maxEvaluations", maxEvaluations);
 	
 			
 			// Mutation and Crossover for Real codification
@@ -152,7 +152,7 @@ class SPEA2_SI_Run{
 
 	QualityIndicator indicators; // Object to get quality indicators
 	
-	public void run() throws SecurityException, IOException, JMException, ClassNotFoundException{
+	public void run(int populationSize, int maxEvaluations) throws SecurityException, IOException, JMException, ClassNotFoundException{
 		
 		logger_ = Configuration.logger_;
 		fileHandler_ = new FileHandler("NSGAII_main.log");
@@ -195,10 +195,10 @@ class SPEA2_SI_Run{
 			
 			
 			// Algorithm parameters
-			algorithm.setInputParameter("populationSize", 100);
-			algorithm.setInputParameter("maxEvaluations", 7000);
+			algorithm.setInputParameter("populationSize", populationSize);
+			algorithm.setInputParameter("maxEvaluations", maxEvaluations);
 			//for spea2
-			algorithm.setInputParameter("archiveSize", 100);
+			algorithm.setInputParameter("archiveSize", populationSize);
 			
 			// Mutation and Crossover for Real codification
 			parameters = new HashMap();
@@ -255,10 +255,10 @@ public class AalborgProblemWithSmartInitilizationMain {
 		
 		if(args[0].equals("NSGAII_SI")){
 			NSGAII_SI_Run nsgaii_si = new NSGAII_SI_Run();
-			nsgaii_si.run();
+			nsgaii_si.run(Integer.parseInt(args[1]), Integer.parseInt(args[2]));
 		}else if(args[0].equals("SPEA2_SI")){
 			SPEA2_SI_Run spea2_si = new SPEA2_SI_Run();
-			spea2_si.run();
+			spea2_si.run(Integer.parseInt(args[1]), Integer.parseInt(args[2]));
 		}
 	}
 }
