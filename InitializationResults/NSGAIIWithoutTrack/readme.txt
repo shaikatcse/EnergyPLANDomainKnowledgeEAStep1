@@ -3,6 +3,8 @@ This is the results (FUN and VAR) of 10 different runs with 10 different seeds w
 Problem: EnergyPLANProblemAalborg2ObjectivesWith1EnergyPLANEvolution
 Population: 100
 Evolution: 7000
+Crossover: SBX
+Mutation: polynomial
 crossover Probabilty: 0.9
 Mutation probability: 0.1
 Distribution index: 10

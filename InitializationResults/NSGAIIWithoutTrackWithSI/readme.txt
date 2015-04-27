@@ -4,18 +4,14 @@ Problem: EnergyPLANProblemAalborg2ObjectivesWith1EnergyPLANEvolution (modified t
 
 Population: 100
 Evolution: 7000
+Crossover: SBX
+Mutation: polynomial
 crossover Probabilty: 0.9
-Mutation probability: 0.2
+Mutation probability: 0.1
 Distribution index: 10
-Algorithm: NSGA-IIForSI
+Algorithm:NSGAIIForSI
 selection: Binary Tournament 2.
 
 long seed [] = {343434, 551254, 145845, 555541, 551641,625882,985312,458745, 228424, 7811554 };
 
-Boolean favorGenesforRE[] ={true, true, true, true, true};
-Boolean favorGenesforConventionalPP[] ={false, false, false, false, false};
-
-Parameters regarding smart initialization:
-theta = 6.0
-MaxDistributionIndex = 4
-numberOfIndevPerCombination = 3
+read initial population from "C:\Users\mahbub\Documents\GitHub\EnergyPLANDomainKnowledgeEAStep1\InitializationResults\InitIndividualWithSI" folder
