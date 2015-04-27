@@ -9,5 +9,6 @@ Boolean favorGenesforConventionalPP[] ={false, false, false, false, false};
 
 Parameters regarding smal initialization:
 theta = 6.0
-MaxDistributionIndex = 4
-numberOfIndevPerCombination = 3
+MaxDistributionIndex = 3
+numberOfIndevPerCombination = 4
+numberOfRandomIndividuals=200
