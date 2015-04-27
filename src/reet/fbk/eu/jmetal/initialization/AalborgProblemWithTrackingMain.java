@@ -206,7 +206,7 @@ class NSGAII_SI_RunWithTracking  {
 
 			// Algorithm parameters
 			algorithm.setInputParameter("populationSize", 100);
-			algorithm.setInputParameter("maxEvaluations", 1000);
+			algorithm.setInputParameter("maxEvaluations", 7000);
 			algorithm.setInputParameter("indicators", indicators);
 
 			try {
