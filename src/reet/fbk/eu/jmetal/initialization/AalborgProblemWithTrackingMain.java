@@ -168,7 +168,7 @@ class NSGAII_SI_RunWithTracking  {
 		logger_.addHandler(fileHandler_);
 		
 		
-		File folder = new File("InitializationResults/InitIndividualWithSI/attempt1");
+		File folder = new File("InitializationResults/InitIndividualWithSI");
 		File[] listOfFiles = folder.listFiles(new FilenameFilter() {
 		    @Override
 		    public boolean accept(File dir, String name) {
