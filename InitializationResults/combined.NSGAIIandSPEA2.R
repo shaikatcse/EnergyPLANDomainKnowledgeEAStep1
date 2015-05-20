@@ -1,8 +1,8 @@
 #this scipt is used to generate a boxplot with four indicator (hypervolume, IGD, Epsilon, spead)
 
-#postscript("indicators_NSGAII_SPEA2.eps", horizontal=FALSE, onefile=FALSE, height=8, width=12, pointsize=10)
+postscript("indicators_NSGAII_SPEA2.eps", horizontal=FALSE, onefile=FALSE, height=6, width=8.5, pointsize=10)
 #pdf("combined_comparison.pdf", onefile=FALSE, width=8.5, height = 6)
-jpeg(filename = "combined_comparison.jpeg", width = 8.5, height = 6, units = "in", pointsize = 10, res = 1000)
+#jpeg(filename = "combined_comparison.jpeg", width = 8.5, height = 6, units = "in", pointsize = 10, res = 1000)
 
 
 NSGAIIresultDirectory<-"."
