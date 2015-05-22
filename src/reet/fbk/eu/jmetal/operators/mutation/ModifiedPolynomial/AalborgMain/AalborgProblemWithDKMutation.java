@@ -27,8 +27,7 @@ import reet.fbk.eu.jmetal.metaheuristics.nsgaII.NSGAIIForDK;
 import reet.fbk.eu.jmetal.metaheuristics.spea2.SPEA2ForDK;
 
 /**
- * The class is main class where the class can execute algorithm from the command line
- * argument. The class only run the algorithm with normal initilization (random) technique. 
+ *  This class is main class to run Aalborg problem with domain-knowledge mutation
  * 
  */
 class NSGAII_Nor_Run{
