@@ -4,4 +4,5 @@ mergeFUN_I: Pareto front of Initilization Process (C:\Users\mahbub\Documents\Git
 mergeFUN_N: all Pareto front from 10 runs with NSGAII with smart/DK mutation
 mergeFUN_S: all Pareto front from 10 runs with SPEA2 with smart/DK mutation
 mergeFUN: merge mergeFUN_N, mergeFUN_S, mergeFUN_I
-mergeFUN.pf: Pareto front from mergeFUN
+mergeFUN_SM.pf: Pareto front from mergeFUN for Smart mutation + smart initilization
+mergeFUN.pf: Pareto fromt by merging smart Initialization + smart mutation + integreteMOEA results
