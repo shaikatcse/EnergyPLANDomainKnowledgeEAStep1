@@ -1,9 +1,9 @@
 This is pdfTeX, Version 3.1415926-2.3-1.40.12 (MiKTeX 2.9 64-bit) (preloaded format=pdflatex 2014.3.24)  22 MAY 2015 14:47
 entering extended mode
-**SPEA2results.tex
+**NSGAIIresults.tex
 
 (C:\Users\mahbub\Documents\GitHub\EnergyPLANDomainKnowledgeEAStep1\Initializati
-onResults\latex\SPEA2results.tex
+onResults\latex\NSGAIIresults.tex
 LaTeX2e <2011/06/27>
 Babel <v3.8m> and hyphenation patterns for english, afrikaans, ancientgreek, ar
 abic, armenian, assamese, basque, bengali, bokmal, bulgarian, catalan, coptic, 
@@ -85,7 +85,7 @@ Package xcolor Info: Model `Gray' substituted by `gray' on input line 1359.
 Package xcolor Info: Model `wave' substituted by `hsb' on input line 1360.
 )
 (C:\Users\mahbub\Documents\GitHub\EnergyPLANDomainKnowledgeEAStep1\Initializati
-onResults\latex\SPEA2results.aux)
+onResults\latex\NSGAIIresults.aux)
 LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 8.
 LaTeX Font Info:    ... okay on input line 8.
 LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 8.
@@ -128,24 +128,24 @@ LaTeX Font Info:    External font `cmex10' loaded for size
 {C:/Users/mahbub/AppData/Local/MiKTeX/2.9/pdftex/config/pdftex.map}]
 [2]
 (C:\Users\mahbub\Documents\GitHub\EnergyPLANDomainKnowledgeEAStep1\Initializati
-onResults\latex\SPEA2results.aux) ) 
+onResults\latex\NSGAIIresults.aux) ) 
 Here is how much of TeX's memory you used:
  1511 strings out of 493923
- 19227 string characters out of 3149333
+ 19237 string characters out of 3149333
  80873 words of memory out of 3000000
  4842 multiletter control sequences out of 15000+200000
  7280 words of font info for 26 fonts, out of 3000000 for 9000
  841 hyphenation exceptions out of 8191
- 34i,12n,35p,252b,237s stack positions out of 5000i,500n,10000p,200000b,50000s
-<C:/Users/mahbub/MikTex/fonts/type1/public/a
-msfonts/cm/cmbx12.pfb><C:/Users/mahbub/MikTex/fonts/type1/public/amsfonts/cm/cm
-mi5.pfb><C:/Users/mahbub/MikTex/fonts/type1/public/amsfonts/cm/cmmi7.pfb><C:/Us
-ers/mahbub/MikTex/fonts/type1/public/amsfonts/cm/cmr10.pfb><C:/Users/mahbub/Mik
-Tex/fonts/type1/public/amsfonts/cm/cmr12.pfb><C:/Users/mahbub/MikTex/fonts/type
-1/public/amsfonts/cm/cmr5.pfb><C:/Users/mahbub/MikTex/fonts/type1/public/amsfon
-ts/cm/cmr7.pfb><C:/Users/mahbub/MikTex/fonts/type1/public/amsfonts/cm/cmsy5.pfb
-><C:/Users/mahbub/MikTex/fonts/type1/public/amsfonts/cm/cmsy7.pfb>
-Output written on SPEA2results.pdf (2 pages, 90663 bytes).
+ 34i,12n,35p,253b,237s stack positions out of 5000i,500n,10000p,200000b,50000s
+<C:/Users/mahbub/MikTex/fonts/type1/public/
+amsfonts/cm/cmbx12.pfb><C:/Users/mahbub/MikTex/fonts/type1/public/amsfonts/cm/c
+mmi5.pfb><C:/Users/mahbub/MikTex/fonts/type1/public/amsfonts/cm/cmmi7.pfb><C:/U
+sers/mahbub/MikTex/fonts/type1/public/amsfonts/cm/cmr10.pfb><C:/Users/mahbub/Mi
+kTex/fonts/type1/public/amsfonts/cm/cmr12.pfb><C:/Users/mahbub/MikTex/fonts/typ
+e1/public/amsfonts/cm/cmr5.pfb><C:/Users/mahbub/MikTex/fonts/type1/public/amsfo
+nts/cm/cmr7.pfb><C:/Users/mahbub/MikTex/fonts/type1/public/amsfonts/cm/cmsy5.pf
+b><C:/Users/mahbub/MikTex/fonts/type1/public/amsfonts/cm/cmsy7.pfb>
+Output written on NSGAIIresults.pdf (2 pages, 90958 bytes).
 PDF statistics:
  45 PDF objects out of 1000 (max. 8388607)
  0 named destinations out of 1000 (max. 500000)
