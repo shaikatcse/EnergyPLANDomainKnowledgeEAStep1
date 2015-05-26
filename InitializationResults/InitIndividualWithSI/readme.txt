@@ -12,3 +12,6 @@ theta = 6.0
 MaxDistributionIndex = 3
 numberOfIndevPerCombination = 4
 numberOfRandomIndividuals=200
+
+//2nd seeding list
+long seed[] = { 144759,	271439, 445964, 494817, 530563, 724859, 746153, 747584, 866309, 938562};
