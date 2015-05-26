@@ -43,14 +43,30 @@ class NSGAII_Nor_Run{
 
 	QualityIndicator indicators; // Object to get quality indicators
 	
-	public void run() throws SecurityException, IOException, ClassNotFoundException, JMException{
+	public void run(int populationSize, int maxEvaluations) throws SecurityException, IOException, ClassNotFoundException, JMException{
 		logger_ = Configuration.logger_;
 		fileHandler_ = new FileHandler("NSGAII_main.log");
 		logger_.addHandler(fileHandler_);
 
 		//seed for nsgaii
-		long seed [] = {545782, 455875, 547945, 458478, 981354, 652262, 562366, 365652, 456545, 549235 };
+		//long seed [] = {545782, 455875, 547945, 458478, 981354, 652262, 562366, 365652, 456545, 549235 };
 		
+		//2nd seed for nsgaii
+		long seed [] = {
+				161395,
+				276644,
+				309259,
+				370995,
+				468245,
+				515856,
+				668763,
+				698156,
+				756252,
+				930462
+
+				
+		};
+				
 		int numberOfRun=10;
 		for (int i = 0; i < numberOfRun; i++) {
 			
@@ -71,8 +87,8 @@ class NSGAII_Nor_Run{
 			
 			
 			// Algorithm parameters
-			algorithm.setInputParameter("populationSize", 100);
-			algorithm.setInputParameter("maxEvaluations", 5000);
+			algorithm.setInputParameter("populationSize", populationSize);
+			algorithm.setInputParameter("maxEvaluations", maxEvaluations);
 			
 			
 			// Mutation and Crossover for Real codification
@@ -139,13 +155,29 @@ class SPEA2_Nor_Run{
 
 	QualityIndicator indicators; // Object to get quality indicators
 	
-	public void run() throws SecurityException, IOException, ClassNotFoundException, JMException{
+	public void run(int populationSize, int maxEvaluations) throws SecurityException, IOException, ClassNotFoundException, JMException{
 		logger_ = Configuration.logger_;
 		fileHandler_ = new FileHandler("NSGAII_main.log");
 		logger_.addHandler(fileHandler_);
 
 		//seed for spea2
-		long seed [] = {154568, 148456, 447514, 458475, 274587, 712584, 975572, 585464, 467542, 686544 };
+		//long seed [] = {154568, 148456, 447514, 458475, 274587, 712584, 975572, 585464, 467542, 686544 };
+		
+		//2nd seed for spea2
+		long seed [] = {
+				212139,
+				368817,
+				418353,
+				471922,
+				500024,
+				596970,
+				784248,
+				808035,
+				953022,
+				983349
+
+		};
+				
 		
 		int numberOfRun=10;
 		for (int i = 0; i < numberOfRun; i++) {
@@ -167,9 +199,9 @@ class SPEA2_Nor_Run{
 			
 			
 			// Algorithm parameters
-			algorithm.setInputParameter("populationSize", 100);
-			algorithm.setInputParameter("maxEvaluations", 5000);
-			 algorithm.setInputParameter("archiveSize", 100);
+			algorithm.setInputParameter("populationSize", populationSize);
+			algorithm.setInputParameter("maxEvaluations", maxEvaluations);
+			 algorithm.setInputParameter("archiveSize", populationSize);
 			
 			// Mutation and Crossover for Real codification
 			parameters = new HashMap();
@@ -226,10 +258,10 @@ public class AalborgProblemWithNormalInitilizationMain {
 	public static void main(String args[]) throws SecurityException, ClassNotFoundException, IOException, JMException{
 		if(args[0].equals("NSGAII")){
 			NSGAII_Nor_Run nsgaii = new NSGAII_Nor_Run();
-			nsgaii.run();
+			nsgaii.run(Integer.parseInt(args[1]), Integer.parseInt(args[2]));
 		}else if(args[0].equals("SPEA2")){
 			SPEA2_Nor_Run spea2 = new SPEA2_Nor_Run();
-			spea2.run();
+			spea2.run(Integer.parseInt(args[1]), Integer.parseInt(args[2]));
 		}
 	}
 }

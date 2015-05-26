@@ -52,17 +52,51 @@ class NSGAII_SI_Run{
 		logger_.addHandler(fileHandler_);
 		
 		//seed for NSGAII
-		long seed [] = {343434, 551254, 145845, 555541, 551641,625882,985312,458745, 228424, 7811554 };
+		//long seed [] = {343434, 551254, 145845, 555541, 551641,625882,985312,458745, 228424, 7811554 };
 		
+		//2n seed for NSGAII
+		long seed [] = {
+				251843,
+				351008,
+				427848,
+				434479,
+				607483,
+				618448,
+				685039,
+				764699,
+				765255,
+				915076
+
+		};
+				
 		int numberOfRun=10;
 		
-		File folder = new File("InitializationResults/InitIndividualWithSI");
+		/*File folder = new File("InitializationResults/InitIndividualWithSI");
 		File[] listOfFiles = folder.listFiles(new FilenameFilter() {
 		    @Override
 		    public boolean accept(File dir, String name) {
 		        return name.startsWith("Init");
 		    }
-		});
+		});*/
+		
+		File[] listOfFiles = new File[numberOfRun] ;
+		
+		long initSeed[] = { 144759,
+				271439,
+				445964,
+				494817,
+				530563,
+				724859,
+				746153,
+				747584,
+				866309,
+				938562};
+
+		for(int i=0;i<numberOfRun;i++){
+			listOfFiles[i] = new File("InitializationResults/InitIndividualWithSI/InitIndv_seed_"+initSeed[i]);
+			
+		}
+
 		
 		for (int i = 0; i < numberOfRun; i++) {
 			
@@ -159,20 +193,54 @@ class SPEA2_SI_Run{
 		logger_.addHandler(fileHandler_);
 	
 		//seed for spea2
-		long seed [] = {857578, 647647, 647848, 891747, 957363, 538947, 425374, 637384, 125386, 243858 };
+		//long seed [] = {857578, 647647, 647848, 891747, 957363, 538947, 425374, 637384, 125386, 243858 };
+		
+		//2nd seed for spea2
+		long seed [] = {
+				145295,
+				378578,
+				384873,
+				437331,
+				461628,
+				544774,
+				631545,
+				712308,
+				733779,
+				878532
+
+		};
+				
 		int numberOfRun=10;
 		
-		File folder = new File("InitializationResults/InitIndividualWithSI");
+		/*File folder = new File("InitializationResults/InitIndividualWithSI");
 		File[] listOfFiles = folder.listFiles(new FilenameFilter() {
 		    @Override
 		    public boolean accept(File dir, String name) {
 		        return name.startsWith("Init");
 		    }
-		});
+		});*/
+		
+		File[] listOfFiles = new File[numberOfRun] ;
+		
+		long initSeed[] = { 144759,
+				271439,
+				445964,
+				494817,
+				530563,
+				724859,
+				746153,
+				747584,
+				866309,
+				938562};
+
+		for(int i=0;i<numberOfRun;i++){
+			listOfFiles[i] = new File("InitializationResults/InitIndividualWithSI/InitIndv_seed_"+initSeed[i]);
+			
+		}
 		
 		for (int i = 0; i < numberOfRun; i++) {
 			
-			
+				
 			PseudoRandom.setRandomGenerator(new RandomGenerator(seed[i]));
 			
 			indicators = null;
