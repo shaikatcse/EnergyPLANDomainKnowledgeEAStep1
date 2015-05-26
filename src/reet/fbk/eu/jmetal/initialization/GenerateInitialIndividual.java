@@ -51,8 +51,20 @@ public class GenerateInitialIndividual {
 
 		QualityIndicator indicators; // Object to get quality indicators
 
-		long seed[] = { 545454, 565656, 455885, 245454, 714451, 752453, 125742,
-				455411, 447551, 844545 };
+		/*long seed[] = { 545454, 565656, 455885, 245454, 714451, 752453, 125742,
+				455411, 447551, 844545 };*/
+		
+		//2nd list
+		long seed[] = { 144759,
+						271439,
+						445964,
+						494817,
+						530563,
+						724859,
+						746153,
+						747584,
+						866309,
+						938562};
 
 		int numberOfRun = 10;
 		for (int i = 0; i < numberOfRun; i++) {
