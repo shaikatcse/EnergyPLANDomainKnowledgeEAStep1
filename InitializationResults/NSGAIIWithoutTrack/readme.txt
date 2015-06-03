@@ -11,10 +11,10 @@ Distribution index: 10
 Algorithm: NSGA-II
 selection: Binary Tournament 2.
 
-
+//run#1 to run# 10
 seed [] = {545782, 455875, 547945, 458478, 981354, 652262, 562366, 365652, 456545, 549235 };
 
-2nd 10 runs with 10 new seeds
+//2nd 10 runs with 10 new seeds (run # 11 to run #20)
 long seed [] = {
 				161395,
 				276644,
@@ -28,4 +28,19 @@ long seed [] = {
 				930462
 
 				
+		};
+
+//3rd seed for nsgaii (run#21 to run#30)
+long seed [] = {
+				170339,
+				259029,
+				288470,
+				353882,
+				626495,
+				683991,
+				714786,
+				989776,
+				992177,
+				999921
+			
 		};
