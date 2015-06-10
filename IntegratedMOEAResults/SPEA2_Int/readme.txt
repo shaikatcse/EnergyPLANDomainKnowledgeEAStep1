@@ -25,3 +25,5 @@ Output:
 FUN*: Fun files for different run
 VAR*: var files for diferent run
 StoppingGen: stopping generation fr different run
+
+mergeFUN_SInt: merge all Pareto-front for 30 runs with SPEA2 Integrated/combined approach

@@ -24,3 +24,5 @@ Output:
 FUN*: Fun files for different run
 VAR*: var files for diferent run
 StoppingGen: stopping generation fr different run
+
+mergeFuUN_NInt: merge all Pareto-front of 30 runs for NSGA-II integrated/combined approach
