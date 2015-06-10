@@ -45,3 +45,5 @@ long seed [] = {
 };
 
 read initial population from "C:\Users\mahbub\Documents\GitHub\EnergyPLANDomainKnowledgeEAStep1\InitializationResults\InitIndividualWithSI" folder
+
+mergeFUN_NSI: all Pareto front from 30 runs with NSGAII with smart inililization

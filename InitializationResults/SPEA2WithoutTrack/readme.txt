@@ -43,3 +43,5 @@ long seed [] = {
 				888346
 
 		};		
+
+mergeFUN_S: all Pareto front from 30 runs with SPEA2

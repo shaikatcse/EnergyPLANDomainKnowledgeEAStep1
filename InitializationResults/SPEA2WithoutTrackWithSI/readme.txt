@@ -44,3 +44,5 @@ long seed [] = {
 				919749
 };
 read initial population from "C:\Users\mahbub\Documents\GitHub\EnergyPLANDomainKnowledgeEAStep1\InitializationResults\InitIndividualWithSI" folder
+
+mergeFUN_SSI: all Pareto front from 30 runs with SPEA2 with smart inililization
