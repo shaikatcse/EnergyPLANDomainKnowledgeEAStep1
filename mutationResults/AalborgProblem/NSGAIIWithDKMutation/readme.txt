@@ -14,3 +14,6 @@ selection: Binary Tournament 2.
 
 seed [] = {545782, 455875, 547945, 458478, 981354, 652262, 562366, 365652, 456545, 549235 };
 The seeds are same that is used in initilization experiment. It'll help to compare with typical NSGAII as two algorithms starts from same initialized individuals.
+
+
+mergeFUN_NDK: merge all 30 runs fo NSGA-II with DK mutation

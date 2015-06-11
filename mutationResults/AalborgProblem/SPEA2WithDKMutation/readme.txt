@@ -14,3 +14,5 @@ archiveSize: 100
 
 long seed [] = {154568, 148456, 447514, 458475, 274587, 712584, 975572, 585464, 467542, 686544 };
 The seeds are same that is used in initilization experiment. It'll help to compare with typical SPEA2 as two algorithms starts from same initialized individuals.
+
+mergeFUN_SDK: merge all 30 runs for SPEA2 with DK mutation
