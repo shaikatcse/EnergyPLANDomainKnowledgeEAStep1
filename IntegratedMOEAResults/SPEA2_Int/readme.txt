@@ -16,10 +16,12 @@ Domain-knowledge (same used for Smart Initialization and DKMutataion):
 Boolean favorGenesforRE[] = { true, true, true, true, true };
 Boolean favorGenesforConventionalPP[] = { false, false, false,false, false };
 
+
 Parameters for Stopping criteria:
 nGenLT = 20
 noGenUnCh = 5;
 significanceValue = 0.05;
+
 
 Output:
 FUN*: Fun files for different run
