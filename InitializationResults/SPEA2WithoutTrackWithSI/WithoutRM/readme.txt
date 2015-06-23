@@ -47,6 +47,6 @@ long seed[] ={
 	};
 				
 
-read initial population from "C:\Users\mahbub\Documents\GitHub\EnergyPLANDomainKnowledgeEAStep1\InitializationResults\InitIndividualWithSI\WithoutRM" folder
+read initial population from "C:\Users\mahbub\Documents\GitHub\EnergyPLANDomainKnowledgeEAStep1\InitializationResults\InitIndividualWithSI\WithoutRM" folder. These population are withour ramdom inidividuals.
 
-mergeFUN_SSI: all Pareto front from 30 runs with SPEA2 with smart inililization
+mergeFUN_SSI_WSI: all Pareto front from 30 runs with SPEA2 with smart inililization

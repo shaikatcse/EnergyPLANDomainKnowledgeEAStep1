@@ -47,6 +47,6 @@ long seed[] ={
 	};
 				
 
-read initial population from "C:\Users\mahbub\Documents\GitHub\EnergyPLANDomainKnowledgeEAStep1\InitializationResults\InitIndividualWithSI\WithoutRM" folder
+read initial population from "C:\Users\mahbub\Documents\GitHub\EnergyPLANDomainKnowledgeEAStep1\InitializationResults\InitIndividualWithSI\WithoutRM" folder. These population are without random individuals.
 
-mergeFUN_NSI: all Pareto front from 30 runs with NSGAII with smart inililization
+mergeFUN_NSI_WRM: all Pareto front from 30 runs with NSGAII with smart inililization
