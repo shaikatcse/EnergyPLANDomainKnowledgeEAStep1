@@ -1,6 +1,6 @@
 #postscript("indicators_NSGAII_SPEA2.eps", horizontal=FALSE, onefile=FALSE, height=8, width=12, pointsize=10)
 #pdf("indicators_NSGAII_NSGAII_DKM.pdf", onefile=FALSE, width=10)
-postscript("NSGAII_SPEA2_Int.eps", horizontal=FALSE, onefile=FALSE, height=6, width=8.5, pointsize=12)
+postscript("NSGAII_SPEA2_Int.eps", horizontal=FALSE, onefile=FALSE, height=6, width=8.5, pointsize=11)
 
 NSGAIIresultDirectory<-"."
 
@@ -17,7 +17,7 @@ fileNSGAII_Int<-paste(fileNSGAII_Int, "WithoutRM", sep="/")
 fileNSGAII_Int<-paste(fileNSGAII_Int, indicator, sep="/")
 NSGAII_Int_results<-scan(fileNSGAII_Int)
 
-algs<-c("NSGAII","NSGAII_In")
+algs<-c("NSGAII","NSGAII_Com")
 boxplot(NSGAII_results,NSGAII_Int_results,names=algs, notch = FALSE)
 titulo <-indicator
 title(main=titulo)
@@ -38,7 +38,7 @@ fileSPEA2_Int<-paste(fileSPEA2_Int, "WithoutRM", sep="/")
 fileSPEA2_Int<-paste(fileSPEA2_Int, indicator, sep="/")
 SPEA2_Int_results<-scan(fileSPEA2_Int)
 
-algs<-c("SPEA2","SPEA2_Int")
+algs<-c("SPEA2","SPEA2_Com")
 boxplot(SPEA2_results,SPEA2_Int_results,names=algs, notch = FALSE)
 titulo <-indicator
 title(main=titulo)
