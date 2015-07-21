@@ -220,6 +220,9 @@ public class NSGAIIForDKandSCandSI extends NSGAII {
 			population.add(newSolution);
 		} // for*/
 
+		//added by shahriar
+		boolean isStoppingActivated=false;
+		
 		if (initialPopulationFile != null) {
 			BufferedReader br = null;
 
@@ -313,9 +316,12 @@ public class NSGAIIForDKandSCandSI extends NSGAII {
 		while (evaluations < maxEvaluations ) {
 
 			Ranking generationRanking = new Ranking(population);
-			if(stopMOEA.isStopMOEA((int) evaluations / populationSize, generationRanking.getSubfront(0), problem_.getNumberOfObjectives(), problem_.getNumberOfVariables())){
+			if(!isStoppingActivated && stopMOEA.isStopMOEA((int) evaluations / populationSize, generationRanking.getSubfront(0), problem_.getNumberOfObjectives(), problem_.getNumberOfVariables())){
 				System.out.println("Activated: " +(int) evaluations / populationSize);	
-				break;
+				//break;
+				isStoppingActivated=true;
+				setOutputParameter("stoppingPopulation", (SolutionSet)generationRanking.getSubfront(0)) ; 
+				setOutputParameter("stopGen",(int) evaluations/populationSize);
 			}
 			
 			// Create the offSpring solutionSet
@@ -439,6 +445,8 @@ public class NSGAIIForDKandSCandSI extends NSGAII {
 
 		} // while
 
+		
+		
 		// Return as output parameter the evaluations
 		setOutputParameter("evaluations", evaluations);
 
@@ -459,6 +467,12 @@ public class NSGAIIForDKandSCandSI extends NSGAII {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
+		}
+		
+		//added by shahriar
+		if(!isStoppingActivated){
+			setOutputParameter("stoppingPopulation", (SolutionSet)ranking.getSubfront(0)) ; 
+			setOutputParameter("stopGen",(int) evaluations/populationSize);
 		}
 
 		return ranking.getSubfront(0);
