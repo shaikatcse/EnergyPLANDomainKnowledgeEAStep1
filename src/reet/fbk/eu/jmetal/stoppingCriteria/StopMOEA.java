@@ -22,8 +22,15 @@ public class StopMOEA {
 	/*
 	 * New parameters for Aalborg Simulaiton
 	 */
-	static final int nGenLT = 20, noGenUnCh = 5;
+	/*static final int nGenLT = 20, noGenUnCh = 5;
+	static final double significanceValue = 0.05;*/
+	
+	/*
+	 * New parameters for Aalborg Simulaiton
+	 */
+	static final int nGenLT = 25, noGenUnCh = 5;
 	static final double significanceValue = 0.05;
+	
 
 	AveragedHausdroffDistance ahd;
 	CalculateDiversity cdv;
