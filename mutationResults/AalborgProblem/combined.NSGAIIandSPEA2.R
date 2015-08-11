@@ -7,11 +7,13 @@ NSGAIIresultDirectory<-"."
 NSGAIIqIndicator <- function(indicator)
 {
 	fileNSGAII<-paste(NSGAIIresultDirectory, "NSGAII", sep="/")
+	#fileNSGAII<-paste(fileNSGAII,"With_mutation_pr_0.2", sep="/")
 #filePolynomialMutation<-paste(filePolynomialMutation, problem, sep="/")
 	fileNSGAII<-paste(fileNSGAII, indicator, sep="/")
 	NSGAII_results<-scan(fileNSGAII)
 
 fileNSGAIIDKM<-paste(NSGAIIresultDirectory, "NSGAIIWithDKMutation", sep="/")
+fileNSGAIIDKM<-paste(fileNSGAIIDKM,"With_mutation_pr_0.1", sep="/")
 #fileDKMutation<-paste(fileDKMutation, problem, sep="/")
 fileNSGAIIDKM<-paste(fileNSGAIIDKM, indicator, sep="/")
 NSGAIIDKM_results<-scan(fileNSGAIIDKM)
@@ -27,11 +29,13 @@ SPEA2resultDirectory<-"."
 SPEA2qIndicator <- function(indicator)
 {
 	fileSPEA2<-paste(SPEA2resultDirectory, "SPEA2", sep="/")
+	#fileSPEA2<-paste(fileSPEA2, "With_mutation_pr_0.2", sep="/")
 #filePolynomialMutation<-paste(filePolynomialMutation, problem, sep="/")
 	fileSPEA2<-paste(fileSPEA2, indicator, sep="/")
 	SPEA2_results<-scan(fileSPEA2)
 
 fileSPEA2DKM<-paste(SPEA2resultDirectory, "SPEA2WithDKMutation", sep="/")
+fileSPEA2DKM<-paste(fileSPEA2DKM,"With_mutation_pr_0.1", sep="/")
 #fileDKMutation<-paste(fileDKMutation, problem, sep="/")
 fileSPEA2DKM<-paste(fileSPEA2DKM, indicator, sep="/")
 SPEA2DKM_results<-scan(fileSPEA2DKM)
