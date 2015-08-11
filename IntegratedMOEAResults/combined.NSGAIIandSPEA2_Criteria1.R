@@ -1,6 +1,6 @@
 #postscript("indicators_NSGAII_SPEA2.eps", horizontal=FALSE, onefile=FALSE, height=8, width=12, pointsize=10)
 #pdf("indicators_NSGAII_NSGAII_DKM.pdf", onefile=FALSE, width=10)
-postscript("NSGAII_SPEA2_Int_AllEvoCom.eps", horizontal=FALSE, onefile=FALSE, height=6, width=8.5, pointsize=11)
+postscript("NSGAII_SPEA2_Int.eps", horizontal=FALSE, onefile=FALSE, height=6, width=8.5, pointsize=11)
 
 NSGAIIresultDirectory<-"."
 
@@ -15,7 +15,7 @@ NSGAIIqIndicator <- function(indicator)
 fileNSGAII_Int<-paste(NSGAIIresultDirectory, "NSGAII_int", sep="/")
 fileNSGAII_Int<-paste(fileNSGAII_Int, "WithoutRM", sep="/")
 fileNSGAII_Int<-paste(fileNSGAII_Int, "With_mutation_pr_0.1", sep="/")
-fileNSGAII_Int<-paste(fileNSGAII_Int, "AllEvoCom", sep="/")
+fileNSGAII_Int<-paste(fileNSGAII_Int, "Criteria1", sep="/")
 
 #fileDKMutation<-paste(fileDKMutation, problem, sep="/")
 fileNSGAII_Int<-paste(fileNSGAII_Int, indicator, sep="/")
@@ -40,7 +40,7 @@ SPEA2qIndicator <- function(indicator)
 fileSPEA2_Int<-paste(SPEA2resultDirectory, "SPEA2_Int", sep="/")
 fileSPEA2_Int<-paste(fileSPEA2_Int, "WithoutRM", sep="/")
 fileSPEA2_Int<-paste(fileSPEA2_Int, "With_mutation_pr_0.1", sep="/")
-fileSPEA2_Int<-paste(fileSPEA2_Int, "AllEvoCom", sep="/")
+fileSPEA2_Int<-paste(fileSPEA2_Int, "Criteria1", sep="/")
 
 #fileDKMutation<-paste(fileDKMutation, problem, sep="/")
 fileSPEA2_Int<-paste(fileSPEA2_Int, indicator, sep="/")
