@@ -10,20 +10,23 @@ NSGAIIresultDirectory<-"."
 NSGAIIqIndicator <- function(indicator)
 {
 	fileNSGAII<-paste(NSGAIIresultDirectory, "NSGAIIWithoutTrack", sep="/")
+	#fileNSGAII<-paste(fileNSGAII,"With_mutation_pr_0.2", sep="/")
 #filePolynomialMutation<-paste(filePolynomialMutation, problem, sep="/")
 	fileNSGAII<-paste(fileNSGAII, indicator, sep="/")
 	NSGAII_results<-scan(fileNSGAII)
 
-fileNSGAIIsi<-paste(NSGAIIresultDirectory, "NSGAIIWithoutTrackWithSI", sep="/")
-fileNSGAIIsi<-paste(fileNSGAIIsi, "WithoutRM", sep="/")
-#fileDKMutation<-paste(fileDKMutation, problem, sep="/")
-fileNSGAIIsi<-paste(fileNSGAIIsi, indicator, sep="/")
-NSGAIIsi_results<-scan(fileNSGAIIsi)
+	fileNSGAIIsi<-paste(NSGAIIresultDirectory, "NSGAIIWithoutTrackWithSI", sep="/")
+	fileNSGAIIsi<-paste(fileNSGAIIsi, "WithoutRM", sep="/")
+	#fileNSGAIIsi<-paste(fileNSGAIIsi, "With_mutation_pr_0.2", sep="/")
 
-algs<-c("RI","SI")
-boxplot(NSGAII_results,NSGAIIsi_results,names=algs, notch = FALSE)
-titulo <-paste(indicator, "NSGAII", sep=":")
-title(main=titulo)
+	#fileDKMutation<-paste(fileDKMutation, problem, sep="/")
+	fileNSGAIIsi<-paste(fileNSGAIIsi, indicator, sep="/")
+	NSGAIIsi_results<-scan(fileNSGAIIsi)
+
+	algs<-c("RI","SI")
+	boxplot(NSGAII_results,NSGAIIsi_results,names=algs, notch = FALSE)
+	titulo <-paste(indicator, "NSGAII", sep=":")
+	title(main=titulo)
 }
 
 
@@ -32,12 +35,14 @@ SPEA2resultDirectory<-"."
 SPEA2qIndicator <- function(indicator)
 {
 	fileSPEA2<-paste(SPEA2resultDirectory, "SPEA2WithoutTrack", sep="/")
+	#fileSPEA2<-paste(fileSPEA2, "With_mutation_pr_0.2", sep="/")
 #filePolynomialMutation<-paste(filePolynomialMutation, problem, sep="/")
 	fileSPEA2<-paste(fileSPEA2, indicator, sep="/")
 	SPEA2_results<-scan(fileSPEA2)
 
 fileSPEA2si<-paste(SPEA2resultDirectory, "SPEA2WithoutTrackWithSI", sep="/")
 fileSPEA2si<-paste(fileSPEA2si, "WithoutRM", sep="/")
+#fileSPEA2si<-paste(fileSPEA2si, "With_mutation_pr_0.2", sep="/")
 #fileDKMutation<-paste(fileDKMutation, problem, sep="/")
 fileSPEA2si<-paste(fileSPEA2si, indicator, sep="/")
 SPEA2si_results<-scan(fileSPEA2si)
