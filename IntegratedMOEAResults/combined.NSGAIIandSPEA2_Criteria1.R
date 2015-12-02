@@ -1,6 +1,6 @@
 #postscript("indicators_NSGAII_SPEA2.eps", horizontal=FALSE, onefile=FALSE, height=8, width=12, pointsize=10)
 #pdf("indicators_NSGAII_NSGAII_DKM.pdf", onefile=FALSE, width=10)
-postscript("NSGAII_SPEA2_Int.eps", horizontal=FALSE, onefile=FALSE, height=6, width=8.5, pointsize=11)
+postscript("NSGAII_SPEA2_Int_test.eps", horizontal=FALSE, onefile=FALSE, height=6, width=8.5, pointsize=11)
 
 NSGAIIresultDirectory<-"."
 
@@ -24,7 +24,7 @@ NSGAII_Int_results<-scan(fileNSGAII_Int)
 algs<-c("NSGAII","NSGAII_Com")
 boxplot(NSGAII_results,NSGAII_Int_results,names=algs, notch = FALSE)
 titulo <-indicator
-title(main=titulo)
+title(main=titulo, cex.main=1.5)
 }
 
 SPEA2resultDirectory<-"."
@@ -49,7 +49,7 @@ SPEA2_Int_results<-scan(fileSPEA2_Int)
 algs<-c("SPEA2","SPEA2_Com")
 boxplot(SPEA2_results,SPEA2_Int_results,names=algs, notch = FALSE)
 titulo <-indicator
-title(main=titulo)
+title(main=titulo, cex.main=1.5)
 }
 
 #SPEA2resultDirectory<-"./MutationStudySPEA2/data/"
@@ -71,7 +71,7 @@ title(main=titulo)
 #titulo <-paste(indicator, "SPEA2", sep=":")
 #title(main=titulo)
 #}
-par(mfrow=c(2,4))
+par(mfrow=c(2,4), cex.axis=1.0, cex.lab=2.0)
 indicator<-"HV"
 NSGAIIqIndicator(indicator)
 indicator<-"IGD"
@@ -98,5 +98,7 @@ SPEA2qIndicator(indicator)
 #SPEA2qIndicator(indicator, "OptimizeElecEnergy_SPEA2")
 #indicator<-"Epsilon"
 #SPEA2qIndicator(indicator, "OptimizeElecEnergy_SPEA2")
+
+dev.off()
 
 
