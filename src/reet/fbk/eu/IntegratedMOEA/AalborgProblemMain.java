@@ -12,7 +12,6 @@ import jmetal.core.Algorithm;
 import jmetal.core.Operator;
 import jmetal.core.Problem;
 import jmetal.core.SolutionSet;
-
 import reet.fbk.eu.jmetal.metaheuristics.nsgaII.NSGAIIForDKandSCandSI;
 import reet.fbk.eu.jmetal.metaheuristics.spea2.SPEA2ForDKandSCandSI;
 import jmetal.operators.crossover.CrossoverFactory;
@@ -21,9 +20,10 @@ import jmetal.qualityIndicator.QualityIndicator;
 import jmetal.util.Configuration;
 import jmetal.util.JMException;
 
+import jmetal.util.PseudoRandom;
+import jmetal.util.RandomGenerator;
 //import reet.fbk.eu.jmetal.operators.mutation.MutationFactory;
 import reet.fbk.eu.jmetal.operators.mutation.MutationFactory;
-
 
 import java.util.logging.Logger;
 
@@ -54,27 +54,76 @@ class Integrated_NSGAII_Run {
 		fileHandler_ = new FileHandler("NSGAII_main.log");
 		logger_.addHandler(fileHandler_);
 
-		int numberOfRun = 10;
+		int numberOfRun = 12;
 
-		/*File f1= new File("InitializationResults/InitIndividualWithSI/InitIndv_seed_844545");
-		File f2= new File("InitializationResults/InitIndividualWithSI/InitIndv_seed_752453");
-		File f3= new File("InitializationResults/InitIndividualWithSI/InitIndv_seed_714451");
-		File f4= new File("InitializationResults/InitIndividualWithSI/InitIndv_seed_565656");
-		File f5= new File("InitializationResults/InitIndividualWithSI/InitIndv_seed_545454");
-		
-		File[] listOfFiles={f1,f2,f3,f4,f5};*/
-		
-		File folder = new File("InitializationResults/InitIndividualWithSI");
-		File[] listOfFiles = folder.listFiles(new FilenameFilter() {
-			@Override
-			public boolean accept(File dir, String name) {
-				return name.startsWith("Init");
-			}
-		});
+		/*
+		 * File f1= new
+		 * File("InitializationResults/InitIndividualWithSI/InitIndv_seed_844545"
+		 * ); File f2= new
+		 * File("InitializationResults/InitIndividualWithSI/InitIndv_seed_752453"
+		 * ); File f3= new
+		 * File("InitializationResults/InitIndividualWithSI/InitIndv_seed_714451"
+		 * ); File f4= new
+		 * File("InitializationResults/InitIndividualWithSI/InitIndv_seed_565656"
+		 * ); File f5= new
+		 * File("InitializationResults/InitIndividualWithSI/InitIndv_seed_545454"
+		 * );
+		 * 
+		 * File[] listOfFiles={f1,f2,f3,f4,f5};
+		 */
+
+		/*
+		 * File folder = new File("InitializationResults/InitIndividualWithSI");
+		 * File[] listOfFiles = folder.listFiles(new FilenameFilter() {
+		 * 
+		 * @Override public boolean accept(File dir, String name) { return
+		 * name.startsWith("Init"); } });
+		 */
+
+		File[] listOfFiles = new File[numberOfRun];
+
+		/*
+		 * 2nd initial seeds long initSeed[] = { 144759, 271439, 445964, 494817,
+		 * 530563, 724859, 746153, 747584, 866309, 938562};
+		 */
+		// 3rd initial seed
+		/*
+		 * long initSeed[] ={ 172480, 242648, 268602, 272313, 412455, 441996,
+		 * 633160, 814562, 822805, 843288 };
+		 */
+
+		long seed[] = {/* 131528, 194125, 199140, 286828, 287192, 303839, 304408,
+				325235, 337877, 347354,
+
+				376366, 449029, 472366, 507361, 526317, 570490, 571961, 585378,*/
+				607688, 664876,
+
+				684002, 692766, 749363, 853504, 860186, 892574, 925410, 931203,
+				962803, 991907
+
+		};
+
+		long initSeed[] = { /*125742, 144759, 172480, 242648, 245454, 268602,
+				271439, 272313, 412455, 441996,
+
+				445964, 447551, 455411, 455885, 494817, 530563, 545454, 565656,*/
+				633160, 714451,
+
+				724859, 746153, 747584, 752453, 814562, 822805, 843288, 844545,
+				866309, 938562
+
+		};
+
+		for (int i = 0; i < numberOfRun; i++) {
+			listOfFiles[i] = new File(
+					"InitializationResults/InitIndividualWithSI/WithoutRM/InitIndv_seed_"
+							+ initSeed[i]);
+
+		}
 
 		for (int i = 0; i < numberOfRun; i++) {
 
-			// PseudoRandom.setRandomGenerator(new RandomGenerator(seed[i]));
+			PseudoRandom.setRandomGenerator(new RandomGenerator(seed[i]));
 
 			indicators = null;
 
@@ -106,10 +155,11 @@ class Integrated_NSGAII_Run {
 					parameters);
 
 			parameters = new HashMap();
-			parameters.put("probability", 0.2);
+			parameters.put("probability", 0.1);
 			parameters.put("distributionIndex", 10.0);
 			parameters.put("favorGenesforRE", favorGenesforRE);
-			parameters.put("favorGenesForConventioanlPP", favorGenesforConventionalPP);
+			parameters.put("favorGenesForConventioanlPP",
+					favorGenesforConventionalPP);
 			parameters.put(
 					"maximum generation",
 					(int) algorithm.getInputParameter("maxEvaluations")
@@ -119,7 +169,6 @@ class Integrated_NSGAII_Run {
 			mutation = MutationFactory.getMutationOperator(
 					"GeneralModifiedPolynomialMutationForEnergySystems",
 					parameters);
-
 
 			// mutation =
 			// MutationFactory.getMutationOperator("GeneralRealMutationForRes",
@@ -143,29 +192,74 @@ class Integrated_NSGAII_Run {
 			SolutionSet population = algorithm.execute();
 			long estimatedTime = System.currentTimeMillis() - initTime;
 
-			int evaluations = ((Integer) algorithm
-					.getOutputParameter("evaluations")).intValue();
-			writeStoppingGenerationInFile(listOfFiles[i].getName().substring(14), (int) evaluations / populationSize);
+			int stopGenCriteria1 = ((Integer) algorithm
+					.getOutputParameter("stopGenCriteria1")).intValue();
+
+			writeStoppingGenerationInFile(listOfFiles[i].getName()
+					.substring(14), stopGenCriteria1,
+					"IntegratedMOEAResults\\NSGAII_Com\\Criteria1");
+			SolutionSet stoppingPopulationCriteria1 = ((SolutionSet) algorithm
+					.getOutputParameter("stoppingPopulationCriteria1"));
+
+			stoppingPopulationCriteria1
+					.printVariablesToFile("IntegratedMOEAResults\\NSGAII_Com\\Criteria1\\VAR_Init_"
+							+ listOfFiles[i].getName().substring(14)
+							+ "_seed_"
+							+ seed[i]);
+			logger_.info("Objectives values have been writen to file FUN");
+			stoppingPopulationCriteria1
+					.printObjectivesToFile("IntegratedMOEAResults\\NSGAII_Com\\Criteria1\\FUN_Init_"
+							+ listOfFiles[i].getName().substring(14)
+							+ "_seed_"
+							+ seed[i]);
+
+			//criteria 2
+			int stopGenCriteria2 = ((Integer) algorithm
+					.getOutputParameter("stopGenCriteria2")).intValue();
+
+			writeStoppingGenerationInFile(listOfFiles[i].getName()
+					.substring(14), stopGenCriteria2,
+					"IntegratedMOEAResults\\NSGAII_Com\\Criteria2");
+			SolutionSet stoppingPopulationCriteria2 = ((SolutionSet) algorithm
+					.getOutputParameter("stoppingPopulationCriteria2"));
+
+			stoppingPopulationCriteria2
+					.printVariablesToFile("IntegratedMOEAResults\\NSGAII_Com\\Criteria2\\VAR_Init_"
+							+ listOfFiles[i].getName().substring(14)
+							+ "_seed_"
+							+ seed[i]);
+			logger_.info("Objectives values have been writen to file FUN");
+			stoppingPopulationCriteria2
+					.printObjectivesToFile("IntegratedMOEAResults\\NSGAII_Com\\Criteria2\\FUN_Init_"
+							+ listOfFiles[i].getName().substring(14)
+							+ "_seed_"
+							+ seed[i]);
+
 			// Result messages
 			logger_.info("Total execution time: " + estimatedTime + "ms");
 			logger_.info("Variables values have been writen to file VAR");
 			population
-					.printVariablesToFile("IntegratedMOEAResults\\NSGAII\\VAR_Init_"
-							+ listOfFiles[i].getName().substring(14));
+					.printVariablesToFile("IntegratedMOEAResults\\NSGAII_Com\\AllEvoCom\\VAR_Init_"
+							+ listOfFiles[i].getName().substring(14)
+							+ "_seed_"
+							+ seed[i]);
 			logger_.info("Objectives values have been writen to file FUN");
 			population
-					.printObjectivesToFile("IntegratedMOEAResults\\NSGAII\\FUN_Init_"
-							+ listOfFiles[i].getName().substring(14));
+					.printObjectivesToFile("IntegratedMOEAResults\\NSGAII_Com\\AllEvoCom\\FUN_Init_"
+							+ listOfFiles[i].getName().substring(14)
+							+ "_seed_"
+							+ seed[i]);
 		}
 
 	}
 
-	public void writeStoppingGenerationInFile(String seed, int generation) {
+	public void writeStoppingGenerationInFile(String seed, int generation,
+			String folder) {
 		File file;
 		FileWriter fw;
 		BufferedWriter bw;
 
-		file = new File("IntegratedMOEAResults\\NSGAII\\StoppingGen");
+		file = new File(folder + "\\StoppingGen");
 
 		try {
 			if (!file.exists()) {
@@ -208,27 +302,89 @@ class Integrated_SPEA2_Run {
 		fileHandler_ = new FileHandler("NSGAII_main.log");
 		logger_.addHandler(fileHandler_);
 
-		
-		/*int numberOfRun = 2;
-		File f1= new File("InitializationResults/InitIndividualWithSI/InitIndv_seed_455885");
-		File f2= new File("InitializationResults/InitIndividualWithSI/InitIndv_seed_545454");
-		/*File f3= new File("InitializationResults/InitIndividualWithSI/InitIndv_seed_714451");
-		File f4= new File("InitializationResults/InitIndividualWithSI/InitIndv_seed_565656");
-		File f5= new File("InitializationResults/InitIndividualWithSI/InitIndv_seed_545454");
-		
-		File[] listOfFiles={f1,f2};*/
+		/*
+		 * int numberOfRun = 2; File f1= new
+		 * File("InitializationResults/InitIndividualWithSI/InitIndv_seed_455885"
+		 * ); File f2= new
+		 * File("InitializationResults/InitIndividualWithSI/InitIndv_seed_545454"
+		 * ); /*File f3= new
+		 * File("InitializationResults/InitIndividualWithSI/InitIndv_seed_714451"
+		 * ); File f4= new
+		 * File("InitializationResults/InitIndividualWithSI/InitIndv_seed_565656"
+		 * ); File f5= new
+		 * File("InitializationResults/InitIndividualWithSI/InitIndv_seed_545454"
+		 * );
+		 * 
+		 * File[] listOfFiles={f1,f2};
+		 */
 
-		File folder = new File("InitializationResults/InitIndividualWithSI");
-		File[] listOfFiles = folder.listFiles(new FilenameFilter() {
-			@Override
-			public boolean accept(File dir, String name) {
-				return name.startsWith("Init");
-			}
-		});
-		
-		int numberOfRun = 10;
+		/*
+		 * File folder = new File("InitializationResults/InitIndividualWithSI");
+		 * File[] listOfFiles = folder.listFiles(new FilenameFilter() {
+		 * 
+		 * @Override public boolean accept(File dir, String name) { return
+		 * name.startsWith("Init"); } });
+		 */
 
+		int numberOfRun = 2;
+
+		File[] listOfFiles = new File[numberOfRun];
+
+		/*
+		 * 2nd initial seed for reading files for smart initialization long
+		 * initSeed[] = { 144759, 271439, 445964, 494817, 530563, 724859,
+		 * 746153, 747584, 866309, 938562};
+		 */
+
+		// 3rd initial seed
+		/*
+		 * long initSeed[] ={ 172480, 242648, 268602, 272313, 412455, 441996,
+		 * 633160, 814562, 822805, 843288 };
+		 */
+
+		long seed[] = { /*116023, 122077, 148412, 229494, 234118,*/ 250755, /*289773,*/
+				315371/*, 366586, 386609*/
+
+				/*403236, 529557, 542538, 544241, 625137, 629633, 630311, 668240,
+				686408, 701282,
+
+				710450, 736124, 758115, 811191, 861135, 889553, 922683, 929630,
+				943600, 983919*/
+
+		};
+
+		long initSeed[] = { /*125742,144759, 172480, 242648, 245454,*/ 268602,
+				/*271439,*/ 272313/*, 412455, 441996*/
+
+				/*445964, 447551, 455411, 455885, 494817, 530563, 545454, 565656,
+				633160, 714451,
+
+				724859, 746153, 747584, 752453, 814562, 822805, 843288, 844545,
+				866309, 938562*/
+
+		};
+
+		/*
+		 * for(int i=0;i<numberOfRun;i++){ listOfFiles[i] = new File(
+		 * "InitializationResults/InitIndividualWithSI/WithoutRM/InitIndv_seed_"
+		 * +initSeed[i]);
+		 * 
+		 * }
+		 */
+
+		// to run in reverse order
 		for (int i = 0; i < numberOfRun; i++) {
+					listOfFiles[i] = new File(
+					"InitializationResults/InitIndividualWithSI/WithoutRM/InitIndv_seed_"
+							+ initSeed[i]);
+
+		}
+
+		// for (int i = 0; i < numberOfRun; i++) {
+		// to run in reverse order
+		for (int i = 0; i < numberOfRun; i++) {
+			
+			PseudoRandom.setRandomGenerator(new RandomGenerator(seed[i]));
 
 			indicators = null;
 
@@ -271,7 +427,8 @@ class Integrated_SPEA2_Run {
 			parameters.put("probability", 0.2);
 			parameters.put("distributionIndex", 10.0);
 			parameters.put("favorGenesforRE", favorGenesforRE);
-			parameters.put("favorGenesForConventioanlPP", favorGenesforConventionalPP);
+			parameters.put("favorGenesForConventioanlPP",
+					favorGenesforConventionalPP);
 			parameters.put(
 					"maximum generation",
 					(int) algorithm.getInputParameter("maxEvaluations")
@@ -302,30 +459,75 @@ class Integrated_SPEA2_Run {
 			long initTime = System.currentTimeMillis();
 			SolutionSet population = algorithm.execute();
 			long estimatedTime = System.currentTimeMillis() - initTime;
-			
-			int evaluations = ((Integer) algorithm
-					.getOutputParameter("evaluations")).intValue();
-			writeStoppingGenerationInFile(listOfFiles[i].getName().substring(14), (int) evaluations / populationSize);
+
+			int stopGenCriteria1 = ((Integer) algorithm
+					.getOutputParameter("stopGenCriteria1")).intValue();
+
+			writeStoppingGenerationInFile(listOfFiles[i].getName()
+					.substring(14), stopGenCriteria1,
+					"IntegratedMOEAResults\\SPEA2_Com\\Criteria1");
+			SolutionSet stoppingPopulationCriteria1 = ((SolutionSet) algorithm
+					.getOutputParameter("stoppingPopulationCriteria1"));
+
+			stoppingPopulationCriteria1
+					.printVariablesToFile("IntegratedMOEAResults\\SPEA2_Com\\Criteria1\\VAR_Init_"
+							+ listOfFiles[i].getName().substring(14)
+							+ "_seed_"
+							+ seed[i]);
+			logger_.info("Objectives values have been writen to file FUN");
+			stoppingPopulationCriteria1
+					.printObjectivesToFile("IntegratedMOEAResults\\SPEA2_Com\\Criteria1\\FUN_Init_"
+							+ listOfFiles[i].getName().substring(14)
+							+ "_seed_"
+							+ seed[i]);
+
+			//criteria 2
+			int stopGenCriteria2 = ((Integer) algorithm
+					.getOutputParameter("stopGenCriteria2")).intValue();
+
+			writeStoppingGenerationInFile(listOfFiles[i].getName()
+					.substring(14), stopGenCriteria2,
+					"IntegratedMOEAResults\\SPEA2_Com\\Criteria2");
+			SolutionSet stoppingPopulationCriteria2 = ((SolutionSet) algorithm
+					.getOutputParameter("stoppingPopulationCriteria2"));
+
+			stoppingPopulationCriteria2
+					.printVariablesToFile("IntegratedMOEAResults\\SPEA2_Com\\Criteria2\\VAR_Init_"
+							+ listOfFiles[i].getName().substring(14)
+							+ "_seed_"
+							+ seed[i]);
+			logger_.info("Objectives values have been writen to file FUN");
+			stoppingPopulationCriteria2
+					.printObjectivesToFile("IntegratedMOEAResults\\SPEA2_Com\\Criteria2\\FUN_Init_"
+							+ listOfFiles[i].getName().substring(14)
+							+ "_seed_"
+							+ seed[i]);
 
 			// Result messages
 			logger_.info("Total execution time: " + estimatedTime + "ms");
 			logger_.info("Variables values have been writen to file VAR");
 			population
-					.printVariablesToFile("IntegratedMOEAResults\\SPEA2\\VAR_Init_"
-							+ listOfFiles[i].getName().substring(14));
+					.printVariablesToFile("IntegratedMOEAResults\\SPEA2_Com\\AllEvoCom\\VAR_Init_"
+							+ listOfFiles[i].getName().substring(14)
+							+ "_seed_"
+							+ seed[i]);
 			logger_.info("Objectives values have been writen to file FUN");
 			population
-					.printObjectivesToFile("IntegratedMOEAResults\\SPEA2\\FUN_Init_"
-							+ listOfFiles[i].getName().substring(14));
+					.printObjectivesToFile("IntegratedMOEAResults\\SPEA2_Com\\AllEvoCom\\FUN_Init_"
+							+ listOfFiles[i].getName().substring(14)
+							+ "_seed_"
+							+ seed[i]);
+		
 		}
 	}
-	
-	public void writeStoppingGenerationInFile(String seed, int generation) {
+
+	public void writeStoppingGenerationInFile(String seed, int generation,
+			String folder) {
 		File file;
 		FileWriter fw;
 		BufferedWriter bw;
 
-		file = new File("IntegratedMOEAResults\\SPEA2\\stoppingGen");
+		file = new File(folder + "\\StoppingGen");
 
 		try {
 			if (!file.exists()) {
@@ -353,10 +555,12 @@ public class AalborgProblemMain {
 
 		if (args[0].equals("NSGAII")) {
 			Integrated_NSGAII_Run integrated_nsgaii = new Integrated_NSGAII_Run();
-			integrated_nsgaii.run(Integer.parseInt(args[1]), Integer.parseInt(args[2]));
+			integrated_nsgaii.run(Integer.parseInt(args[1]),
+					Integer.parseInt(args[2]));
 		} else if (args[0].equals("SPEA2")) {
 			Integrated_SPEA2_Run integrated_spea2 = new Integrated_SPEA2_Run();
-			integrated_spea2.run(Integer.parseInt(args[1]), Integer.parseInt(args[2]));
+			integrated_spea2.run(Integer.parseInt(args[1]),
+					Integer.parseInt(args[2]));
 		}
 	}
 }
