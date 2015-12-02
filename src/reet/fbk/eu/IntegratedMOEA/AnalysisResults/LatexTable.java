@@ -522,10 +522,10 @@ public class LatexTable {
 		
 		  lt.experimentName_  = "" ;
 		   lt.algorithmNameList_   = new String[] {
-		      "NSGAII", "NSGAII_Int", "SPEA2", "SPEA2_Int"} ;
+		      "NSGAII", "NSGAII_Int/WithoutRM/With_mutation_pr_0.1/Criteria1", "SPEA2", "SPEA2_Int/WithoutRM/With_mutation_pr_0.1/Criteria1"} ;
 		    lt.problemList_     = new String[] {
 		      ""} ;
-		    lt.indicatorList_   = new String[] {"HV", "Spread", "IGD", "Epsilon", "GD"} ;
+		    lt.indicatorList_   = new String[] {"HV", "IGD", "Epsilon", "Spread", "GD"} ;
 		    
 		    int numberOfAlgorithms = lt.algorithmNameList_.length ;
 
