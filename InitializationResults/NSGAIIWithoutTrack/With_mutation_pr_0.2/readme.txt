@@ -1,4 +1,4 @@
-This is the results (FUN and VAR) of 10 different runs with 10 different seeds with NSGAII for building true Pareto front.
+This is the results (FUN and VAR) of 30 different runs with 30 different seeds with NSGAII for building true Pareto front.
 
 Problem: EnergyPLANProblemAalborg2ObjectivesWith1EnergyPLANEvolution
 Population: 100

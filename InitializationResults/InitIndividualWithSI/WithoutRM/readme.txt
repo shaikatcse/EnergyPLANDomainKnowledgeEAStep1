@@ -1,4 +1,4 @@
-This is the initial individuals of 10 different runs with 30 different seeds. This is different than other because in this setup there are no random initialized individuals.
+This is the initial individuals of 30 different runs with 30 different seeds. This is different than other because in this setup there are no random initialized individuals.
 
 Problem: EnergyPLANProblemAalborg2ObjectivesWith1EnergyPLANEvolution (modified to work without PP and boiler capacity, now, the number of decision variable is 5. The file will be found in initilization folder)
 
@@ -30,3 +30,4 @@ long seed[] = {
 				843288
 	
 		};
+N.B: these initial solutions are used for the results for the ASOC paper.

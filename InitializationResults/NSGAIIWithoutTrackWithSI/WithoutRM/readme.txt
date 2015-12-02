@@ -1,4 +1,4 @@
-This is the results (FUN and VAR) of 10 different runs with 10 different seeds with NSGAII with smart initilization for building true Pareto front.
+This is the results (FUN and VAR) of 10 different runs with 30 different seeds with NSGAII with smart initilization for building true Pareto front.
 
 Problem: EnergyPLANProblemAalborg2ObjectivesWith1EnergyPLANEvolution (modified to work without PP and boiler capacity, now, the number of decision variable is 5. The file will be found in initilization folder)
 
@@ -50,3 +50,5 @@ long seed[] ={
 read initial population from "C:\Users\mahbub\Documents\GitHub\EnergyPLANDomainKnowledgeEAStep1\InitializationResults\InitIndividualWithSI\WithoutRM" folder. These population are without random individuals.
 
 mergeFUN_NSI_WRM: all Pareto front from 30 runs with NSGAII with smart inililization
+
+N.B: this results are reported in ASOC paper
