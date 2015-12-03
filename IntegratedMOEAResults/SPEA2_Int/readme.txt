@@ -1,4 +1,4 @@
-This is the results (FUN and VAR) of 10 different runs with integrated SPEA2(Smart initialization + DK mutataion + Stopping criteria).
+This is the results (FUN and VAR) of 30 different runs with integrated SPEA2(Smart initialization + DK mutataion + Stopping criteria).
 
 Problem: EnergyPLANProblemAalborg2ObjectivesWith1EnergyPLANEvolution 
 Population: 100

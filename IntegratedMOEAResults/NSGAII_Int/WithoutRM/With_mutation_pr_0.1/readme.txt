@@ -1,4 +1,4 @@
-This is the results (FUN and VAR) of 10 different runs with integrated NSGAII (Smart initialization + DK mutataion + Stopping criteria).
+This is the results (FUN and VAR) of 30 different runs with integrated NSGAII (Smart initialization + DK mutataion + Stopping criteria).
 
 Problem: EnergyPLANProblemAalborg2ObjectivesWith1EnergyPLANEvolution 
 Population: 100
@@ -64,6 +64,8 @@ Criterion#2:
 nGenLT=15 
 nGenUnCh=7 
 alpha=0.05
+AllEvoCom:
+all 7000 evaluations are completed.
 
 Initial population read from 'C:\Users\mahbub\Documents\GitHub\EnergyPLANDomainKnowledgeEAStep1\InitializationResults\InitIndividualWithSI\WithoutRM' folder. These population are generated without random individuals.
 
@@ -74,3 +76,5 @@ StoppingGen: stopping generation fr different run
 
 mergeFuUN_NInt_WRM: merge all Pareto-front of 30 runs for NSGA-II integrated/combined approach when stopping criteria # 1 is activated.
 mergeFuUN_NInt_WRM_AllEvo: merge all Pareto-front of 30 runs for NSGA-II integrated/combined approach with all evaluations completed.
+
+N.B.: results of Criteria # 1 is reported in ASOC paper.
