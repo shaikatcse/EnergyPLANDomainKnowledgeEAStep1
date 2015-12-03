@@ -1,6 +1,6 @@
 #postscript("indicators_NSGAII_SPEA2.eps", horizontal=FALSE, onefile=FALSE, height=8, width=12, pointsize=10)
 #pdf("indicators_NSGAII_NSGAII_DKM.pdf", onefile=FALSE, width=10)
-postscript("indicators_NSGAII_SPEA2.eps", horizontal=FALSE, onefile=FALSE, height=6, width=8.5, pointsize=12)
+postscript("indicators_NSGAII_SPEA2_test.eps", horizontal=FALSE, onefile=FALSE, height=6, width=8.5, pointsize=12)
 
 NSGAIIresultDirectory<-"."
 
@@ -65,7 +65,7 @@ title(main=titulo)
 #titulo <-paste(indicator, "SPEA2", sep=":")
 #title(main=titulo)
 #}
-par(mfrow=c(2,4))
+par(mfrow=c(2,4),  cex.lab=2.0, cex.axis=1.5)
 indicator<-"HV"
 NSGAIIqIndicator(indicator)
 indicator<-"IGD"
@@ -93,4 +93,4 @@ SPEA2qIndicator(indicator)
 #indicator<-"Epsilon"
 #SPEA2qIndicator(indicator, "OptimizeElecEnergy_SPEA2")
 
-
+dev.off()
