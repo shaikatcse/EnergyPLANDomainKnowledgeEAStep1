@@ -1,4 +1,4 @@
-This is the results (FUN and VAR) of 10 different runs with 10 different seeds with NSGAII with domain-knowledge mutation for.
+This is the results (FUN and VAR) of 30 different runs with 30 different seeds with NSGAII with domain-knowledge mutation for.
 
 Problem: EnergyPLANProblemAalborg2ObjectivesWith1EnergyPLANEvolution
 Population: 100
@@ -50,3 +50,5 @@ The seeds are same that is used in initilization experiment. It'll help to compa
 
 
 mergeFUN_NDK: merge all 30 runs fo NSGA-II with DK mutation
+
+N.B.: these results are reported in ASOC paper
