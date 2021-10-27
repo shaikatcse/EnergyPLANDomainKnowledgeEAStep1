@@ -1,0 +1,712 @@
+\documentclass{article}
+
+\usepackage{fixltx2e}
+\usepackage{epstopdf}
+\usepackage{amsmath}
+\usepackage{hyperref}
+\usepackage{graphicx}
+\usepackage{eurosym}
+\usepackage{enumerate}
+\usepackage{color}
+\usepackage{pbox}
+\usepackage{tablefootnote}
+\usepackage{amsthm}
+\usepackage{algorithm}
+\usepackage[noend]{algpseudocode}
+\usepackage{amssymb}
+\usepackage{multirow}
+\usepackage[table]{xcolor}
+\usepackage{epstopdf}
+\usepackage{pifont}
+
+\newcommand{\cmark}{\ding{51}}%
+\newcommand{\xmark}{\ding{55}}%
+
+\begin{document}
+\title{Simple optimization with EnergyPLAN (solar, wind, fuel share) With Domain Knowledge}
+\maketitle
+
+\section{Introduction}
+
+This report is about the chromosome representation of the optimization of energy systems. This report also presents a  new mutation based on domain knowledge. 
+The report reviews the quality indicators that are used for comparing  multi-objective optimization evolutionary algorithms. 
+The results of newly developed mutation is presented and compared with generic mutation.
+ 
+
+\section{Chromosome representation}
+
+Chromosome representation is one of the important steps in evolutionary algorithms. 
+A good representation helps the algorithm to search the space more efficiently. 
+%In this optimization problem, we can not able to directly use the generic representation (i.e., real representation). 
+In the next few sections, the problems of generic representation is discussed and a repair function is developed to deal with the problem.
+%For our design variables, we need to deal with some step size. 
+%Consider a design variable, such as Off-shore wind capacity in MW. 
+%For the least discrete case, the design variable may differ to one another by 1 MW (e.g., for one case the off-shore wind capacity is 5000 MW, for another design the capacity is 5001 MW). 
+%But the decision maker may not be intersected at the level of accuracy of 1 MW. 
+%So, the representation should be generalized to deal with any given step size. 
+%The state of the art can not able to deal with the any given step size. 
+%So, if the step size is 50 MW, then the design variable varies with 50 MW step size. 
+%
+%\subsection{Problem with Integer representation}
+%Most of the time, Integer variables are represented in binary format. 
+%But there are some problems to deal with binary representation. 
+%The first problem is the maximum limit of variable depends on number of bits used to represent the variable. 
+%As an example, if we consider 6 bits to represent the variable, we will have the limit from 0 to $2^6$. 
+%On the other hand, for generalized case, we need to deal with dynamic limit.
+%Because, for a particular region, a source of renewable energy can not go beyond a maximum capacity.   
+%However, there can be a possible binary representation that can deal with any given bound using the following formula \ref{dynamic binary representation}. 
+%But, the representation may suffer serious problem of the generating same phenotype from two different genotypes. 
+%As an example, if we have range [10, 30], we need 5 bits to represent the variable. 
+%A genotype $(01010)_2 = 10$  produce a phenotype 20. 
+%Another genotype $(11111)_2 = 21$ produces the same phenotype 20. 
+%
+%\begin{equation}
+%\label{dynamic binary representation}
+%	phenotype = lb + (genotype \% (ub-lb+1))
+%\end{equation}  
+%Where $lb$ means lower bound and $ub$ means upper bound.
+%    
+%So, we decided to use real representation with some rounding and some techniques to deal with a given step size. 
+
+\subsection{Representation}
+
+In  this optimization problem, we need to deal with two kinds of design variables. 
+First four variables are the capacity of four different sources in MW (Off-shore wind, on-shore wind, PV and conventional power plant). 
+And we have another three design variables those represent the share of three fuels (coal, oil and N. Gas) for conventional power plant.
+Each fuel share value represents a relative share with respect to the uses of other fuels. 
+As an example, if both coal and oil share is 0.5, EnergyPLAN\footnote{It is assumed that EnergyPLAN is already introduced.} tries to use same amount of coal and oil to meet the demand. 
+But if 0.25 and 0.5 is given for coal and oil, EnergyPLAN tries to use double amount of oil than coal.
+
+For the decision variables of the capacity of different  sources, we use real representation where the maximum possible capacity of a region is given. 
+On the other hand for fuel shares, we use real representation within a range of 0 to 1. 
+%To deal with the step size we propose different repair functions for those two kinds of design variables.
+
+\subsection{Repair function}
+The concept of repair function \cite{Bonissone_Subbu_Eklund_Kiehl_2006} is vastly used in the field of evolutionary algorithm. 
+The main concept of repair function is that repair the genes\footnote{Each individual may contains several genes} so that the in-feasible gene is changed to a feasible gene. 
+%In our case, we have seven genes within a individual} those are invalid in terms of search space exploration. 
+%For example, the capacity of 1510 MW for a source is invalid in a step size of 50 MW. 
+%For example, the first row of table \ref{table:example fuel share} is invalid if the excepted step of fuel share is 10\%.
+In the case of fuels mixing in a conventional power plant, most of the time, decision maker are not interested in exact percentage (e.g.: 31\% coal, 23\% oil and 44\% natural gas).
+Because the exact percentage is difficult to implement. 
+So, we want to employ the concept of step size, where decision maker can define the step size. 
+In the case of previous example, if the step size is 5\%, then the shares will be changed,  30\% for coal, 25\% for oil and 45\% for natural gas.
+%But there are some problem to use the same idea in fuel share. 
+%The way EnergyPLAN treat the fuel shares require some new modification of the earlier concept. 
+It is already mentioned that fuel shares in EnergyPLAN are treated as relative fuel shares with respect to other fuel shares. 
+Each gene that represents a fuel share has a limit between 0 to 1. 
+So, the repair function that we use here adjust the the gene values in a way so that relative shares of each fuel will be a multiple of the given step size. 
+An Example is given in the table \ref{table:example fuel share} where step size is 0.1 (i.g.: 10\%).
+The 1\textsuperscript{st} row of the tables is the gene values for fuel shares for a particular individual. 
+The 2\textsuperscript{nd} row is the absolute shares calculated using equation \eqref{eq:Fuel Share}.
+3 \textsuperscript{rd} and 4\textsuperscript{th} rows present the gene values what we expect after \textit{repairing}.
+
+\begin{equation}
+\label{eq:Fuel Share}
+fuelShare_i = \frac{geneValue_{i}}{\sum\limits_{i=1}^n geneValue_{i}} \\ \text{where }
+i \in {Coal, Oil, N. gas}
+\end{equation}  
+
+
+So, our proposed repair function takes a real number and repair the gene in such a way so that the gene maps with nearest valid gene value of the invalid value. 
+%For the above example, the repair function maps the gene value to 1500 MW. 
+%For the above example, the gene values of third row of the table has the valid values for the genes.
+The following equation describes the function. 
+
+%\begin{equation}
+%\label{eq:Representation of capacity design variables1}
+%value = \lfloor \lvert {geneValue}\rvert \rfloor + 0.5 \nonumber
+%\end{equation}  
+
+\begin{equation*}
+\label{eq:Representation of capacity design variables2}
+rgv =
+\begin{cases}
+value + (sts - (value\bmod{sts})) & \text{if } (value \bmod{ sts}) >= sts/2, \\
+value - (value \bmod{ sts}) & \text{otherwise}.
+\end{cases}
+\end{equation*}
+
+Where $rgv$ is the repaired gene value and $sts$ is the step size, $value$ is the rounding gene value (e.g., rounded off two decimal place).
+
+%We want to continue with the same idea for mixing of fuel shares. 
+
+\begin{table}
+\centering
+\caption {Fuel Share Example}
+\label{table:example fuel share}
+
+\begin{tabular}{c|c|c|c}\hline
+fuel & coal & Oil & N. gas \\ \hline
+gene value& 0.10 & 0.051 & 0.82 \\ \hline
+Absolute fuel share before repair& 0.103 &0.053&0.844\\ \hline
+gene value after repair & 0.097 & 0.097 & 0.78 \\ \hline
+Absolute fuel share after repair & 0.1 & 0.1 & 0.8 \\ \hline   
+
+\end{tabular}
+\end{table}
+
+%Share for a fuel is defined by the following formula.
+
+
+Next, we present an algorithm to repair the gene value according to the step size given by a decision maker algo. \ref{alg:repair-fuel-gene}. 
+%The repair of fuel genes are more complicated than the repair of sources' capacity genes. 
+The values represent in the fuel share genes do not represent the absolute shares of the fuels.
+It represent the relative share of the fuels.
+So, a two step process can solve the problem. 
+In the 1\textsuperscript{st} step, actual fuel shares are calculated (step \# 2 and 3 of algorithm \ref{alg:repair-fuel-gene}) and  adjust the absolute shares according to the given step size (Step \# 4). 
+The adjustment is done by using the equation \eqref{eq:Representation of capacity design variables2}. 
+Then, in the 2\textsuperscript{nd} step, the new relative shares are assign according to the fixed absolute share (Step \# 7).
+Step \#5 and \#6 is necessary to make some minor change to the gene, if sum of all gene are not equal to 1. 
+Sometime this may be happen because of rounding effect. 
+For the same rounding effect, it may be possible to have a gene value greater than 1.
+In that case step \#8 and \#9 are require to scale down the gene values accordingly.
+
+\begin{algorithm}
+  \caption{Repair Function for fuel genes
+    \label{alg:repair-fuel-gene}}
+  \begin{algorithmic}[1]
+%    \Require{$x$ and $y$ are packed  strings of equal length $n$}
+    %\Statex
+    \Function{Repair fuel gene}{$StepSize, fuelGenes$}
+%      \Comment{$\oplus$: bitwise exclusive-or}
+%      \For{$i \gets 1 \textrm{ to } n$}
+%        \If{$z_i \neq 0$}
+%       
+%        \EndIf
+%      \EndFor
+	\State{originalSum = sum of all values of fuelGenes}
+	\State{normalize each gene value according to \textit{originalSum}}
+	\State{\textit{fixedGeneValues}=adjust each gene value by \textit{stepSize}}
+	\If{sum of all the scaled gene value is not equal to '1'}
+		\State{adjust a randomly gene value to make the sum equal to '1'}
+	\EndIf
+	\State{\textit{newGeneValues = OrinialSum * fixedGeneValues}}
+	\If{any new gene value is greater than 1}
+		\State{Scale down each gene value by maximum gene value}
+	\EndIf 	    
+	 \State \Return{$newfuelGenes$}
+    \EndFunction
+  \end{algorithmic}
+\end{algorithm}
+
+A step-wise example is given in table.\ref{table:exaple of fuel share repair}.
+And positions of use of the repair function within the main evolutionary loop is shown in fig. \ref{fig:position of repair function}.
+
+\begin{figure}
+\centering
+
+\includegraphics[scale=0.5]{./figures/Position_of_repair_function.pdf}
+\caption{Position of applying repair function within the main loop of evolutionary algorithm}
+\label{fig:position of repair function}
+\end{figure}
+
+\begin{table}[h]
+\centering
+\caption{An step (mentioned in the algorithm \ref{alg:repair-fuel-gene}) wise  example of repair function for fuel share}
+\label{table:exaple of fuel share repair}
+\begin{tabular}{cccc} \hline
+Description & coal     & Oil      & N. gas   \\ \hline
+Original Value   & 0.104173 & 0.051276 & 0.98     \\ \hline
+Step \# 3        & 0.091746 & 0.045159 & 0.863095 \\ \hline
+Step \# 4        & 0.1      & 0        & 0.9      \\\hline
+Step \# 7        & 0.113545 & 0        & 1.021904 \\ \hline
+Step \#8, 9      & 0.111111 & 0        & 1      \\ \hline
+\end{tabular}
+
+\end{table}
+
+\section{Problem Specific Mutation}
+Mutation, one of the key operators of an EA, basically mimic the idea of mutation from nature. 
+%A problem specific mutation specially designed to deal with the optimization problem of renewable energy and conventional energy is presented. 
+The presented mutation operator, specially designed to deal with the optimization problem of an energy system, is a combination of three different mutations.
+In a single mutation process, only one mutation is applied among three mutations.  
+First mutation is designed to favours renewable sources i.e,  increase the capacity of RE sources and use cleaner fuel, other mutation is designed to do completely the opposite (i.e.: favours conventional sources and use low cost fuel). 
+The third mutation is a traditional/generic mutation (polynomial mutation or non-uniform mutation \cite{Deb_2001}). 
+The reason behind the use of generic mutation is to keep the diversity of the population. 
+Without the use of a traditional mutation, we may lead the search toward extreme solutions. 
+In that case, we will lose interesting trade-off solutions for the decision makers. 
+The selection of a mutation among three mutations depends on a random number drawn over uniformly distributed probability distribution.
+Fig. \ref{fig:mutation flowchart} illustrates the overall mutation process ($P_{REFM}$ is the probability of applying the renewable energy favour mutation and $P_{CEFM}$ is the probability of applying conventional energy favour mutation).
+
+
+%To design the mutation that favour renewable energy and conventional energy, the above domain-knowledge are considered.
+%
+%\begin{itemize}
+%\item It is better to increase the capacity of renewable sources to reduce CO\textsubscript{2} emission
+%\item To reduce the annual cost, the use of coal should be increase
+%\item The use of coal should be decrease to reduce CO\textsubscript{2} emission
+%\item Natural gas is costly but clean fuel.
+%\end{itemize}
+
+%In the next chapter, we present the mutation that favour renewable energy. 
+
+
+\begin{figure}
+\centering
+
+\includegraphics[scale=0.5]{./figures/mutation_flowchart.pdf}
+\caption{Mutation Flowchart.}
+\label{fig:mutation flowchart}
+\end{figure}
+
+%\subsection{Renewable energy favour mutation}
+Now, we present the design of a mutation operator that can favour renewable energy sources. 
+Traditional mutation operator makes a change to an individual so that the value of genes \footnote{An individual may consists of several genes.} may be decreased or increased. 
+Most of the time, a probability distribution is used to generate a new value of a gene e.g., polynomial mutation, normal mutation \cite{Deb_2001}. 
+In that case, the gene may fall both in the upper side (value increased) or lower side (value decreased) of the gene (anywhere within gLB to gUB, in the left figure of fig. \ref{fig:truncated pdf and cdf}, where \textit{gV}, \textit{gLB} and \textit{gUB} represent gene value, lower bound and upper bound of the gene respectively).
+But to favour renewable sources, we want the mutation operator should make changes to some chosen genes so that the new gene value can only be increased (anywhere within gV to gUB in the left figure of fig. \ref{fig:truncated pdf and cdf}) or decreased.
+As an example, consider a gene value of an individual is \textbf{1250} and the lower and upper bound of the gene is 0 and 2000 respectively. 
+If the gene represents the capacity of a wind source, the mutation should generate a new gene only within the range of 1250 to 2000. 
+If we want to favour conventional sources, the mutation should produce a new gene within the range of 0 to 1250. 
+
+To design the renewable or conventional favour mutation, we use the \textit{normal probability  distribution}\cite{wiki:normal-distribution}. 
+%The reason behind selecting normal distribution is that it give better control over the distribution through two parameter, \textit{mean and standard deviation}.
+We will have a normal distribution centered on the \textit{gV} of an individual (mean, $\mu$ is set to gV and standard deviation, $\sigma$ is set to $d/3$, where $d=|gV - gUB$ or $gLB|$). 
+The selection of $\sigma$ value ensures that most of the time the new gene value will lie near to the old gene value (i.e., mean value). 
+Then the probability density function (pdf) is truncated within an upper or lower range \cite{wiki:truncated-distribution}.
+% (e.g.: in the fig. \ref{fig:truncated pdf and cdf}, upper range is shown). 
+The red distribution in the left side of fig. \ref{fig:truncated pdf and cdf} shows the truncated pdf distributed within the range of \emph{$gLB$ to $gUB$}. 
+%with $\mu=3.0$ and $\sigma=1.0$, where gV is 3.0 and gUB is 6.0. 
+On the other hand, the blue distribution shows the truncated pdf within the range of \emph{$gV$ to $gUB$}.
+%In the figure, $gV$ represents the gene value and $gUB$ represents the upper bound of the gene.  
+And the corresponding cumulative distribution function is shown in the right side of the figure.  
+A random number is drawn from an uniform distribution within a range of 0 to 1.
+A new gene value is obtained using \textit{inverse cdf or quantile function}\cite{wiki:Quantile-function}.
+The details of the mutation is given in the following algorithm \ref{alg:mutation-favours-Res}. 
+
+\begin{figure}
+\centering
+\includegraphics[scale=1.0]{./figures/trun_pdf_cdf.pdf}
+\caption{An example of probability density function and cumulative distribution function used in the mutation.}
+\label{fig:truncated pdf and cdf}
+\end{figure}
+
+\begin{algorithm*}
+  \caption{Mutation favours Renewable sources 
+    \label{alg:mutation-favours-Res}}
+  \begin{algorithmic}[1]
+%    \Require{$x$ and $y$ are packed  strings of equal length $n$}
+    %\Statex
+    \Function{MutationfavoursRes}{$individual, ListOfFoveredGene$}
+%      \Comment{$\oplus$: bitwise exclusive-or}
+%      \For{$i \gets 1 \textrm{ to } n$}
+%        \If{$z_i \neq 0$}
+%       
+%        \EndIf
+%      \EndFor
+	
+	\For{each gene of an individual}
+		\If{gene $\in ListOfFoveredGene$}
+		\State{Define a normal distribution; $\mu= gV$,  $\sigma = d_u/3$}
+		\State{Truncate the distribution where distribution lower bound = $gV$ and distribution upper bound = $gUB$}
+	
+	\State{Calculate the cdf of the distribution}
+	\State{Draw a random number from an uniform distribution within the range of 0 to 1}
+	\State{ $gV =$ inverse cdf (quantile function) for the random number}
+	\Else
+			\State{Define a normal distribution; $\mu= gV$,  $\sigma = d_l/3$}
+		\State{Truncate the distribution where distribution lower bound = $gLB$ and distribution upper bound = $gV$}
+	
+	\State{Calculate the cdf of the distribution}
+	\State{Draw a random number from an uniform distribution within the range of 0 to 1}
+	\State{$gV =$ inverse cdf (quantile function) for the random number}
+	\EndIf
+	 		
+	\EndFor	
+	
+      \State \Return{$individual$}
+    \EndFunction
+  \end{algorithmic}
+   Where $gV$ is the gene value, $gLB$ is the lower bound of the gene , $gUB$ is the upper bound of the gene, $d_u = gUB - gV$, $d_l=gV-gLB$ and $ListOfFoveredGene$ is given in table  \ref{table:variables-in-mutation}.
+  
+\end{algorithm*}
+
+
+\begin{table*}[h]
+\centering
+
+\begin{tabular}{cccccccc}
+Mutation & off-Shore Wind & On-shore Wind  & PV         & Conventional PP & coal       & Oil & N. Gas     \\ \hline
+favour RE & \checkmark & \checkmark & \checkmark & -- & \xmark     & --  & \checkmark \\
+favour CE & \xmark     & \xmark     & \xmark     & -- & \checkmark & --  & \xmark    
+\end{tabular}
+\caption{Different sources that should be increased or decreased in two different mutations. \checkmark indicate an increase and \xmark indicate a decrease, -- indicate doing nothing.}
+\label{table:variables-in-mutation}
+\end{table*}
+
+The mutation that favours conventional energy is the same as the previous one except the choice of favouring decision variables. 
+But process that is applied on the variables is identical.
+The table \ref{table:variables-in-mutation} shows the decision variables that are increased or decreased according to the corresponding mutation.
+
+\section{Quality Indicators for Multi-objective Optimization Problem}
+\label{sec:Quality Indicators for Multi-objective Optimization Problem}
+The way of comparing two algorithms in multi-objective optimization are completely different than single objective optimization. 
+For a single objective optimization case, a algorithm is preferable than another, can be simple identified by measuring the value of objective function that need to be maximized or minimized. 
+On the other hand, for a multi-objective optimization case, the comparison is not so simple. 
+Unlikely the single objective case, multi-objective optimization algorithm generates a set of non-dominated solutions called Pareto optimal set. 
+Also the assessment criteria of an algorithm is depends the user demands.
+As an example, a user may be in interested on an algorithm that approximate global Pareto-front consistently, rather than an algorithm that converge to global Pareto-front but occasionally.
+The quality of a Pareto-Optimal set generated by a method/algorithm mainly depends on three factors \cite{sarker_assessment_2002}.
+\begin{enumerate}
+\item Minimize the distance between true Pareto-front and obtained non-dominating set.
+\item Maximizing the Spread of the solution in the set.
+\item Maximising Number of elements in the set
+\end{enumerate}
+
+Many literatures are published to capture the all three criteria into a single value. 
+In fact, no indicator really able to capture all three issues discussed above within a single value \cite{sarker_assessment_2002}.
+Actually interesting enough to mention that the issues discuss above are contradictory to each other and the design of a assessment indicator itself is a multi-objective optimization problem. 
+Therefore, it is not worthy to make a decision for an algorithm based on single assessment indicator. 
+      
+Here, some of the main quality indicators found in literature are described below.
+
+\subsection{Generational Distance (GD)}
+The measurement of generational distance (GD) is done by calculating the distance between the elements of achieved Pareto front and known true Pareto front (TPF) \cite{veldhuizen_multiobjective_1998}. 
+
+\begin{equation}
+	GD=\frac{\sqrt{{\sum\limits_{i=1}^n{d_i^2} }}}{n}
+\end{equation}  
+where $n$ is the number of element found in a achieved non-dominated set and $d_i$ is the Euclidean distance between the points in found non-dominated set and nearest points of TPF (measured in objective space). 
+The closer the value of GD to $0$ means the obtained Pareto-front is closer to known true Pareto-front. 
+In the case of $GD=0$, the achieved Pareto front exactly match with TPF. 
+In the picture \ref{fig:generational distance}, the red lines represent the distance between the non-dominated points and true Pareto-front points. 
+The main problem of this quality indicator is that it value of the indicator may be misleading, if there are two different non-dominated sets need to be compared, and one set has very few points close to the TPF points and another set has many non-dominated points including the points of earlier set.
+The problem also exists if the two sets have same number of points. 
+Consider, a set has 50 points those are very compact and close to each other and also close to TPF, on the other hand, another set has same number of points but they are well distributed but not so close of the TPF. 
+In the field of multi-objective optimization distribution of non-dominated points is an important issue to be considered. 
+
+\begin{figure}
+
+
+\centering
+\includegraphics[scale=1.0]{./figures/gd.png}
+\caption{Generational Distance}
+\label{fig:generational distance}
+\end{figure}   
+
+\subsection{Inverted Generational Distance (IGD)}
+To deal with the problem of GD, a very similar quality indicator is proposed, called inverted generational distance(IGD) \cite{veldhuizen_multiobjective_1998}. 
+The concept of the indicator is opposite to GD. 
+Here, the distance from the points of TPF to the point of obtained non-dominated set is measured and averaged. 
+\begin{equation}
+GD=\frac{\sqrt{{\sum\limits_{i=1}^k{d_i^2} }}}{k}
+\end{equation}
+where, $k$ is the number of points in true Pareto-front and $d_i$ is the distance between a point of TPF and the nearest point of obtained non-dominated Pareto front. 
+%\textcolor{red} {A picture willl be nice}. 
+The better the quality of the solution set, the less the value of IGD will found. 
+When $IGD=0$, that means the solution set not only lies on the TPF, but also it covers each points of know true Pareto-front.
+By comparing the points of TPF with non-dominated set, IGD gets free from the problems founded in GD.
+
+\subsection{Spread}
+It is highly desirable that obtained Pareto-front should be well distributed and well spread to provide all possible options to the decision maker. 
+Deb at al. \cite{deb_fast_2002} introduced an indicator, called \textit{spread}, to understand how well distributed the front is.   
+The indicator measures the span of the achieved non-dominated solution set. 
+The indicator is measured by taking Euclidean distance between consecutive solutions and make a average of those distances. 
+Then another two Euclidean distances are measured from the extreme two points of TPF and boundary points of the obtained set. 
+All the distances are measured in objective space. 
+Finally using the following formula \ref{eq:Spread equation}, the value of the Spread is measured the non-uniformity in the distribution. 
+ 
+
+\begin{equation}
+\label{eq:Spread equation}
+\Delta = \frac{d_f+d_l+\sum\limits_{i=1}^{N-1}|d_i-\bar{d}| }{d_f+d_l+(N-1) \bar{d}}
+\end{equation}     
+\begin{figure}
+\centering
+
+\includegraphics[scale=1.0]{./figures/Spread.pdf}
+\caption{Calculation of Spread Indicator (taken from \cite{deb_fast_2002}}
+\label{Fig:Spread}
+\end{figure}
+
+Where, $d_f$ and $d_l$ are the Euclidean distances between the extreme solutions of TPF and boundary solutions of achieved set fig. \ref{Fig:Spread}.  
+$\bar{d}$ is the average distances over all $d_i$, assuming that there are $N$ number of solutions and $N-11$ number of consecutive distances in the obtained set. 
+A good distribution will have $d_i$ value close to $\bar{d}$ and $d_f$ and $d_l$ equal to zero, make the indicator value, $\Delta$, as close to zero.
+
+\subsection{Generalized Spread}
+The indicator is introduced by Zhou A. \cite{zhou_combining_2006}.
+The indicator is the extension of previous indicator of \textit{spread} to work with more than 2 objectives. 
+
+\begin{equation}
+\Delta(S,TPF)=\frac{\sum\limits_{i=1}^m d(e_i, S) + \sum\limits_{x \in TPF} |d(x,S)-\bar{d}|}{\sum\limits_{i=1}^m d(e_i, S) + |TPF|\bar{d}}
+\end{equation}    
+Where $S$ is the obtained non-dominating solution set and TPF is the true Pareto front, $m$ is the number of objectives, $e_i \in \{e_1, \dots, e_m \}$ are the $m$ extreme solutions, $|TPF|$ is the number of solutions in TPF and
+\begin{equation}
+d(x,S)= \min \limits_{y \in S, y \not= x} \parallel F(x) - F(y) \parallel ^2
+\end{equation}
+\begin{equation}
+\bar{d}=\frac{1}{|TPF|} \sum \limits_{x \in S} d(x,S)
+\end{equation}
+where $F(x)$ is the objective vector consists of all the $m$ objective values for $x$.
+
+\subsection{Epsilon}
+This indicator is first proposed by Zitzler at al \cite{zitzler_performance_2003}. 
+Here the concept of domination of one set to another set is considered in all objectives. 
+Considering two sets, the concept is that how much minimum distance a bad set needs to be translated to dominate the better set. 
+In the figure \ref{fig:epsilon}, the set coloured with black is better than the gray set for the minimization problem. 
+The \textit{red line} indicate the amount, that much the gray set needs to translate to be able to dominate black set. Mathematically,
+\begin{equation}
+I_{\epsilon_+}^1 (S,TPF) = \inf_{\epsilon \in \mathbb{•}thbb{R} } \{\forall \vec{p} \in TPF \mid \exists \vec{s} \in S: 	\vec{s} \preceq \vec{p}+\epsilon\}
+\end{equation}  
+Where $\vec{s}\preceq\vec{p}$ means $\vec{s}$ dominates $\vec{p}$.
+\begin{figure}
+\centering
+
+\includegraphics[scale=1.0]{./figures/epsilon.png}
+\caption{calculation of epsilon indicator}
+\label{fig:epsilon}
+\end{figure}  
+  
+\subsection{Hypervolume}
+This indicator/metric is also proposed by Zitzler \cite{zitzler_multiobjective_1999} in 1999. 
+The indicator measures the volume covered by the solutions of non-dominated set in objective space. 
+For bi-objective optimization problem, each solution is covered by a rectangle from a reference point (for maximization problem, the reference point is generally origin, and for minimization problem reference point can be chosen from the worst solution with all population). 
+The metric is measured by doing union of all rectangles founded from the solution of obtained non-dominated set. 
+Mathematically,
+\begin{equation}
+HV=volume \left( \bigcup_{i=1}^{|Q|} v_i \right)
+\end{equation}
+Where $Q$ is the set of non-dominated solutions, for each solution in $Q$, a hypercube, $v_i$ is created from the reference point. 
+And the volume of the union of all hypercubes measures the value of the hypervolume.
+Figure  \ref{fig:hypervolume} shows the union of all rectangles for a set.
+
+\begin{figure}
+\centering
+
+\includegraphics[scale=1.0]{./figures/hypervolume.png}
+\caption{calculation of hyper-volume indicator}
+\label{fig:hypervolume}
+\end{figure}
+
+The main drawback of the indicator is, the value can be misleading if the shape of the set in objective space is concave \cite{sarker_assessment_2002}. 
+The indicator may provide poor measurement if two algorithms may differ more than one issues discussed before sec. \ref{sec:Quality Indicators for Multi-objective Optimization Problem}.   
+
+\textit{It is worth to mentioned that all sets need to be normalized to get those matrices. 
+}
+
+\subsection{Discussion}
+
+It is clear from above discussion that no single metric or indicator is able to provide us a clear indication about an algorithm/method. 
+The decision makers generally want a number of uniformly distributed solutions over a tread-off surface. 
+So, a combination of some indicators is a good choice to compare the algorithms \cite{sarker_assessment_2002}.
+According to the discussion, the indicators can be categorizes into three different categories \cite{arribere_tecnicas_2010, siwei_jiang_consistencies_2014}. Fig. \ref{fig:Indicator categories} shows the relationship of indicators with the categories.  
+\begin{itemize}
+\item Convergence: GD \& Epsilon
+\item Diversity: Spread \& Generalized Spread
+\item Convergence \& Diversity: Hypervolume \& IGD
+\end{itemize}
+
+
+
+\begin{figure}
+\centering
+
+\includegraphics[scale=0.6]{./figures/indicators_category.pdf}
+\caption{Indicators Category (adopted from \cite{arribere_tecnicas_2010})}
+\label{fig:Indicator categories}
+\end{figure} 
+
+In our experiment, we will use all the indicators to compare our mutation to generic mutation.
+%but compare with their corresponding category.
+%Therefore, \textit{GD} and \textit{Epsilon} for convergence
+%\textit{Hypervolume, Inverted generational distance} is for convergence and with \textit{epsilon} for convergence and \textit{spread} for diversity will be used.   
+
+
+\section{Experimental Setup}
+To test the performance of our developed mutation, called DKMutation, we have done two kinds of experiments. 
+The experiment is done on a dataset of Denmark.  
+The first experiment is done using regular crossover and mutation operator (Simulated Binary Crossover and Polynomial mutation) with repair function.
+Next experiment is done using the same crossover but using DKMutation. 
+To have a fair competition between two methods, we use same initial population.
+Therefore, two algorithms start from same initial individual.
+The generation of initial population is controlled by predefined seeds.
+Each experiment is carried out for 10 different random seeds. 
+%Each experiment consists of 10 independent runs. 
+Therefore, we have carried out total 20 independent runs, 10 with the state-of-the-art operator and another 10 runs with our developed operator.
+
+The following parameters are used for first experiment where we use the state-of-the-art operator.
+
+\begin{itemize}
+\item Population: 100
+\item Evolution: 5000
+\item crossover Probability: 0.9
+\item Mutation probability: 0.2
+\item Distribution index: 4
+\item Algorithm: NSGA-II
+\item Parent selection: Binary Tournament.
+\end{itemize}
+
+%To perform next experiment, we have just change the mutation probability 0.2 to 0.4. Our assumption is that more use of the mutation operator will give use better results.
+
+To measure the performance of the operator we need to measure the value of quality indicators describe in sec. \ref{sec:Quality Indicators for Multi-objective Optimization Problem}.
+But expect hypervolume, it is require to know true Pareto-front for a problem earlier to measure the value of all other quality indicators.
+As the true Pareto-optimal set is not known, we construct the Pareto-front by combining the results from 20 different run. 
+The approach is of combining the results of different runs is a well known practice in the field of evolutionary algorithm, when true Pareto-front is unknown \cite{Durillo_Nebro_Alba_2010}. 
+
+After getting the true Pare-front, we have done the experiment again to get generational data for quality indicators. 
+The reason behind to run the entire experiment again is that to capture the values of indicators in each generation.
+And to have values in each generation, we need the known Pareto-front constructed in previous experiment.
+Table. \ref{table:Experiment summary} summarize the whole experiments and purpose of the experiment.
+
+\begin{table}[h]
+\label{table:Experiment summary}
+\begin{tabular}{|l|l|l|l|}
+
+\hline
+Experiment Name  & Operators         & No of runs & Purpose                                                                                              \\ \hline
+Exp-Regular 1    & SBX \& Polynomial & 10         & \multirow{2}{*}{Generate true Pareto-front}                                                          \\ \cline{1-3}
+Exp-DKMutation 1 & SBX \& DKMutation & 10         &                                                                                                      \\ \hline
+Exp-Regular 2    & SBX \& Polynomial & 10         & \multirow{2}{*}{\begin{tabular}[c]{@{}c@{}}collect generational \\ data for indicators\end{tabular}} \\ \cline{1-3}
+Exp-DKMutation 2 & SBX \& DKMutation & 10         &                                                                                                      \\ \hline
+ 
+\end{tabular}
+\end{table}
+
+\section{Results}
+The results presented here divided into two parts. 
+In the first part, the results are gather after completing of the first run.
+This results present the behavior of the algorithm (operator) at the end of the run. 
+In the second phase, we try to capture the behaviors of the algorithm during the run. 
+For this purpose, we collect the data about different indicators in each generation for different runs.
+
+\subsection{Results after completion of run} 
+
+The table \ref{table:result HV and IGD} below shows the results of 10 different run for Exp-regular 1 and Exp-DKMutation 1. 
+The shadowed cells represents better performance for the corresponding indicator. 
+It is noted that higher value of hypervolume represent better performance and lower value of IGD means better performance. 
+When considering hypervolume, regular operators are manage to provide good performance 2 times more then the Domain-knowledge mutation. 
+But in respect to IGD, DKMutation manage to outperform the regular operator 6 times.
+ 
+ \begin{table}[h]
+\caption{Results for HV and IGD}
+ \label{table:result HV and IGD}
+ 
+\begin{tabular}{c|cc|cc}  \hline
+\multicolumn{1}{l}{} & \multicolumn{2}{c}{HyperVolume}    & \multicolumn{2}{c}{IGD}           \\ \hline 
+Seed                 & Exp. Regular 1 & Exp. DKMutation 1 & Exp. Regular 1 & Exp. DKMutation 1 \\ \hline
+365652               &  0.835233       & \cellcolor[gray]{0.7}0.850046          & 0.003717       & \cellcolor[gray]{0.7}0.002392          \\
+455875               & \cellcolor[gray]{0.7}0.889545       & 0.871887          & 0.006704       & \cellcolor[gray]{0.7}0.001743          \\
+456545               & \cellcolor[gray]{0.7}0.889545       & 0.837827          &\cellcolor[gray]{0.7} 0.001859       & 0.002354          \\
+458478               & 0.827764       & \cellcolor[gray]{0.7}0.840518          & 0.007353       & \cellcolor[gray]{0.7}0.00231           \\
+545782               & 0.83592        & \cellcolor[gray]{0.7} 0.839544          & 0.002697       & \cellcolor[gray]{0.7}0.002235          \\
+547945               & \cellcolor[gray]{0.7}0.883954       & 0.838292          & 0.006959       & \cellcolor[gray]{0.7}0.002266          \\
+549235               & \cellcolor[gray]{0.7}0.841302       & 0.833172          & \cellcolor[gray]{0.7}0.003796       & 0.004549          \\
+562366               & \cellcolor[gray]{0.7}0.890897       & 0.840934          & 0.006725       & \cellcolor[gray]{0.7}0.002228          \\
+652262               & 0.828183       & \cellcolor[gray]{0.7}0.873807          & 0.007784       & \cellcolor[gray]{0.7}0.002266          \\
+981354               & \cellcolor[gray]{0.7}0.888231       & 0.83999           & 0.003411       & \cellcolor[gray]{0.7}0.002288    \\ \hline    
+\end{tabular}
+\end{table}
+
+The next table \ref{table: results Spread and generalized Spread} shows the results of \textit{Spread and generalized Spread indicators}. 
+It should be noted that each of the indicators need to be minimized to present the better result. 
+It is already mentioned earlier that \textit{generalized spread} is a multi-dimensional version of \textit{spread} where spread works only for two objective case. 
+Our problem is a bi-objective problem and still we observed that the values of two indicators are different.  
+There are mainly two reasons behind getting different values. 
+The first reason is that \textit{spread} indicator do not consider duplicate solutions, if duplicate solutions exist in obtained Pareto-front. 
+As spread measures the distance of successive solutions, the distance between successive solutions for duplicated solutions are considered as zero. 
+On the other hand, as \textit{generalized spread} considers the distance of nearest solutions whose distance is greater than zero, each duplicate solution is considered as an independent solution. 
+The second reason is that \textit{spread} considers  gaps between all the successive solutions. 
+On the contrary, \textit{generalized spread} consider the smallest gap in any direction. 
+Consider an one dimensional case, where four solutions have values of $10, 12$, $16$ and $18$. 
+If we consider \textit{spread}, there are 3 distances of $2, 4, 2$. 
+On the other hand, if we consider \textit{generalized spread}, the three distances are $2, 2, 2$. 
+We do not able to specify which on the better, but with DKMutation, we have managed to outperform regular mutation 15 times within 20 times.
+
+
+\begin{table}[h]
+
+\caption {Results for Spread and generalized Spread}
+\label{table: results Spread and generalized Spread}
+\begin{tabular}{c|cc|cc}\hline
+\multicolumn{1}{l}{} & \multicolumn{2}{c}{Spread}         & \multicolumn{2}{c}{Generalized Spread} \\ \hline
+Seed                 & Exp. Regular 1 & Exp. DKMutation 1 & Exp. Regular 1   & Exp. DKMutation 1   \\ \hline
+365652               & \cellcolor[gray]{0.7}0.657685       & 0.773247          & 0.573008755      & \cellcolor[gray]{0.7}0.558847165         \\
+455875               & \cellcolor[gray]{0.7}0.675538       & 0.785794          & 0.677625004      & \cellcolor[gray]{0.7}0.569152299         \\
+456545               & 0.675538       & \cellcolor[gray]{0.7}0.641181          & 0.689310642      & \cellcolor[gray]{0.7}0.385132845         \\
+458478               & 0.685045       & \cellcolor[gray]{0.7}0.648291          & 0.715928387      &\cellcolor[gray]{0.7} 0.433595939         \\
+545782               & 0.619087       & \cellcolor[gray]{0.7}0.586206          & 0.544114878      & \cellcolor[gray]{0.7}0.419384069         \\
+547945               & 0.827126       & \cellcolor[gray]{0.7}0.544189          & 0.816414887      & \cellcolor[gray]{0.7}0.433969669         \\
+549235               & \cellcolor[gray]{0.7}0.644144       & 0.648021          & \cellcolor[gray]{0.7}0.552251426      & 0.636379722         \\
+562366               & 0.719552       & \cellcolor[gray]{0.7}0.515242          & 0.704807006      &\cellcolor[gray]{0.7} 0.45772625          \\
+652262               &\cellcolor[gray]{0.7} 0.70084        & 0.964505          & 0.697327808      & \cellcolor[gray]{0.7}0.587781616         \\
+981354               & 0.967737       & \cellcolor[gray]{0.7}0.618592          & 0.606944707      & \cellcolor[gray]{0.7}0.412998768   \\ \hline     
+\end{tabular}
+\end{table}
+
+The following table \ref{table:results GD and Epsilon} shows the results of \textit{generational distance} and \textit{epsilon} indicators.
+The results show that it is a tie for epsilon, but in generational distance regular operator outperform DKMutation. 
+Most probably the reason it that DKMutation is able to produce more diverse solution along the tread-off surface but the state-of-the-art operator produces results near to true Pareto front.
+
+\begin{table}[h]
+\caption{Results for GD and Epsilon}
+\label{table:results GD and Epsilon}
+\begin{tabular}{c|cc|cc} \hline
+\multicolumn{1}{l}{} & \multicolumn{2}{c}{Generational distance} & \multicolumn{2}{c}{Epsilon}        \\ \hline
+Seed                 & Exp. Regular 1     & Exp. DKMutation 1    & Exp. Regular 1 & Exp. DKMutation 1 \\ \hline
+365652               & 0.005615           &\cellcolor[gray]{0.8} 0.00485              & 1573           & \cellcolor[gray]{0.8}754               \\
+455875               & \cellcolor[gray]{0.8}0.000641           & 0.002132             & 631            & \cellcolor[gray]{0.8}5.696             \\
+456545               & \cellcolor[gray]{0.8}0.000811           & 0.006319             & \cellcolor[gray]{0.8}596            & 694               \\
+458478               & \cellcolor[gray]{0.8}0.002539           & 0.005513             & 1842           & \cellcolor[gray]{0.8}689               \\
+545782               & 0.00578            & \cellcolor[gray]{0.8}0.004896             & 1432           & \cellcolor[gray]{0.8}797               \\
+547945               & \cellcolor[gray]{0.8}0.001582           & 0.005812             & \cellcolor[gray]{0.8}604            & 1008              \\
+549235               & 0.005617           & \cellcolor[gray]{0.8}0.005303             & \cellcolor[gray]{0.8}1051           & 1688              \\
+562366               & \cellcolor[gray]{0.8}0.000489           & 0.006442             & \cellcolor[gray]{0.8}629            & 652               \\
+652262               & \cellcolor[gray]{0.8}0.002267           & 0.003865             & 1841           & \cellcolor[gray]{0.8}689               \\
+981354               & \cellcolor[gray]{0.8}0.002626           & 0.005827             & \cellcolor[gray]{0.8}683            & 702  \\ \hline            
+\end{tabular}
+\end{table}
+
+\subsection{Results during run}
+
+In this section we are going to present generational results for two most important quality indicators, \emph{hypervolume and inverse generational distance(IGD)}. 
+To understand the overall behavior, we make an average and normalized the data for each generation using \eqref{equ:generational hypervolume}, \eqref{equ:generational IGD} . 
+\begin{equation}
+\label{equ:generational hypervolume}
+HV_{gen_i} = \frac {\sum\limits_{j=1}^k HV_j^i} {k} * 100
+\end{equation}
+Where $i$ is the generation number, $k$ is the total number of runs with different seeds. In our case, k is equal to 10.
+$HV_j^i$ means hypervolume of $i^{th}$ generation of $j^{th}$ run. 
+Using the equation we measure the average value of hyperpervolume in a scale of 100 for regular operator and DKMutation.
+\begin{figure}
+\centering
+\label{fig:genetational IGD}
+\includegraphics[scale=0.5]{./figures/HV_generation.pdf}
+\end{figure}
+
+
+For IGD, it is expected that the value will be close to zero.
+\begin{equation}
+\label{equ:generational IGD}
+IGD_{gen_i} = \frac{\sum\limits_{j=1}^k IGD_j^i}{k*IGD_{max}} *100
+\end{equation}
+Where $i$ is the generation number, $k$ is the total number of runs with different seeds. 
+$IGD_{max}$ is the maximum IGD found in all different runs. 
+\begin{figure}
+\centering
+\label{fig:genetational IGD}
+\includegraphics[scale=0.5]{./figures/IGD_generation.pdf}
+\end{figure}
+
+From the chart of hypervolume, it is clear that our developed mutation closely follow the regular mutation from the beginning until end. 
+%There is not much difference from curves presents hypervolume for two different operators.
+
+On the other hand, the chart of IGD is similar until 15 generation. 
+After 15 generations, the curve represents DKMutation continue goes downward, but the other curve that represents polynomial mutation stabilizes. 
+
+\section{Future work}
+The concept of favouring renewable energy sources, clean energy sources and favouring the conventional energy sources, low cost fuel can be applied to crossover operator.
+%As a future work, these concepts may be applied to the state-of-the-art crossover. 
+In the next experiment we may use the same distribution that is used in polynomial mutation instead of normal distribution.
+%Our primary assumption is that the above concept perform better because of instead of two different distribution we can use the same distribution.
+Another area we want to explore is smart initialization.
+State-of-the-art algorithm initializes individuals randomly from a uniformly distributed probability distribution. 
+But we know that a renewable sources is better than another if the distribution of the source (distribution of wind or solar on every hour) match the distribution of electricity demand of the region.  
+Therefor, we can design an initialization process that prioritize the better renewable sources.
+
+\bibliographystyle{plain}
+\bibliography{references} 
+
+  
+
+\end{document}

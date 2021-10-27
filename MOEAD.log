@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="windows-1252" standalone="no"?>
+<!DOCTYPE log SYSTEM "logger.dtd">
+<log>
+<record>
+  <date>2015-03-12T08:59:17</date>
+  <millis>1426147157506</millis>
+  <sequence>0</sequence>
+  <logger>jMetal</logger>
+  <level>INFO</level>
+  <class>reet.fbk.eu.jmetal.metaheuristics.moead.MOEAD_main</class>
+  <method>main</method>
+  <thread>1</thread>
+  <message>Total execution time: 54838427ms</message>
+</record>
+<record>
+  <date>2015-03-12T08:59:17</date>
+  <millis>1426147157538</millis>
+  <sequence>1</sequence>
+  <logger>jMetal</logger>
+  <level>INFO</level>
+  <class>reet.fbk.eu.jmetal.metaheuristics.moead.MOEAD_main</class>
+  <method>main</method>
+  <thread>1</thread>
+  <message>Objectives values have been writen to file FUN</message>
+</record>
+<record>
+  <date>2015-03-12T08:59:17</date>
+  <millis>1426147157541</millis>
+  <sequence>2</sequence>
+  <logger>jMetal</logger>
+  <level>INFO</level>
+  <class>reet.fbk.eu.jmetal.metaheuristics.moead.MOEAD_main</class>
+  <method>main</method>
+  <thread>1</thread>
+  <message>Variables values have been writen to file VAR</message>
+</record>
+</log>
