@@ -104,7 +104,7 @@ public class NSGAIISpooling extends Algorithm {
       
     } //for       
 
-    ((EnergyPLANProblemSRIV4Spooling)problem_).evaluateAll(population);
+    ((EnergyPLANProblemCEIS2021V1Spooling)problem_).evaluateAll(population);
     
     // Generations 
     while (evaluations < maxEvaluations) {
