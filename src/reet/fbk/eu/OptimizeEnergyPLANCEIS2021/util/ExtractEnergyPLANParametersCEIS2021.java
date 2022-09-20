@@ -903,12 +903,23 @@ public class ExtractEnergyPLANParametersCEIS2021 {
 	Double sumOfSolarThermalProductionProfile;
 	Double averageHourlyHeatingDemand;
 
-	public void readProfiles() throws IOException {
+	public void readProfiles(String simulatedYear) throws IOException {
 
-		BufferedReader brthermalDeamndProfile = new BufferedReader(
-				new FileReader(".\\EnergyPLAN161\\energyPlan Data\\Distributions\\CEIS_Thermal_Demand_LC_2030.txt"));
-		BufferedReader brsolarThermalProductionProfile = new BufferedReader(
-				new FileReader(".\\EnergyPLAN161\\energyPlan Data\\Distributions\\CEIS_SolarThermal_Hourly_Production_2030.txt"));
+		BufferedReader brthermalDeamndProfile=null;
+		BufferedReader brsolarThermalProductionProfile=null;
+		
+		if(simulatedYear.equals("2030")) {	
+			brthermalDeamndProfile = new BufferedReader(
+					new FileReader(".\\EnergyPLAN161\\energyPlan Data\\Distributions\\CEIS_Thermal_Demand_LC_2030.txt"));
+			brsolarThermalProductionProfile = new BufferedReader(
+					new FileReader(".\\EnergyPLAN161\\energyPlan Data\\Distributions\\CEIS_SolarThermal_Hourly_Production_2030.txt"));
+		}else if(simulatedYear.equals("2050")) {
+			brthermalDeamndProfile = new BufferedReader(
+					new FileReader(".\\EnergyPLAN161\\energyPlan Data\\Distributions\\CEIS_Thermal_Demand_LC_2050.txt"));
+			brsolarThermalProductionProfile = new BufferedReader(
+					new FileReader(".\\EnergyPLAN161\\energyPlan Data\\Distributions\\CEIS_SolarThermal_Hourly_Production_2050.txt"));
+		}
+		
 		String line;
 
 		sumOfThermalDemandProfile = 0.0;
@@ -934,6 +945,72 @@ public class ExtractEnergyPLANParametersCEIS2021 {
 	}
 
 	public double solarUtilizationCalculation(double heatDemand, double solarInput, double storageDays) {
+		
+		
+		double solarUtilization = 0.0;
+		double storageContent = 0.0;
+
+		// storage capacity
+		double storage = (heatDemand / 8784)*  storageDays  * 24;
+
+		double startingStorageContent = 0.0, endingStorageContent = 0.0, percentage = 0.0;
+
+		/*int run = 0;
+		do {
+			
+			
+			if(run >=  10)
+				break;*/
+			
+			startingStorageContent = endingStorageContent;
+			storageContent = startingStorageContent;
+			solarUtilization = 0.0;
+			
+			
+			for (int i = 0; i < thermalDeamndProfile.size(); i++) {
+				double hourSolarThermalproduction = solarInput * solarThermalProductionProfile.get(i)
+						/ sumOfSolarThermalProductionProfile;
+				double hourThermalDemand = heatDemand * thermalDeamndProfile.get(i) / sumOfThermalDemandProfile;
+
+				/*
+				 * if(hourSolarThermalproduction>hourThermalDemand)
+				 * solarUtilization+=hourThermalDemand; else
+				 * solarUtilization+=hourSolarThermalproduction;
+				 */
+
+				if (hourSolarThermalproduction <= hourThermalDemand) {
+					solarUtilization += (hourSolarThermalproduction
+							+ Math.min(storageContent, (hourThermalDemand - hourSolarThermalproduction)));
+					storageContent -= Math.min(storageContent, (hourThermalDemand - hourSolarThermalproduction));
+					if (storageContent < 0)
+						storageContent = 0.0;
+				} else {
+					solarUtilization += (hourThermalDemand);
+					storageContent += (hourSolarThermalproduction - hourThermalDemand);
+					if (storageContent >= (storage))
+						storageContent = storage;
+
+				}
+
+				
+
+			}
+			endingStorageContent = storageContent;
+			
+			/*if(Math.abs(startingStorageContent - endingStorageContent) != 0.0)
+				percentage =  Math.abs(startingStorageContent - endingStorageContent)/Math.max(startingStorageContent, endingStorageContent)*100.0;
+			else
+				percentage = 0.0;
+			
+			run++;
+		}while( percentage >= 10.0 );
+		*/
+		
+		
+		return solarUtilization;
+		}
+	
+	public double solarUtilizationCalculation(String xSolarInput, double heatDemand, double solarInput, double storageDays) {
 		
 		
 		double solarUtilization = 0.0;
@@ -981,10 +1058,11 @@ public class ExtractEnergyPLANParametersCEIS2021 {
 
 				}
 
-				endingStorageContent = storageContent;
+				
 
 			}
-		
+			endingStorageContent = storageContent;
+			
 			if(Math.abs(startingStorageContent - endingStorageContent) != 0.0)
 				percentage =  Math.abs(startingStorageContent - endingStorageContent)/Math.max(startingStorageContent, endingStorageContent)*100.0;
 			else
@@ -997,7 +1075,6 @@ public class ExtractEnergyPLANParametersCEIS2021 {
 		
 		return solarUtilization;
 		}
-	
 
 	public static void main(String[] args) throws IOException, JMException {
 
@@ -1017,8 +1094,8 @@ public class ExtractEnergyPLANParametersCEIS2021 {
 		 */
 
 		ExtractEnergyPLANParametersCEIS2021 f = new ExtractEnergyPLANParametersCEIS2021("2030");
-		f.readProfiles();
-		System.out.println(f.solarUtilizationCalculation(13.70, 11.39, 113));
+		f.readProfiles("2030");
+		System.out.println(f.solarUtilizationCalculation("c", 42.43, 4.52, 317));
 
 	}
 	

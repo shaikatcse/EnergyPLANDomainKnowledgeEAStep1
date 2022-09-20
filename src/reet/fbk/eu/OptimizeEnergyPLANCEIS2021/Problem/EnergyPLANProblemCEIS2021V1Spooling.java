@@ -100,7 +100,7 @@ public class EnergyPLANProblemCEIS2021V1Spooling extends Problem {
 
 		numberOfVariables_ = 35;
 		numberOfObjectives_ = 2;
-		numberOfConstraints_ = 1;
+		numberOfConstraints_ = 3;
 
 		problemName_ = "EnergyPLANProblemCEIS2021";
 
@@ -114,7 +114,7 @@ public class EnergyPLANProblemCEIS2021V1Spooling extends Problem {
 		
 		// decision variables
 		// index - 0 -> HydroCap
-		dvHM.put("HydroCap", new DecisionVarible(new ArrayList<String>( Arrays.asList("input_hydro_cap=")), indexOfDV++, 0, 4732, "Renewable"));
+		dvHM.put("RiverHydroCap", new DecisionVarible(new ArrayList<String>( Arrays.asList("input_RES3_capacity=")), indexOfDV++, 0, 4732, "Renewable"));
 		// index - 1 -> PVCap
 		dvHM.put("PVCap", new DecisionVarible(new ArrayList<String>( Arrays.asList("input_RES2_capacity=")), indexOfDV++, 0, 39420, "Renewable"));
 		//index 2-> Biogas (considered as wind)
@@ -194,7 +194,7 @@ public class EnergyPLANProblemCEIS2021V1Spooling extends Problem {
 		dvHM.put("h2CarDemandInKM", new DecisionVarible(new ArrayList<String>( Arrays.asList("input_fuel_Transport[6]=")),  indexOfDV++, 1, 129572000, "Transport"));
 	}else if (simulatedYear.equals("2050")) {
 		// index - 0 -> HydroCap
-				dvHM.put("HydroCap", new DecisionVarible(new ArrayList<String>( Arrays.asList("input_hydro_cap=")), indexOfDV++, 0, 4732, "Renewable"));
+				dvHM.put("RiverHydroCap", new DecisionVarible(new ArrayList<String>( Arrays.asList("input_RES3_capacity=")), indexOfDV++, 0, 4732, "Renewable"));
 				// index - 1 -> PVCap
 				dvHM.put("PVCap", new DecisionVarible(new ArrayList<String>( Arrays.asList("input_RES2_capacity=")), indexOfDV++, 0, 41845, "Renewable"));
 				//index 2-> Biogas (considered as wind)
@@ -340,7 +340,7 @@ public class EnergyPLANProblemCEIS2021V1Spooling extends Problem {
 		ex = new ExtractEnergyPLANParametersCEIS2021(simulatedYear);
 
 		try {
-			ex.readProfiles();
+			ex.readProfiles(simulatedYear);
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -405,12 +405,22 @@ public class EnergyPLANProblemCEIS2021V1Spooling extends Problem {
 		it = col.iterator();
 		double localCO2emission = Double.parseDouble(it.next().toString());
 
-		// extract import	
+		// extract import
 		col = (Collection<String>) energyplanmMap.get("AnnualImportElectr.");
 		it = col.iterator();
 		double elecImport = Double.parseDouble(it.next().toString());
 
+		double co2InImportedEleOil = 0.0, co2InImportedEleNGas = 0.0, co2InImportedEleCoal = 0.0;
+
+		if(simulatedYear.equals("2030")) {
+			co2InImportedEleOil=((elecImport/0.53*0.66/100)*0.267);
+			co2InImportedEleNGas=((elecImport/0.53*43.94/100)*0.202);
+		}else if(simulatedYear.equals("2050")) {
+			co2InImportedEleOil=((elecImport/0.56*0.00/100)*0.267);
+			co2InImportedEleNGas=((elecImport/0.56*12.00/100)*0.202);
+		}
 		
+		localCO2emission = localCO2emission + co2InImportedEleOil + co2InImportedEleNGas ;
 		energyplanmMap.put("CO2Emission", localCO2emission);
 
 		solution.setObjective(0, localCO2emission);
@@ -447,44 +457,83 @@ public class EnergyPLANProblemCEIS2021V1Spooling extends Problem {
 		String AnnualH2mCHPheatStr = it.next().toString();
 		double AnnualH2mCHPheatheat = Double.parseDouble(AnnualH2mCHPheatStr);
 
-		double investmentCostAnnualH2mCHPheat = ((AnnualH2mCHPheatheat * Math.pow(10, 6)) / 15000)
-				* ( 3.725 * (0.03/ (1-Math.pow( (1+0.03) , (-20)) )) );  
+		double investmentCostAnnualH2mCHPheat=0.0; 
+		if(simulatedYear.equals("2030")) {
+			investmentCostAnnualH2mCHPheat = (((AnnualH2mCHPheatheat * Math.pow(10, 6)) / 15000)
+				*  3.725 * 0.03)/ (1-Math.pow( (1+0.03) , (-20)) );  
+		}else if(simulatedYear.equals("2050")) {
+			investmentCostAnnualH2mCHPheat = (((AnnualH2mCHPheatheat * Math.pow(10, 6)) / 15000)
+					*  3.725 * 0.03)/ (1-Math.pow( (1+0.03) , (-20)) ); 
+		}
+				
 		investmentCost +=  investmentCostAnnualH2mCHPheat;
 		
-		double operationalCostAnnualH2mCHPheat =   (AnnualH2mCHPheatheat*Math.pow(10,6)/15000)*0.0417*3.725;
+		double operationalCostAnnualH2mCHPheat = 0.0;
+		if(simulatedYear.equals("2030")){
+			operationalCostAnnualH2mCHPheat =   (AnnualH2mCHPheatheat*Math.pow(10,6)/15000)*0.0417*3.725;
+		}else if(simulatedYear.equals("2050")){
+			operationalCostAnnualH2mCHPheat =   (AnnualH2mCHPheatheat*Math.pow(10,6)/15000)*0.0417*3.725;
+		}
+		
 		fixedOperationalCost += operationalCostAnnualH2mCHPheat;
 		
 		
 		col = (Collection<String>) energyplanmMap.get("nGasmCHPHeatDemand");
 		it = col.iterator();
-		String AnnualnGasCHPheatStr = it.next().toString();
-		double AnnualnGasmCHPheatheat = Double.parseDouble(AnnualH2mCHPheatStr);
+		String AnnualnGasmCHPheatStr = it.next().toString();
+		double AnnualnGasmCHPheat = Double.parseDouble(AnnualnGasmCHPheatStr);
 		double FU_N_Gas_CHP= 0.284618279; 
-		double investmentCostAnnualnGasmCHPheat = (AnnualnGasmCHPheatheat*Math.pow(10,6)/15000)*(((0.9*1000*0.38*15)/(0.48*FU_N_Gas_CHP*366*24))
-				*(0.03/(1-Math.pow((1+0.03),(-20))))+0.0391*((0.9*1000*0.38*15)/(0.48*FU_N_Gas_CHP*366*24)))
-		+ AnnualnGasmCHPheatheat*(0.145*3600*(0.03/(1- Math.pow((1+0.03),(-40)))));
+		double investmentCostAnnualnGasmCHPheat = 0.0;
+		if(simulatedYear.equals("2030")) {
+			investmentCostAnnualnGasmCHPheat = ((AnnualnGasmCHPheat*Math.pow(10,6)/15000)*((0.9*1000*0.38*15)/(0.48*FU_N_Gas_CHP*366*24))
+					*0.03)/(1-Math.pow((1+0.03),(-20))) + AnnualnGasmCHPheat*0.174*3600*0.03/(1- Math.pow((1+0.03),(-40)));
+			
+		}else if(simulatedYear.equals("2050")) {
+			investmentCostAnnualnGasmCHPheat = ((AnnualnGasmCHPheat*Math.pow(10,6)/15000)*((0.9*1000*0.40*15)/(0.50*FU_N_Gas_CHP*366*24))
+					*0.03)/(1-Math.pow((1+0.03),(-20)))+ 
+					+ AnnualnGasmCHPheat*0.174*3600*0.03/(1- Math.pow((1+0.03),(-40)));
+			
+		}
+		
 		investmentCost += investmentCostAnnualnGasmCHPheat;
 		
-		double operationalCostAnnualnGasmCHPheat = (AnnualnGasmCHPheatheat*Math.pow(10,6)/15000)*0.0391*
-				((0.9*1000*0.38*15)/(0.48*FU_N_Gas_CHP*366*24))+AnnualnGasmCHPheatheat*0.0076*0.145*3600;
+		double operationalCostAnnualnGasmCHPheat=0.0;
+		if(simulatedYear.equals("2030")) {
+			operationalCostAnnualnGasmCHPheat = (AnnualnGasmCHPheat*Math.pow(10,6)/15000)*0.0391*
+					((0.9*1000*0.38*15)/(0.48*FU_N_Gas_CHP*366*24))+AnnualnGasmCHPheat*0.0076*0.174*3600;
+		}else if(simulatedYear.equals("2050")) {
+			operationalCostAnnualnGasmCHPheat = (AnnualnGasmCHPheat*Math.pow(10,6)/15000)*0.0399*
+			((0.9*1000*0.40*15)/(0.48*FU_N_Gas_CHP*366*24))+AnnualnGasmCHPheat*0.0076*0.174*3600;
+		}
 		fixedOperationalCost += operationalCostAnnualnGasmCHPheat;
 		
 		
-		col = (Collection<String>) energyplanmMap.get("biomassBoilerHeatDemand");
+		col = (Collection<String>) energyplanmMap.get("biomassmCHPHeatDemand");
 		it = col.iterator();
-		String AnnualBiomassBoilerheatStr = it.next().toString();
-		double AnnualBiomassBoilerheat = Double.parseDouble(AnnualBiomassBoilerheatStr);
+		String biomassmCHPHeatDemandStr = it.next().toString();
+		double AnnualBiomassmCHPheat = Double.parseDouble(biomassmCHPHeatDemandStr);
 		double FU_Biogas_CHP=0.284618279;
-		double investmentCostBiomassBioler = AnnualBiomassBoilerheat *Math.pow(10,6) /15000*(((5.5*1000*0.18*15)/(0.67*FU_Biogas_CHP*366*24))*
-				(0.03/(1- Math.pow((1+0.03),(-20))))
-				+0.0083*((5.5*1000*0.18*15)/(0.67*FU_Biogas_CHP*366*24)))
-				+AnnualBiomassBoilerheat*(0.145*3600*(0.03/(1-Math.pow((1+0.03),(-40)))));
-	
-		investmentCost += investmentCostBiomassBioler;
+		double investmentCostBiomassmCHP=0.0;
+		if(simulatedYear.equals("2030")) {
+			investmentCostBiomassmCHP = ((AnnualBiomassmCHPheat *Math.pow(10,6) /15000) * ((5.5*1000*0.18*15)/(0.67*FU_Biogas_CHP*366*24))*
+				0.03)/(1- Math.pow((1+0.03),(-20)))
+				+AnnualBiomassmCHPheat*0.174*3600*0.03/(1-Math.pow((1+0.03),(-40)));	
+		}else if(simulatedYear.equals("2050")) {
+			investmentCostBiomassmCHP = ((AnnualBiomassmCHPheat *Math.pow(10,6) /15000) * ((5.3*1000*0.20*15)/(0.70*FU_Biogas_CHP*366*24))*
+					0.03)/(1- Math.pow((1+0.03),(-20)))
+					+AnnualBiomassmCHPheat*0.174*3600*0.03/(1-Math.pow((1+0.03),(-40)));
+		}
+		investmentCost += investmentCostBiomassmCHP;
 		
-		double operationalCostBiomassBioler = (AnnualBiomassBoilerheat*Math.pow(10,6)/15000)*0.0083*((5.5*1000*0.18*15)/
-				(0.67*FU_Biogas_CHP*366*24))+AnnualBiomassBoilerheat*0.0076*0.145*3600;
-		fixedOperationalCost += operationalCostBiomassBioler;
+		double operationalCostBiomassmCHP=0.0;
+		if(simulatedYear.equals("2030")) {
+			operationalCostBiomassmCHP = (AnnualBiomassmCHPheat*Math.pow(10,6)/15000)*0.0083*((5.5*1000*0.18*15)/
+					(0.67*FU_Biogas_CHP*366*24))+AnnualBiomassmCHPheat*0.0076*0.174*3600;
+		}else if (simulatedYear.equals("2050")) {
+			operationalCostBiomassmCHP = (AnnualBiomassmCHPheat*Math.pow(10,6)/15000)*0.0085*((5.3*1000*0.20*15)/
+					(0.7*FU_Biogas_CHP*366*24))+AnnualBiomassmCHPheat*0.0076*0.174*3600;
+		}
+		fixedOperationalCost += operationalCostBiomassmCHP;
 		
 		//grid distribution cost
 		col = (Collection<String>) energyplanmMap.get("AnnualElectr.Demand");
@@ -529,22 +578,44 @@ public class EnergyPLANProblemCEIS2021V1Spooling extends Problem {
 		String elecStorage2ChargeStr = it.next().toString();
 		double elecStorage2Charge = Double.parseDouble(elecStorage2ChargeStr);
 		
-		double elecGridDistributionCost=213.61*(1-0.48)*(fixedElecDemand
+		double elecGridDistributionCost=0.0;
+		if(simulatedYear.equals("2030")) {
+			elecGridDistributionCost=213.61*(1-0.48)*(fixedElecDemand
 				+elCarDemandInGWh+hpElecDemand
-				+elecStorage1Charge+ elecStorage2Charge+elForH2ForTransport+ elForH2Heat );
-		
+				+elecStorage1Charge+ elecStorage2Charge+elForH2ForTransport+ elForH2Heat -elecImport ) + 213.61 * elecImport;
+		}else if(simulatedYear.equals("2050")) {
+			elecGridDistributionCost=236.31*(1-0.486)*(fixedElecDemand
+					+elCarDemandInGWh+hpElecDemand
+					+elecStorage1Charge+ elecStorage2Charge+elForH2ForTransport+ elForH2Heat -elecImport ) + 236.31 * elecImport;
+		}
 		variableCost += elecGridDistributionCost;
-		
-		double varibleCostForH2=(h2mCHPHeatDemand/0.97)*58.81;
+			
+		double varibleCostForH2=0.0;
+		if(simulatedYear.equals("2030")) {		
+			varibleCostForH2=(h2mCHPHeatDemand/0.97)*58.81;
+		}else if (simulatedYear.equals("2050")) {
+			varibleCostForH2=(h2mCHPHeatDemand/0.98)*72.59;
+		}
 		variableCost += varibleCostForH2;
 				
 		//cost for H2 cars
 		
-		double investmentCostForH2Cars= h2CarDemandInKM/12900*(32.491*(0.03/(1-Math.pow((1+0.03),(-12))))
-				+0.025*32.491)+h2CarDemandInKM/12900*(1.7*(0.03/(1-Math.pow((1+0.03),(-12)))));
+		double investmentCostForH2Cars=0.0;
+		if(simulatedYear.equals("2030")) {
+			investmentCostForH2Cars= h2CarDemandInKM/12900*32.491*0.03/(1-Math.pow((1+0.03),(-12)))
+					+h2CarDemandInKM/12900*1.7*0.03/(1-Math.pow((1+0.03),(-12)));
+		}else if(simulatedYear.equals("2050")) {
+			investmentCostForH2Cars= h2CarDemandInKM/12900*26.761*0.03/(1-Math.pow((1+0.03),(-12)))
+					+h2CarDemandInKM/12900*0.7*0.03/(1-Math.pow((1+0.03),(-12)));
+		}
 		investmentCost += investmentCostForH2Cars;
 		
-		double operationalCostForH2Cars = h2CarDemandInKM/12900*0.025*32.491+h2CarDemandInKM/12900*1.7*0.0418;
+		double operationalCostForH2Cars=0.0;
+		if(simulatedYear.equals("2030")) {
+			operationalCostForH2Cars = h2CarDemandInKM/12900*0.025*32.491+(h2CarDemandInKM/12900)*1.7*0.0418;
+		}else if(simulatedYear.equals("2050")) {
+			operationalCostForH2Cars = h2CarDemandInKM/12900*0.0304*26.761+(h2CarDemandInKM/12900)*0.7*0.0732;
+		}
 		fixedOperationalCost += operationalCostForH2Cars;
 		
 		//cost for solar heat storage
@@ -563,17 +634,26 @@ public class EnergyPLANProblemCEIS2021V1Spooling extends Problem {
 				String heatDemandStr = it.next().toString();
 				double heatDemand = (int) Double.parseDouble(heatDemandStr);
 				
-				investmentCostForSolarHeatStorage += solarStorageInDays*(heatDemand/366*3000*(0.03/(1- Math.pow((1+0.03),(-30)))));
-				operationalCostForSolarHeatStorage += solarStorageInDays *0.007*heatDemand/366*3000;
-				
+				if(simulatedYear.equals("2030")) {
+					investmentCostForSolarHeatStorage += solarStorageInDays*heatDemand/366*3000*0.03/(1- Math.pow((1+0.03),(-30)));
+					operationalCostForSolarHeatStorage += solarStorageInDays *0.007*heatDemand/366*3000;
+				}else if (simulatedYear.equals("2050")) {
+					investmentCostForSolarHeatStorage += solarStorageInDays*heatDemand/366*3000*0.03/(1- Math.pow((1+0.03),(-30)));
+					operationalCostForSolarHeatStorage += solarStorageInDays *0.007*heatDemand/366*3000;
+				}
 		    }
 		}
 		investmentCost += investmentCostForSolarHeatStorage;
 		fixedOperationalCost += operationalCostForSolarHeatStorage;
 
 		//building cost
-		 double investmentCostForEnergyEfficiencyBuilding=17.826*3300*0.03/(1-Math.pow((1+0.03),(-30)));
-		 investmentCost += investmentCostForEnergyEfficiencyBuilding;
+		double investmentCostForEnergyEfficiencyBuilding=0.0;
+		if(simulatedYear.equals("2030")) {
+			investmentCostForEnergyEfficiencyBuilding=17.826*3300*0.03/(1-Math.pow((1+0.03),(-30)));
+		}else if(simulatedYear.equals("2050")) {
+			investmentCostForEnergyEfficiencyBuilding=21.249*3300*0.03/(1-Math.pow((1+0.03),(-30)));
+		}
+		investmentCost += investmentCostForEnergyEfficiencyBuilding;
 		
 		//calculateion cost for h2 electrolyzer
 		
@@ -593,7 +673,7 @@ public class EnergyPLANProblemCEIS2021V1Spooling extends Problem {
 			lifeTime = 11;
 		}
 		
-		double electrolyzerInvestmentCost = (electrolyzerCap*electrolyzerInvestmentUnitCost) * 3/ 
+		double electrolyzerInvestmentCost = ((electrolyzerCap*electrolyzerInvestmentUnitCost) * 0.03)/ 
 				(1 - Math.pow(1+0.03,-lifeTime )) ; 
 		investmentCost += electrolyzerInvestmentCost;
 		
@@ -635,7 +715,12 @@ public class EnergyPLANProblemCEIS2021V1Spooling extends Problem {
 				String xSolarStorageStr = it.next().toString();
 				double xSolarStorage = (int) Double.parseDouble(xSolarStorageStr);
 				
-				double xSolarUtilization = ex.solarUtilizationCalculation(AnnualXHeat, xSolarInput, xSolarStorage );
+				double xSolarUtilization = 0.0;
+				if(solarInputKey.equals("hpSolarInput")) {
+					xSolarUtilization = ex.solarUtilizationCalculation(solarInputKey, AnnualXHeat, xSolarInput, xSolarStorage );
+				}else {
+					xSolarUtilization = ex.solarUtilizationCalculation( AnnualXHeat, xSolarInput, xSolarStorage );
+				}
 				
 				energyplanmMap.put(  key.substring(0, key.length() - 10) + "SolarUtilization", xSolarUtilization);
 
@@ -652,23 +737,60 @@ public class EnergyPLANProblemCEIS2021V1Spooling extends Problem {
 		it = col.iterator();
 		double annualSolarThermalInput = Double.parseDouble(it.next().toString());
 		
-		double totalLand = 310264; 
-		
-		double constraint =  totalLand - (PVCap-636.72)/0.125 + (annualSolarThermalInput * 
-				Math.pow( 10,  6) / 705) ;
-		
-		
-		if (constraint < 0.0) {
-			solution.setOverallConstraintViolation(constraint);
-			solution.setNumberOfViolatedConstraint(1);
+		/*col = (Collection<String>) energyplanmMap.get("AnnaulImportElectr.");
+		it = col.iterator();
+		double annualImportElec = Double.parseDouble(it.next().toString());
 	
-		}else {
+		col = (Collection<String>) energyplanmMap.get("AnnaulExportElectr.");
+		it = col.iterator();
+		double annualExportElec = Double.parseDouble(it.next().toString());
+	*/
 		
 		
+		// extract import
+		col = (Collection<String>) energyplanmMap.get("Annual MaximumImportElectr.");
+		it = col.iterator();
+		double annualMaximumImportElec = Double.parseDouble(it.next().toString());
 		
+		// extract Export
+		col = (Collection<String>) energyplanmMap.get("Annual MaximumExportElectr.");
+		it = col.iterator();
+		double annualMaximumExportElec = Double.parseDouble(it.next().toString());
+		
+		double [] constraint = new double[this.getNumberOfConstraints()];
+		
+		double totalLand2030 = 310264, totalLand2050=660086 ;
+		
+		double	constraintOnImport=0; //in KW
+		double	constraintOnExport=0; //in KW
+		
+		if(simulatedYear.equals("2030")) {
+			constraint[0] =  totalLand2030 - (PVCap-636.72)/0.125 + (annualSolarThermalInput * 
+				Math.pow( 10,  6) / 705) ;
+		}else if(simulatedYear.equals("2050")) {
+			constraint[0] =  totalLand2050 - (PVCap-636.72)/0.133 + (annualSolarThermalInput * 
+					Math.pow( 10,  6) / 720) ;
+		}
+		
+	
+		constraint[1] =  constraintOnImport - annualMaximumImportElec;
+		constraint[2] =  constraintOnExport - annualMaximumExportElec;
+		double total = 0.0;
+	    int number = 0;
+	    for (int i = 0; i < this.getNumberOfConstraints(); i++) {
+	      if (constraint[i]<0.0){
+	        total+=constraint[i];
+	        number++;
+	      }
+		}
+	        
+	    solution.setOverallConstraintViolation(total);    
+	    solution.setNumberOfViolatedConstraint(number); 
+			
+
 			hmForAllSolutions.put(solutonToString(solution), energyplanmMap);
 		}
-		}
+	
 
 	
 	
@@ -748,11 +870,11 @@ public class EnergyPLANProblemCEIS2021V1Spooling extends Problem {
 
 		
 		list.add(new ArrayList<String>() { 
-			{	add (dvHM.get("HydroCap").EnergyPLANVariableName.get(0)); 
-				add( s.getDecisionVariables()[dvHM.get("HydroCap").index].getValue()+""); 
+			{	add (dvHM.get("RiverHydroCap").EnergyPLANVariableName.get(0)); 
+				add( s.getDecisionVariables()[dvHM.get("RiverHydroCap").index].getValue()+""); 
 			}
 		} );
-		modifyMap.put("HydroCap", (int) s.getDecisionVariables()[dvHM.get("HydroCap").index].getValue());
+		modifyMap.put("RiverHydroCap", (int) s.getDecisionVariables()[dvHM.get("RiverHydroCap").index].getValue());
 
 
 		list.add(new ArrayList<String>() { 
@@ -935,9 +1057,8 @@ public class EnergyPLANProblemCEIS2021V1Spooling extends Problem {
 		} );
 
 		//number of disel car
-		final double numberOfDieselCars = (long) s.getDecisionVariables()[ dvHM.get("dieselCarDemandInKM").index].getValue() * efficiencyDieselCar / Math.pow(10, 6) * Math.pow(10, 6)
-				/ (efficiencyDieselCar * averageKMPerYearPerCar * Math.pow(10, 3));
-
+		final double numberOfDieselCars = (long) s.getDecisionVariables()[  dvHM.get("dieselCarDemandInKM").index].getValue() / averageKMPerYearPerCar;
+				
 		list.add(new ArrayList<String>() { 
 			{	add (dvHM.get("dieselCarDemandInKM").EnergyPLANVariableName.get(1)); 
 				add( numberOfDieselCars+"" ); 
@@ -958,8 +1079,7 @@ public class EnergyPLANProblemCEIS2021V1Spooling extends Problem {
 		} );
 
 		//number of el car
-		final double numberOfElCars = (long) s.getDecisionVariables()[ dvHM.get("elCarDemandInKM").index].getValue() * efficiencyEVCar / Math.pow(10, 6) * Math.pow(10, 6)
-				/ (efficiencyEVCar * averageKMPerYearPerCar * Math.pow(10, 3));
+		final double numberOfElCars = (long) s.getDecisionVariables()[  dvHM.get("elCarDemandInKM").index].getValue() / averageKMPerYearPerCar;
 
 		list.add(new ArrayList<String>() { 
 			{	add (dvHM.get("elCarDemandInKM").EnergyPLANVariableName.get(1)); 
@@ -972,15 +1092,15 @@ public class EnergyPLANProblemCEIS2021V1Spooling extends Problem {
 		
 		//h2 car demand
 		final double totalH2DemandInGWhForTrns = (long) s.getDecisionVariables()[  dvHM.get("h2CarDemandInKM").index].getValue() * efficiencyH2Car / Math.pow(10, 6);
+		
 		list.add(new ArrayList<String>() { 
 			{	add (dvHM.get("h2CarDemandInKM").EnergyPLANVariableName.get(0)); 
 				add( totalH2DemandInGWhForTrns +"" ); 
 			}
 		} );
 		
-		final double numberOfH2Cars = (long) s.getDecisionVariables()[ dvHM.get("h2CarDemandInKM").index].getValue() * efficiencyH2Car / Math.pow(10, 6) * Math.pow(10, 6)
-				/ (efficiencyH2Car * averageKMPerYearPerCar * Math.pow(10, 3));
-
+		final double numberOfH2Cars = (long) s.getDecisionVariables()[  dvHM.get("h2CarDemandInKM").index].getValue() / averageKMPerYearPerCar;
+		
 		modifyMap.put("h2CarDemandInKM", (long) s.getDecisionVariables()[  dvHM.get("h2CarDemandInKM").index].getValue());
 		modifyMap.put("h2CarDemandInGWh", totalH2DemandInGWhForTrns);
 		modifyMap.put("NumberOfH2Cars", numberOfH2Cars);

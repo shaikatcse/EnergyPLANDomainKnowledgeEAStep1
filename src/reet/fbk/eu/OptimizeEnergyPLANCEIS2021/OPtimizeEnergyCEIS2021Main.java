@@ -71,12 +71,12 @@ public class OPtimizeEnergyCEIS2021Main {
 		// long seed[]={102354,986587,456987,159753,
 		// 216557,589632,471259,523486,4158963,745896};
 
-		String[] simulatedYear = { "2030" };
+		String[] simulatedYear = {"2030"};
 
 		for (int year = 0; year < simulatedYear.length; year++) {
 			int numberOfRun = 1;
 
-			String folder = "C:\\Users\\shaik\\Desktop\\SRIResults\\" + "\\" + simulatedYear[year];
+			String folder = "C:\\Users\\shaik\\Desktop\\CEIS2021Results\\" + "\\" + simulatedYear[year];
 			File file = new File(folder);
 			file.mkdir();
 
@@ -166,6 +166,7 @@ public class OPtimizeEnergyCEIS2021Main {
 				}*/
 				
 				//write all solutions
+				WriteDataToFile.output.clear();
 				HashMap hm = ((EnergyPLANProblemCEIS2021V1Spooling)problem).getTheList();
 				WriteDataToFile.init();
 				for (Object value : hm.values()) {

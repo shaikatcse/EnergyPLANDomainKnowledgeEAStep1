@@ -2,19 +2,19 @@
 <!DOCTYPE log SYSTEM "logger.dtd">
 <log>
 <record>
-  <date>2021-11-20T02:26:13</date>
-  <millis>1637353573979</millis>
+  <date>2021-11-28T23:18:17</date>
+  <millis>1638119897787</millis>
   <sequence>0</sequence>
   <logger>jMetal</logger>
   <level>INFO</level>
   <class>reet.fbk.eu.OptimizeEnergyPLANCEIS2021.OPtimizeEnergyCEIS2021Main</class>
   <method>main</method>
   <thread>1</thread>
-  <message>Total execution time: 248010ms</message>
+  <message>Total execution time: 220942ms</message>
 </record>
 <record>
-  <date>2021-11-20T02:26:14</date>
-  <millis>1637353574090</millis>
+  <date>2021-11-28T23:18:17</date>
+  <millis>1638119897848</millis>
   <sequence>1</sequence>
   <logger>jMetal</logger>
   <level>INFO</level>
@@ -24,8 +24,8 @@
   <message>Variables values have been writen to file VAR</message>
 </record>
 <record>
-  <date>2021-11-20T02:26:14</date>
-  <millis>1637353574095</millis>
+  <date>2021-11-28T23:18:17</date>
+  <millis>1638119897851</millis>
   <sequence>2</sequence>
   <logger>jMetal</logger>
   <level>INFO</level>

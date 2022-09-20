@@ -136,7 +136,7 @@ public class WriteDataToFile {
 	static public void init() {
 		
 		output.add(new EnergyPLANOutput("PVCap", "PVCap", "kWe"));
-		output.add(new EnergyPLANOutput("HydroCap", "HydroCap", "kWe"));
+		output.add(new EnergyPLANOutput("RiverHydroCap", "RiverHydroCap", "kWe"));
 		output.add(new EnergyPLANOutput("BioGasCap", "BioGasCap", "kWe"));
 		
 		output.add(new EnergyPLANOutput("ElecStorage_Turbine_Cap", "ElecStorage_Turbine_Cap", "KWe"));
@@ -179,15 +179,15 @@ public class WriteDataToFile {
 		
 		output.add(new EnergyPLANOutput("dieselCarDemandInKM", "dieselCarDemandInKM", "KM"));
 		output.add(new EnergyPLANOutput("dieselCarDemandInGWh", "dieselCarDemandInGWh", "GWh"));	
-		output.add(new EnergyPLANOutput("NumberOfDieselCars", "NumberOfDieselCars", "1000 units"));
+		output.add(new EnergyPLANOutput("NumberOfDieselCars", "NumberOfDieselCars", "1 unit"));
 		
 		output.add(new EnergyPLANOutput("elCarDemandInKM", "elCarDemandInKM", "KM"));
 		output.add(new EnergyPLANOutput("elCarDemandInGWh", "elCarDemandInGWh", "GWh"));	
-		output.add(new EnergyPLANOutput("NumberOfElCars", "NumberOfElCars", "1000 units"));
+		output.add(new EnergyPLANOutput("NumberOfElCars", "NumberOfElCars", "1 unit"));
 		
 		output.add(new EnergyPLANOutput("h2CarDemandInKM", "h2CarDemandInKM", "KM"));
 		output.add(new EnergyPLANOutput("h2CarDemandInGWh", "h2CarDemandInGWh", "GWh"));	
-		output.add(new EnergyPLANOutput("NumberOfH2Cars", "NumberOfH2Cars", "1000 units"));
+		output.add(new EnergyPLANOutput("NumberOfH2Cars", "NumberOfH2Cars", "1 unit"));
 		
 			
 		output.add(new EnergyPLANOutput("ElectrolyzerCapacity", "ElectrolyzerCapacity", "kWe"));
@@ -195,7 +195,11 @@ public class WriteDataToFile {
 		
 		output.add(new EnergyPLANOutput("AnnualPVElectr.", "AnnualPV", "GWh"));
 		output.add(new EnergyPLANOutput("AnnualWindElectr.", "AnnualBiogas", "GWh"));
-		output.add(new EnergyPLANOutput("AnnualHydroElectr.", "AnnualHydro", "GWh"));
+		output.add(new EnergyPLANOutput("AnnualRiverElectr.", "AnnualRiverHydro", "GWh"));
+		output.add(new EnergyPLANOutput("AnnualPumpElectr.", "AnnualPumpElectr.", "GWh"));
+		output.add(new EnergyPLANOutput("AnnualTurbineElectr.", "AnnualTurbineElectr.", "GWh"));
+		output.add(new EnergyPLANOutput("AnnualPump2Electr.", "AnnualPump2Electr.", "GWh"));
+		output.add(new EnergyPLANOutput("AnnualTurbine2Electr.", "AnnualTurbine2Electr.", "GWh"));
 		
 		
 		
@@ -207,7 +211,7 @@ public class WriteDataToFile {
 		output.add(new EnergyPLANOutput("Oil Consumption", "OilConsumption", "GWh"));
 		output.add(new EnergyPLANOutput("Biomass Consumption", "BiomassConsumption", "GWh"));
 		output.add(new EnergyPLANOutput("Ngas Consumption", "NgasConsumption", "GWh"));
-		output.add(new EnergyPLANOutput("Bottleneck", "Bottleneck", "GWh"));
+		output.add(new EnergyPLANOutput("Bottleneck", "Bottleneck", "kEuro"));
 		output.add(new EnergyPLANOutput("Electricity exchange", "TotalElectricityExchangeCost", "kEuro"));
 		output.add(new EnergyPLANOutput("calculatedVariableCost", "calculatedVariableCost", "kEuro"));
 		output.add(new EnergyPLANOutput("calculatedOperationalCost", "calculatedOperationalCost", "kEuro"));
